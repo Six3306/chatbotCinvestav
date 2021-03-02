@@ -1,0 +1,77 @@
+<div class="image_background">
+    <!-- <app-header></app-header> -->
+    <span class="titleP"><img src="/assets/pictures/logo_ChatbotCinves.png" alt="logoChat" class="logoP"/></span>
+
+    <div class=" background_register transparent ">
+        <div class="centrado">
+            <h1 class="tituloIS">Registrarse</h1>
+            <div>
+                <div class="circulo_register">
+                </div>
+            </div>
+            <div>
+                <!-- form del registo -->
+                <form [formGroup]="formRegister" autocomplete="off" (ngSubmit)="sendRegister()">
+                    <mat-form-field>
+                        <input matInput formControlName="username" placeholder="Nombre(s)" type="text" id="username">
+                    </mat-form-field>
+                    <p>
+                        <mat-form-field class="lastName">
+                            <input matInput formControlName="lastNameFather" placeholder="Apellido paterno" type="text" id="lastNameFather">
+                        </mat-form-field>
+                        <span class="space"> &nbsp;&nbsp; </span>
+                        <mat-form-field class="lastName">
+                            <input matInput formControlName="lastNameMother" placeholder="Apellido paterno" type="text" id="lastNameMother">
+                        </mat-form-field>
+                    </p>
+
+                    <p class="emailAge">
+                        <mat-form-field class="yearsold">
+                            <input matInput formControlName="yearsold" placeholder="Edad" type="number" id="yearsold">
+                        </mat-form-field>
+                        <span class="space"> &nbsp;</span>
+                        <mat-form-field class="email">
+                            <input matInput formControlName="email" placeholder="Correo" type="email" id="email">
+                        </mat-form-field>
+                    </p>
+
+                    <p>
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" formControlName="rol">
+                            <mat-radio-button class="example-radio-button" *ngFor="let rol of rols" [value]="rol">
+                                {{rol}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </p>
+                    <!--input de las contraseñas -->
+
+                    <mat-form-field class="pass">
+                        <input matInput formControlName="password" placeholder="Contraseña" type="password" id="password" autocomplete="off">
+                    </mat-form-field>
+                    <span class="space"> &nbsp;&nbsp; </span>
+                    <mat-form-field class="pass">
+                        <input matInput formControlName="confirmPassword" placeholder="Confirma la contraseña" type="password" id="confirmPassword" class="confirmPassword" autocomplete="off">
+                    </mat-form-field>
+
+                    <div class="button">
+                        <button class="button_register" [disabled]="formRegister.invalid" type="submit" mat-button>Registrar</button>
+                    </div>
+
+                    <p class="optionsBottom">
+                        ¿Ya tienes cuenta? <button class="button_nocss" (click)="Login()"><strong class="startSession">Inicia sesión</strong></button>
+                    </p>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!--para regresar al login-->
+    <div id="boxR">
+        <button class="btn-return" (click)="loginP()">
+        <i class="material-icons">
+            navigate_before
+        </i>       
+    </button>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+.toolbar {
+    background-color: #1D2B46;
+    color: white;
+    width: 100%;
+    max-height: 1.8%!important;
+}
+
+.navbar-nav {
+    float: right;
+    font-size: 18px;
+}
+
+#exitAccount:hover {
+    color: hsl(357, 73%, 40%);
+    border-bottom-style: solid;
+    border-bottom-color: hsl(357, 63%, 87%);
+    cursor: pointer;
+}
+
+#adminUsers,
+#adminCourStud,
+#adminRemind,
+#goToGeneralFiles,
+#goToChatbot,
+#goToScoresUsers,
+#exitAccount {
+    transition: color 0.2s linear 0.2s;
+}
+
+#adminCourStud:hover,
+#adminUsers:hover,
+#adminRemind:hover,
+#goToGeneralFiles:hover,
+#goToChatbot:hover,
+#goToScoresUsers:hover {
+    color: hsl(233, 18%, 81%);
+    cursor: pointer;
+}
+
+.logoP {
+    width: 210px;
+    height: 100px;
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+#avatar {
+    max-width: 50px!important;
+    max-height: 50px!important;
+    border-radius: 100%;
+    cursor: pointer;
+    margin-top: 0%;
+    margin-right: 2%;
+    float: right;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #3A445D;
+}

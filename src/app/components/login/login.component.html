@@ -1,0 +1,45 @@
+<div class="image_background">
+    <span class="titleP"><img src="/assets/pictures/logo_ChatbotCinves.png" alt="logoChat" class="logoP"/></span>
+    <div class="background_login transparent " id="principal-box">
+        <div class="centrado">
+
+            <h1 class="tituloIS">Iniciar Sesión</h1>
+
+            <!-- Form para enviar los datos para iniciar sesion -->
+            <div>
+                <form [formGroup]="formLogin" autocomplete="off" (ngSubmit)="sendLogin()">
+                    <!-- <p>
+                        <input type="email" class="input_login" placeholder="Email" formControlName="email">
+                    </p> -->
+
+                    <p>
+                        <mat-form-field>
+                            <input matInput formControlName="email" placeholder="Correo" type="email" id="email">
+                        </mat-form-field>
+                    </p>
+
+                    <p>
+                        <mat-form-field>
+                            <input matInput formControlName="password" placeholder="Contraseña" type="password" id="password">
+                        </mat-form-field>
+                    </p>
+
+                    <div class="button">
+                        <button class="button_login" type="submit" mat-button>Iniciar sesión</button>
+                    </div>
+
+
+                    <br>
+                    <p class="optionsBottom">
+                        ¿No tienes cuenta? <button class="button_nocss" (click)="register()"><strong class="startSession">Regístrate</strong></button>
+                    </p>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+<!-- <img src="assets\pictures\paper.jpg" class=".img-fluid. max-width: 100%;" style="height: auto;"> -->

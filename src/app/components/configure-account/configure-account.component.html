@@ -1,0 +1,37 @@
+<div class="image_background">
+
+    <app-header></app-header>
+
+    <br>
+    <p class="title">Editar Perfil</p>
+
+    <img src="../assets/pictures/avatar1.png" id="avatar" />
+
+    <h2 id="nameUser">{{name}}</h2>
+
+
+    <br>
+    <div class="updatePassword">
+        <mat-slide-toggle [(ngModel)]="isChecked" (change)="changePassword()">¿Deseas cambiar tu contraseña?</mat-slide-toggle>
+        <br>
+
+        <form [formGroup]="formUpdateUser" autocomplete="off" (ngSubmit)="sendRegister()">
+
+            <div id="passwords">
+                <mat-form-field class="pass">
+                    <input matInput formControlName="password" placeholder="Contraseña" type="password" id="password" autocomplete="off">
+                </mat-form-field>
+                <span class="space"> &nbsp;&nbsp; </span>
+
+                <mat-form-field class="pass">
+                    <input matInput formControlName="confirmPassword" placeholder="Confirma la contraseña" type="password" id="confirmPassword" class="confirmPassword" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="button">
+                <button class="button_update_user" [disabled]="isChecked==false" type="submit" mat-button>Registrar</button>
+            </div>
+
+        </form>
+    </div>
+</div>

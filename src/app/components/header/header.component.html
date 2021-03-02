@@ -1,0 +1,31 @@
+<!--nav bar -->
+<mat-toolbar class="toolbar">
+</mat-toolbar>
+
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand">
+        <img src="/assets/pictures/logo_ChatbotCinves.png" alt="logoChat" class="logoP" (click)="goMenuPrincipal()" />
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <!--ADMINISTRADOR-->
+            <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminUsers" (click)="adminUsers()">Usuarios</a><span class="space"> &nbsp;&nbsp; </span>
+            <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminCourStud" (click)="adminCourStud()">Gestionar Grupos/Materias/Estudiantes</a><span class="space"> &nbsp;&nbsp; </span>
+            <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminRemind" (click)="adminRemind()">Avisos</a><span class="space"> &nbsp;&nbsp; </span>
+            <!--PROFESOR Y ALUMNOS-->
+            <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class="nav-item nav-link" id="goToGeneralFiles" (click)="goToGeneralFiles()">Gestion de Archivos y Mensajes</a><span class="space"> &nbsp;&nbsp; </span>
+            <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class="nav-item nav-link" id="goToChatbot" (click)="goToChatbot()">Chatbot</a><span class="space"> &nbsp;&nbsp; </span>
+            <!--PROFESOR-->
+            <a *ngIf="typeMenu=='Profesor' && status==true" class="nav-item nav-link" id="goToScoresUsers" (click)="goToScoresUsers()">Calificar</a><span class="space"> &nbsp;&nbsp; </span>
+
+            <!--TODOS-->
+            <a *ngIf="existUser" class="nav-item nav-link" id="exitAccount" (click)="exitAcount()">Cerrar Sesión</a>
+        </div>
+    </div>
+</nav>
+
+<img src="../assets/pictures/avatar1.png" id="avatar" title="{{'Hola '+name}}" (click)="goConfigureAccount()" *ngIf="routeA!='/Configure-account'" />

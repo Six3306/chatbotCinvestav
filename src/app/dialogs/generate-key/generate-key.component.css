@@ -1,0 +1,30 @@
+#name {
+    color: #141270f5;
+}
+
+.windowKey {
+    align-items: center;
+    text-align: center!important;
+}
+
+#copyK-btn {
+    margin-left: 1.5%;
+    border-color: black;
+    /* background: #336479; */
+}
+
+#copyK-btn:hover {
+    box-shadow: 2px 2px 5px #999;
+}
+
+#btnOk {
+    border-color: black;
+    background: #3A445D;
+    color: white;
+    margin-left: 38%;
+}
+
+#btnOk:hover {
+    box-shadow: 2px 2px 5px #999;
+    background: #162138;
+}
