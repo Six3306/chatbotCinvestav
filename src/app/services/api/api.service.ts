@@ -267,4 +267,13 @@ export class APIService {
       return this.http.get(`${this.api}subjects/${id}`,httpOptions);
     }
 
+    verifyEmail(email){
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        })
+      }
+      return this.http.get(`${this.api}usersVerifyEmail/${email}`,httpOptions);
+    }
+
 }

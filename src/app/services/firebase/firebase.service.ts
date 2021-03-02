@@ -79,7 +79,6 @@ export class FirebaseService {
       this.database.database.ref(`Calificaciones/${data.nombreMateria}/${usuario}`).set({bi1:data.bi1, bi2:data.bi2, bi3:data.bi3, bi4:data.bi4
       ,bi5:data.bi5,id:data.id, nombreMateria:data.nombreMateria, subject_id:data.subject_id, user_id:data.user_id}); 
       // this.database.database.ref(`Recordatorios/${id}`).set({delet:remin.delet,publication:remin.publication,reminder:remin.reminder}); 
-
    } 
 
   //funcion para obtener todas las calificaciones
@@ -92,19 +91,34 @@ export class FirebaseService {
      * Función para guardar un usuario e firebase se hizo se probo pero actualmente los usuarios ya no se almacenan ahi  
      * @param data objeto tipo usuario  
      */
-    addUser(data:User) {
-    let id;
-    return new Promise<any>((resolve, reject) =>{
-        this.firestore
-            .collection("usuarios/")
-            .add(data)
-            .then(res => {
-              // console.log(res.id)
-              id=res.id;
-            }, err => reject(err));
+  //   addUser(data:User) {
+  //   let id;
+  //   return new Promise<any>((resolve, reject) =>{
+  //       this.firestore
+  //           .collection("Usuarios/")
+  //           .add(data)
+  //           .then(res => {
+  //             // console.log(res.id)
+  //             id=res.id;
+  //           }, err => reject(err));
         
-    });
-  }
+  //   });
+  // }
+
+
+  //funcion para añadir usuarios
+  addUser(usuario:User):boolean { 
+    var nameU = usuario.email.split("@");
+    if(usuario.type=='Profesor'){
+      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({keyG:usuario.username, nombre:usuario.username});
+      return true;
+    }else if(usuario.type=='Alumno'){
+      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({nombre:usuario.username, grado:'', grupo:''});
+      return true;
+    }
+ } 
+
+
   /**
    * Función para obtener los usuarios de firebase
    */

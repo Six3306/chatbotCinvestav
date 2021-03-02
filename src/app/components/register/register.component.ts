@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
     private formbuilder : FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-    private firabse: FirebaseService,
+    private firebase: FirebaseService,
     private snackBar: MatSnackBar,
   ) {  
     this.formRegister = this.formbuilder.group({
@@ -95,7 +95,7 @@ export class RegisterComponent implements OnInit {
   /**
    * Permite realizar el registro del usuario
    */
-  register(){
+  register(){ 
     let user: User;
     user={
       username:this.formRegister.get("username").value+" "+this.formRegister.get("lastNameFather").value+" "+this.formRegister.get("lastNameMother").value,
@@ -105,20 +105,36 @@ export class RegisterComponent implements OnInit {
       type:this.formRegister.get("rol").value,
       activated:null,
       id:null
-    }
-    this.api.register(user).subscribe(response =>{
-      localStorage.setItem("user", JSON.stringify(user))
-      // localStorage.setItem("token", response.token) 
-      this.router.navigateByUrl("Menu")
-    }, error=>{
-      console.log(error);
-    })
-   
+    } 
+
+    //valida si email de usuario existe
+    this.api.verifyEmail(user.email).subscribe(response=>{
+      if(response){//no existe
+        this.api.register(user).subscribe(response =>{
+
+          //añadiendo a firebase
+          var band = this.firebase.addUser(user);
+    
+          //verificando si todo salio bien
+          if(band){
+            localStorage.setItem("user", JSON.stringify(user));
+            // localStorage.setItem("token", response.token) 
+            this.router.navigateByUrl("Menu");
+          }
+  
+        }, error=>{
+          console.log(error);
+        });
+      }else{//si existe
+        console.log("YA EXISTE!");
+      }
+      
+    });
     
   }
 
   /**
-   * Envia y compruba que los campos del form esten bien
+   * Envia y comprueba que los campos del form esten bien
    * @returns retorna un elemento vacio para terminar la funcion 
    */
   sendRegister(){
@@ -129,7 +145,7 @@ export class RegisterComponent implements OnInit {
       this.openCustomerSnackBarLesson();
       return;
     }
-
+    //registrando
     this.register();
     this.submitted=false;
 
@@ -148,7 +164,7 @@ export class RegisterComponent implements OnInit {
   testFirebase(){
     let user:User = new User ("Alex",12,"luis_pesar@hotmail.com","Alejandro1998a","Alumno","",false)
     let id;
-    this.firabse.getUsers().subscribe(response=>{
+    this.firebase.getUsers().subscribe(response=>{
       for (let index = 0; index < response.length; index++) {
         const element = response[index];
         // console.log(element.payload.doc.data())
@@ -158,7 +174,7 @@ export class RegisterComponent implements OnInit {
         
       }
     })
-    this.firabse.updateUser("4nbQ5UTx4YWWI17w2gH2", user) 
+    this.firebase.updateUser("4nbQ5UTx4YWWI17w2gH2", user) 
   }
 
   //para ir directamente a la ventana del login
