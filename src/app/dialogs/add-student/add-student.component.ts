@@ -144,20 +144,21 @@ export class AddStudentComponent implements OnInit {
     let studentsArray = [];
 
     if(this.dataSource!=undefined || this.dataSource!=null){
-      this.isAllSelected() ?
-      this.selection.clear() :
+
       this.dataSource.data.forEach(row => { 
-          if(this.selection.isSelected(row)){
-            let studentTmp = {
-              id_user: row.id,
-              email: row.email,
-              grade: this.data.grade,
-              group: this.data.group,
-            };
-            studentsArray.push(studentTmp);
-          }
-      });
-    }
+            if(this.selection.isSelected(row)){
+              let studentTmp = {
+                id_user: row.id,
+                email: row.email,
+                username: row.username,
+                grade: this.data.grade,
+                group: this.data.group,
+              };
+              studentsArray.push(studentTmp);
+            }
+        });
+      }
+    
     return studentsArray;
   }
   /**
@@ -178,6 +179,7 @@ export class AddStudentComponent implements OnInit {
       this.dataSource.data.forEach(row => { this.selection.select(row);
     });
   }
+
   /**
    * Funcion para remover las filas seleccionadas
    */

@@ -303,6 +303,7 @@ export class UsersLessonsComponent implements OnInit {
             //añadiendo a Firebase el grado y grupo de un usuario
             let dataU = {
               email: responseDialog[index].email,
+              username: responseDialog[index].username,
               grade: responseDialog[index].grade,
               group: responseDialog[index].group
             }
@@ -331,8 +332,7 @@ export class UsersLessonsComponent implements OnInit {
               }
             })
           }
-
-
+  
         }    
     })
   }

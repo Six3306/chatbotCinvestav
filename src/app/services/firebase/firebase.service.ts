@@ -83,7 +83,7 @@ export class FirebaseService {
 
 
    setGradeGroup(data){
-    this.database.database.ref(`Usuarios/Alumnos/${data.email}`).set({grado:data.grade, grupo:data.group});
+    this.database.database.ref(`Usuarios/Alumnos/${data.email}`).set({grado:data.grade, grupo:data.group, nombre:data.username});
    }
 
   //funcion para obtener todas las calificaciones
