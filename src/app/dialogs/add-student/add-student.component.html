@@ -48,23 +48,18 @@
                 <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
             </ng-container>
 
+            <!-- ID Column -->
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+            </ng-container>
+
             <!-- Progress Column -->
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.username}} </mat-cell>
             </ng-container>
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="grade">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Grado </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.grade}} </mat-cell>
-            </ng-container>
-
-            <!-- Color Column -->
-            <ng-container matColumnDef="group">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.group}} </mat-cell>
-            </ng-container>
 
             <!-- Disclaimer column -->
 

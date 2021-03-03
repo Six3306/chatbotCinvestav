@@ -35,7 +35,7 @@ export class AddStudentComponent implements OnInit {
   /**
    * columnas de la tabla
    */
-  displayedColumns: string[] = ['select','id', 'name','grade', 'group'];
+  displayedColumns: string[] = ['select','id', 'email', 'name'];
   
   /**
    * tabla con los datos de los estudiantes
@@ -113,6 +113,7 @@ export class AddStudentComponent implements OnInit {
         
         for (let index = 0; index < this.arrayStudentsT.length; index++) {
            if(this.arrayStudentsT[index].type==="Alumno"){
+            this.arrayStudentsT[index].email = this.arrayStudentsT[index].email.split("@")[0];
             this.arrayStudents.push(this.arrayStudentsT[index]);
            }
         }
@@ -149,6 +150,7 @@ export class AddStudentComponent implements OnInit {
           if(this.selection.isSelected(row)){
             let studentTmp = {
               id_user: row.id,
+              email: row.email,
               grade: this.data.grade,
               group: this.data.group,
             };

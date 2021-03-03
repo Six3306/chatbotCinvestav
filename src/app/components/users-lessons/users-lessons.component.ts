@@ -7,6 +7,7 @@ import { AddSubjectComponent } from 'src/app/dialogs/add-subject/add-subject.com
 import { AddStudentComponent } from 'src/app/dialogs/add-student/add-student.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
@@ -152,7 +153,7 @@ export class UsersLessonsComponent implements OnInit {
     public dialog : MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,
-
+    private firebase: FirebaseService,
   ) {
 
   }
@@ -286,18 +287,30 @@ export class UsersLessonsComponent implements OnInit {
    */
 
   addStudent(){
+    //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
     const dialogRef = this.dialog.open(AddStudentComponent,{
       data: {
         grade: this.gradeSelected,
-        group:this.groupSelected
+        group: this.groupSelected
       }
     });
+    //despues de cerrar el cuadro de dialogo
     dialogRef.afterClosed().subscribe(responseDialog=>{
         if(responseDialog){
 
           for (let index = 0; index < responseDialog.length; index++) {
+
+            //añadiendo a Firebase el grado y grupo de un usuario
+            let dataU = {
+              email: responseDialog[index].email,
+              grade: responseDialog[index].grade,
+              group: responseDialog[index].group
+            }
+            this.firebase.setGradeGroup(dataU);
+
             this.api.addUserInLesson(responseDialog[index]).subscribe(response=>{
               if(response){
+
                 let params={
                   "grade":this.gradeSelected,
                   "group":this.groupSelected

@@ -81,6 +81,11 @@ export class FirebaseService {
       // this.database.database.ref(`Recordatorios/${id}`).set({delet:remin.delet,publication:remin.publication,reminder:remin.reminder}); 
    } 
 
+
+   setGradeGroup(data){
+    this.database.database.ref(`Usuarios/Alumnos/${data.email}`).set({grado:data.grade, grupo:data.group});
+   }
+
   //funcion para obtener todas las calificaciones
    getScores() { 
     return this.firestore.collection("Calificaciones/").snapshotChanges();

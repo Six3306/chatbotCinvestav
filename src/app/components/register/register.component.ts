@@ -109,7 +109,11 @@ export class RegisterComponent implements OnInit {
 
     //valida si email de usuario existe
     this.api.verifyEmail(user.email).subscribe(response=>{
-      if(response){//no existe
+      
+console.log(response['data']);
+
+
+      if(response['data']==false){//no existe
         this.api.register(user).subscribe(response =>{
 
           //añadiendo a firebase
@@ -127,6 +131,7 @@ export class RegisterComponent implements OnInit {
         });
       }else{//si existe
         console.log("YA EXISTE!");
+        this.router.navigateByUrl("Register");
       }
       
     });
