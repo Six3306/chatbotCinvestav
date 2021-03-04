@@ -8,20 +8,11 @@
     <br><br>
     <div class="row centrado">
         <mat-toolbar-row>
-            <mat-form-field style="font-size: 14px; margin-left: 0%;">
+            <mat-form-field id="selectorGrade">
                 <mat-label>Grado</mat-label>
                 <mat-select (selectionChange)="searchSubjects()" [(ngModel)]="gradeSelected">
                     <mat-option *ngFor="let grade of grades" [value]="grade.value">
                         {{grade.viewValue}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field style=" font-size: 14px; margin-right: 0%;">
-                <mat-label>Grupo</mat-label>
-                <mat-select [(ngModel)]="groupSelected">
-                    <mat-option *ngFor="let group of groups" [value]="group.value">
-                        {{group.viewValue}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

@@ -71,6 +71,10 @@ export class FirebaseService {
       return false;
     }
 
+    addSubject(data){
+
+    }
+
     /**
      * Funcion para actualizar calificaciones
      */

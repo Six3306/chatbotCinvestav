@@ -103,11 +103,6 @@ export class ClassGComponent implements OnInit {
   /**
    * Contiene el valor del grupo seleccionado
    */
-  groupSelected:String
-
-  /**
-   * Contiene el valor del grupo seleccionado
-   */
   profeSelected:String
   /**
    *  Propiedad que sirve para tener los grados de los alumnos
@@ -118,28 +113,9 @@ export class ClassGComponent implements OnInit {
   grades:Grade[] = [
     {value: '1', viewValue:"1°"},
     {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"},
-    {value: '4', viewValue:"4°"},
-    {value: '5', viewValue:"5°"},
-    {value: '6', viewValue:"6°"}
+    {value: '3', viewValue:"3°"}
   ];
-
-  /**
-   * Propiedad que indica 
-   * @param value es el valor que tendra como tal la seleccion 
-   * @param viewValue es el valor que que se muestra para la seleccion 
-   * 
-   */
-  groups:Group[] = [
-    {value: 'A', viewValue:"A"},
-    {value: 'B', viewValue:"B"},
-    {value: 'C', viewValue:"C"},
-    {value: 'D', viewValue:"D"},
-    {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"}
-  ];
-
-  
+ 
 
   @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
   @ViewChildren(MatSort)  sort:QueryList< MatSort>;
@@ -220,13 +196,21 @@ export class ClassGComponent implements OnInit {
   addSubject(){
     const dialogRef = this.dialog.open(AddSubjectComponent,{
       data: {
-        grade: this.gradeSelected,
-        group:this.groupSelected,
+        grade: this.gradeSelected
       }
     });
     dialogRef.afterClosed().subscribe(response=>{
         if(response){
           let subject:Subject= new Subject(response.materia, response.grado, response.profesor, false, 1 );
+
+          //añadiendo a Firebase la nueva materia
+          let classGData = {
+            subject: response.materia,
+            grade: response.grado,
+            professor: response.profesor,
+          }
+          this.firebase.addSubject(classGData);
+
           this.api.addSubject(subject).subscribe(response=>{
             if(response){
               let params={ 
