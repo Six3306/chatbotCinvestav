@@ -86,6 +86,13 @@ export class MenuComponent implements OnInit {
   }
 
   /**
+   * Metodo para dirigirse a la vista de las clases 
+   */
+  goToClases(){
+    this.router.navigateByUrl("Class-g")
+  }
+
+  /**
    * Metodo para dirigirse a la vista de las recordatorios reminders 
    */
   goToRecordatorios(){

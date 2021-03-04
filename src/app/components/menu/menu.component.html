@@ -61,9 +61,15 @@
 
         <!-- Boton para ver materias-->
         <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">
-            <img src="../assets/pictures/gruposAlumnosClases.png" (click)="goToMaterias()" id="gruposAlumnosClasesI">
+            <img src="../assets/pictures/alumnosClases.png" (click)="goToMaterias()" id="gruposAlumnosClasesI">
         </div>
         <!-- /Boton para ver materias-->
+
+        <!-- Boton para ver grupos-->
+        <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">
+            <img src="../assets/pictures/clasesG.png" (click)="goToClases()" id="clasesG">
+        </div>
+        <!-- /Boton para ver grupos-->
 
         <!-- Boton para ver alumnos como administrador-->
         <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">

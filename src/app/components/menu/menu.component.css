@@ -30,6 +30,18 @@ img {
     transition: opacity 0.3s linear 0.4s;
 }
 
+img #clasesG {
+    display: block;
+    margin-top: 40%;
+    /* border-radius: 40px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    width: 360px;
+    height: 350px;
+    transition: opacity 0.3s linear 0.4s;
+}
+
 img:hover {
     opacity: 0.4;
     cursor: pointer;
@@ -123,12 +135,17 @@ img:hover {
 }
 
 #usuariosI {
-    margin-left: 3%;
+    margin-left: 10%;
     /* margin-right: 10%; */
 }
 
 #gruposAlumnosClasesI {
     margin-left: 10%;
+    margin-right: 10%;
+}
+
+#clasesG {
+    margin-left: 15%;
     margin-right: 10%;
 }
 

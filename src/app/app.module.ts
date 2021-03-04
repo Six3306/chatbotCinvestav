@@ -41,7 +41,7 @@ import { RouteGuardGuard } from './guardians/route-guard/route-guard.guard';
 import { LoginRegisterGuard } from './guardians/loginRegister/login-register.guard';
 import { ValidateUsersComponent } from './components/validate-users/validate-users.component';
 import { AdminGuardianGuard } from './guardians/admin-guardian/admin-guardian.guard';
-import { UsersLessonsComponent,CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent } from './components/users-lessons/users-lessons.component';
+import { UsersLessonsComponent, CustomSnackBarComponentUserLessonsAddStudent } from './components/users-lessons/users-lessons.component';
 import { LessonsComponent } from './components/lessons/lessons.component';
 import { AddSubjectComponent } from './dialogs/add-subject/add-subject.component';
 import { AddStudentComponent } from './dialogs/add-student/add-student.component';
@@ -51,7 +51,7 @@ import { GeneralFilesComponent, CustomSnackBarComponentSendGeneralFile } from '.
 import { RemindersComponent, CustomSnackBarComponent } from './components/reminders/reminders.component';
 import { GenerateKeyComponent } from './dialogs/generate-key/generate-key.component';
 import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
-import { ClassGComponent } from './components/class-g/class-g.component';
+import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson } from './components/class-g/class-g.component';
 
 /**
  * Variable para importar todas las librerias de angular material

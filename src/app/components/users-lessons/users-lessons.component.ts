@@ -8,7 +8,7 @@ import { AddStudentComponent } from 'src/app/dialogs/add-student/add-student.com
 import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
-
+ 
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
@@ -268,8 +268,6 @@ export class UsersLessonsComponent implements OnInit {
                 this.materias=true
                 this.arrayLessons=response as Array<any>
                 /**MOSTRAR NOTIFICACION */
-                this.openCustomerSnackBarLesson();
-
                 this.dataSourceLessons = new MatTableDataSource(this.arrayLessons);
                 this.dataSourceLessons.paginator = this.paginator.first;
                 this.dataSourceLessons.sort = this.sort.first;
@@ -385,23 +383,12 @@ export class UsersLessonsComponent implements OnInit {
     this.router.navigateByUrl("Menu");
   } 
 
-  //para mostrar un cuadro emergente con el mensaje de que una materia ha sido agregada correctamente
-  openCustomerSnackBarLesson(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddLesson, {duration: 4000});
-  }
   //para mostrar un cuadro emergente con el mensaje de que un alumno ha sido agregado correctamente
   openCustomerSnackBarStudent(){
     return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddStudent, {duration: 4000});
   }
 
 }
-
-
-@Component({
-  selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Materia Añadida Correctamente</strong></span>`
-})
-export class CustomSnackBarComponentUserLessonsAddLesson{}
 
 @Component({
   selector: 'custom-snackbar',

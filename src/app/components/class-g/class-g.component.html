@@ -1,1 +1,94 @@
-<p>class-g works!</p>
+<div class="image_background">
+
+    <app-header></app-header>
+
+    <!--Buscador-->
+    <br><br><br>
+    <h2 class="title">Gestionar Clases</h2>
+    <br><br>
+    <div class="row centrado">
+        <mat-toolbar-row>
+            <mat-form-field style="font-size: 14px; margin-left: 0%;">
+                <mat-label>Grado</mat-label>
+                <mat-select (selectionChange)="searchSubjects()" [(ngModel)]="gradeSelected">
+                    <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                        {{grade.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field style=" font-size: 14px; margin-right: 0%;">
+                <mat-label>Grupo</mat-label>
+                <mat-select [(ngModel)]="groupSelected">
+                    <mat-option *ngFor="let group of groups" [value]="group.value">
+                        {{group.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar-row>
+    </div>
+
+
+    <br>
+    <!--Tabla de materias-->
+    <div class="row containerTables">
+        <div class="subjects">
+            <h3 style="text-align: center;">Materias</h3>
+            <mat-table class="subjectsTable" mat-table [dataSource]="dataSourceLessons" matSort>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                    <mat-cell class="celdas" *matCellDef="let row"> {{row.name}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+
+                </ng-container>
+
+
+                <!-- Grade Column -->
+                <ng-container matColumnDef="grade">
+                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Grado </mat-header-cell>
+                    <mat-cell class="celdas" *matCellDef="let row"> {{row.grade}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+
+                </ng-container>
+
+
+                <!-- Deleted Column -->
+                <ng-container matColumnDef="deleted">
+                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Desactivar </mat-header-cell>
+                    <mat-cell class="celdas" *matCellDef="let row"> <button mat-flat-button style="background-color: #515e80; color: white;" (click)="deleted(row)">Desactivar</button> </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsLessons"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsLessons;">
+                </mat-row>
+
+
+                <ng-container matColumnDef="disclaimer">
+                    <mat-footer-cell *matFooterCellDef colspan="2">
+                        <button mat-raised-button id="addCourseP" (click)="addSubject()"> Añadir materia </button>
+                    </mat-footer-cell>
+                </ng-container>
+
+                <mat-footer-row *matFooterRowDef="displayedColumnsLessons; sticky: true" class="example-first-footer-row"></mat-footer-row>
+                <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row>
+            </mat-table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"> </mat-paginator>
+        </div>
+        <!--/Tabla de materias-->
+
+    </div>
+    <!--para regresar al menu principal-->
+    <div id="boxR">
+        <button class="btn-return" (click)="menuP()">
+        <i class="material-icons">
+            navigate_before
+        </i>       
+    </button>
+    </div>
+
+</div>

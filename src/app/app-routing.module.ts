@@ -15,6 +15,7 @@ import { ScoresComponent } from './components/scores/scores.component';
 import { GeneralFilesComponent } from './components/general-files/general-files.component';
 import { RemindersComponent } from './components/reminders/reminders.component';
 import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
+import { ClassGComponent } from './components/class-g/class-g.component';
 
 const routes: Routes = [
   { path: 'xyz', component: XyzComponent, },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'Users-lessons', component: UsersLessonsComponent, canActivate:[AdminGuardianGuard] },
   { path: 'Scores', component: ScoresComponent, canActivate:[RouteGuardGuard] },
   { path: 'General-files', component: GeneralFilesComponent, canActivate:[RouteGuardGuard] },
+  { path: 'Class-g', component: ClassGComponent, canActivate:[AdminGuardianGuard] },
   { path: 'reminders',component: RemindersComponent, canActivate:[AdminGuardianGuard]  },
   { path: 'Configure-account',component: ConfigureAccountComponent, canActivate:[RouteGuardGuard]  }
 ];
