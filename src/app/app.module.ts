@@ -51,6 +51,7 @@ import { GeneralFilesComponent, CustomSnackBarComponentSendGeneralFile } from '.
 import { RemindersComponent, CustomSnackBarComponent } from './components/reminders/reminders.component';
 import { GenerateKeyComponent } from './dialogs/generate-key/generate-key.component';
 import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
+import { ClassGComponent } from './components/class-g/class-g.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -105,6 +106,7 @@ const angularMaterial=[
     CustomSnackBarComponentAddScore,
     CustomSnackBarComponentLogin,
     ConfigureAccountComponent,
+    ClassGComponent,
   ],
   imports: [
     BrowserAnimationsModule,
