@@ -19,12 +19,16 @@
         <mat-form-field>
             <mat-label>Profesor</mat-label>
             <mat-select formControlName="profesor">
-                <mat-option *ngFor="let profesor of profes" [value]="profesor.value">
+                <mat-option *ngFor="let profesor of profes" [value]="profesor.viewValue">
                     {{profesor.viewValue}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
     </div>
+
+
+
+
     <!--botones para cancelar o guardar-->
     <div mat-dialog-actions>
         <button mat-button (click)="onClickNo()">No</button>

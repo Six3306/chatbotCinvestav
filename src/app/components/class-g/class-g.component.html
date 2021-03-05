@@ -60,7 +60,7 @@
 
                 <ng-container matColumnDef="disclaimer">
                     <mat-footer-cell *matFooterCellDef colspan="2">
-                        <button mat-raised-button id="addCourseP" (click)="addSubject()"> Añadir materia </button>
+                        <button mat-raised-button id="addCourseP" *ngIf="gradeSelected" (click)="addSubject()"> Añadir materia </button>
                     </mat-footer-cell>
                 </ng-container>
 

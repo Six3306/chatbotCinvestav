@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { AddFilesComponent } from '../add-files/add-files.component';
 import { APIService } from 'src/app/services/api/api.service';
 import { Grade } from 'src/app/components/users-lessons/users-lessons.component';
 import { User } from 'src/app/models/User.model';
@@ -36,10 +35,7 @@ export class AddSubjectComponent implements OnInit {
   grades:Grade[] = [
     {value: '1', viewValue:"1°"},
     {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"},
-    {value: '4', viewValue:"4°"},
-    {value: '5', viewValue:"5°"},
-    {value: '6', viewValue:"6°"}
+    {value: '3', viewValue:"3°"}
   ];
 
   //metodo que permite retornar todos los profesores registrados en el sistema
@@ -51,7 +47,7 @@ export class AddSubjectComponent implements OnInit {
             for (let i = 0; i < this.arrayUsers.length; i++) {
               profes.push({value: this.arrayUsers[i].id, viewValue: this.arrayUsers[i].username});
             }
-            this.profes = profes;
+            this.profes = profes;            
     });
   
    }
@@ -73,9 +69,8 @@ export class AddSubjectComponent implements OnInit {
   ) { 
     this.formFile = this.formBuilder.group({
       grado:[data.grade, [Validators.required]],
-      // grupo: [data.group, [Validators.required]],
       materia:['', [Validators.required]],
-      profesor:['', [Validators.required]],
+      profesor:['', [Validators.required]]
     });
 
   }
@@ -89,5 +84,6 @@ export class AddSubjectComponent implements OnInit {
   ngOnInit() {
     this.retornaProfes();
   }
+
 
 }

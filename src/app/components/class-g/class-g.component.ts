@@ -201,7 +201,7 @@ export class ClassGComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(response=>{
         if(response){
-          let subject:Subject= new Subject(response.materia, response.grado, response.profesor, false, 1 );
+          let subject:Subject= new Subject(response.materia, response.grado, 3, false, 1 );
 
           //añadiendo a Firebase la nueva materia
           let classGData = {

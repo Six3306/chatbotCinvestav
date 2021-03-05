@@ -49,12 +49,6 @@ export class FirebaseService {
     }
 
     addKeyInBD(data):Boolean{
-      // this.database.database.ref("KeysProfesor").push(data).then(response=>{
-      //   return true;
-      // }, error=>{
-      //   return false;
-      // });
-      // return false;
       this.database.database.ref(`KeyProfesor/${data.nameProfesor}`).set({keyG: data.keyG}); 
       return true;
     }
@@ -72,8 +66,14 @@ export class FirebaseService {
     }
 
     addSubject(data){
-
+      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}`).set({profesor: data.professor}); 
+      var arrG:string[] = ["A","B","C","D","E","F","G","H","I","J"];
+      for (let i = 0; i < arrG.length; i++) {
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}`).set({Tareas: "", Materiales: "", RecordatorioClase: "", Examenes: "", DudasAlumnos: "", Calificaciones: ""}); 
+      }
+      return true;
     }
+    // this.database.database.ref(`KeyProfesor/${data.nameProfesor}`).set({keyG: data.keyG}); 
 
     /**
      * Funcion para actualizar calificaciones
