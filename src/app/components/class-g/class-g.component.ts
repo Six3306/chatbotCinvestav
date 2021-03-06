@@ -138,6 +138,16 @@ export class ClassGComponent implements OnInit {
     
   }
 
+  changeActivated(activated:Boolean, row : any){
+    row.status=activated;
+    this.firebase.updateStatusSubject(row);
+    // console.log(row.name+" ... "+row.status);
+    
+    // this.api.updateUser(user).subscribe(response=>{
+    //   // console.log(response)
+    // })
+  }
+
   viewSubjects(){
     let params={
       grade:this.gradeSelected

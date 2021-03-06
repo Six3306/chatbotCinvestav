@@ -88,6 +88,14 @@ export class FirebaseService {
       
     }
 
+    updateStatusSubject(row){
+      console.log(row.status);
+      let n:number;
+      row.status==true? n=1 : n=0;
+      
+      this.database.database.ref(`Clases/${row.grade}/Materias/${row.name}/`).update({estatus:n});
+    }
+
     getProfessors(){
       let arrayProfes: Array<String>=[];
       return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
