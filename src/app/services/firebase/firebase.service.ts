@@ -3,8 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from 'src/app/models/User.model';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Reminder } from 'src/app/models/Reminder.model';
-import { RemindersComponent } from 'src/app/components/reminders/reminders.component';
+import { SubjectG } from 'src/app/models/SubjectG.model';
 
 
 @Injectable({
@@ -66,14 +65,41 @@ export class FirebaseService {
     }
 
     addSubject(data){
-      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}`).set({profesor: data.professor}); 
+      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}`).set({profesor: data.professor, nombreMateria: data.subject, estatus:1}); 
       var arrG:string[] = ["A","B","C","D","E","F","G","H","I","J"];
       for (let i = 0; i < arrG.length; i++) {
         this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}`).set({Tareas: "", Materiales: "", RecordatorioClase: "", Examenes: "", DudasAlumnos: "", Calificaciones: ""}); 
       }
       return true;
     }
-    // this.database.database.ref(`KeyProfesor/${data.nameProfesor}`).set({keyG: data.keyG}); 
+    
+    getSubjectsByGrade(data){
+      let arraySubject: Array<SubjectG>= [];
+      return this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              let subj = new SubjectG(value[val].nombreMateria, data.grade, value[val].profesor, value[val].estatus);
+              arraySubject.push(subj);
+            }
+        }
+        return arraySubject;
+      }); 
+      
+    }
+
+    getProfessors(){
+      let arrayProfes: Array<String>=[];
+      return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              arrayProfes.push(value[val].nombre);              
+            }
+        }
+        return arrayProfes;
+      }); 
+    }
 
     /**
      * Funcion para actualizar calificaciones

@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { APIService } from 'src/app/services/api/api.service';
 import { Grade } from 'src/app/components/users-lessons/users-lessons.component';
 import { User } from 'src/app/models/User.model';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+
 
 @Component({
   selector: 'app-add-subject',
@@ -38,16 +40,17 @@ export class AddSubjectComponent implements OnInit {
     {value: '3', viewValue:"3°"}
   ];
 
+
+
   //metodo que permite retornar todos los profesores registrados en el sistema
   retornaProfes(){
-    
-     this.api.getProfesors().subscribe(response=>{
-            this.arrayUsers=response as Array<User>  
-            let profes: Grade[] = [];
-            for (let i = 0; i < this.arrayUsers.length; i++) {
-              profes.push({value: this.arrayUsers[i].id, viewValue: this.arrayUsers[i].username});
-            }
-            this.profes = profes;            
+     
+    this.firebase.getProfessors().then(response=>{
+      let profes: Grade[] = [];
+      for (let i = 0; i < response.length; i++) {
+        profes.push({value: 0, viewValue: response[i]});
+      }
+      this.profes = profes;
     });
   
    }
@@ -65,7 +68,8 @@ export class AddSubjectComponent implements OnInit {
     private api: APIService,
     public formBuilder: FormBuilder,
     public dialogRef : MatDialogRef<AddSubjectComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any
+    @Inject(MAT_DIALOG_DATA) public data:any,
+    private firebase: FirebaseService,
   ) { 
     this.formFile = this.formBuilder.group({
       grado:[data.grade, [Validators.required]],

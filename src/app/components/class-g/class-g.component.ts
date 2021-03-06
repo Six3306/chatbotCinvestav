@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { APIService } from 'src/app/services/api/api.service';
-import { User } from 'src/app/models/User.model';
 import { Subject } from 'src/app/models/Subject.model';
 import { AddSubjectComponent } from 'src/app/dialogs/add-subject/add-subject.component';
-import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { SubjectG } from 'src/app/models/SubjectG.model';
 
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
@@ -43,54 +42,31 @@ export interface Group{
 })
 export class ClassGComponent implements OnInit {
 
- 
-  /**
-   * Arraeglo que contiene a todos los alumnos buscados
-   */
-  arrayStudents: Array<User>;
   /**
    * Arreglo que contiene todas las materias de los alumnos
    */
   arrayLessons: Array<Subject>;
   
-
+  arraySubjects: Array<SubjectG>;
 
 
   /**
    * Indica si ya se buscaron materias  
    */
   materias: Boolean =false;
-  /**
-   * Indica si ya se buscaron estudiantes anteriormente
-   */
-  estudiantes: Boolean =false;
-  
-  /**
-   * Arreglo que tiene todos los alumnos seleccionados
-   */
-  selection = new SelectionModel<any>(true, []);
-
-
-  /**
-   * Columnas a mostrar para los alumnos
-   */
-  displayedColumns: string[] = ['select','id', 'name','grade', 'group','delet'];
-  
-  /**
-   * Tabla donde estan los datos de los usuarios
-   */
-  dataSource: MatTableDataSource<User>;
 
   /**
    * Columnas a mostrar para las materias
    */
-  displayedColumnsLessons: string[] = ['name','grade', 'deleted'];
+  displayedColumnsLessons: String[] = ['name', 'grade', 'professor','status'];
   
   
   /**
    * Tabla donde estan los datos de los usuarios
    */
   dataSourceLessons: MatTableDataSource<Subject>;
+  
+  dataSourceSubjects: MatTableDataSource<SubjectG>;
 
 
 
@@ -144,49 +120,41 @@ export class ClassGComponent implements OnInit {
    * @param row Matetria qu recibe como parametro para eliminar
    */
   deleted(row:Subject){
-    row.deleted=true;
-    this.api.updateSubject(row).subscribe(response=>{
-      // console.log(response);
-      let params={
-        grade:this.gradeSelected
-      }
+    // row.status=true;
+    // this.api.updateSubject(row).subscribe(response=>{
+    //   // console.log(response);
+    //   let params={
+    //     grade:this.gradeSelected
+    //   }
   
-      this.api.getSubjectsGrade(params).subscribe(response=>{
-        this.materias=true
-        this.arrayLessons=response as Array<Subject>
-        this.dataSourceLessons = new MatTableDataSource(this.arrayLessons);
-        this.dataSourceLessons.paginator = this.paginator.first;
-        this.dataSourceLessons.sort = this.sort.first;
-      });
-    })
+    //   this.api.getSubjectsGrade(params).subscribe(response=>{
+    //     this.materias=true
+    //     this.arrayLessons=response as Array<Subject>
+    //     this.dataSourceLessons = new MatTableDataSource(this.arrayLessons);
+    //     this.dataSourceLessons.paginator = this.paginator.first;
+    //     this.dataSourceLessons.sort = this.sort.first;
+    //   });
+    // })
     
   }
-  /**
-   * Metodo que filtra la busqueda de materias
-   * @param filterValue Valor a filtrar para la busqueda de materias
-   */
-  applyFilterLesson(filterValue: string) {
-    this.dataSourceLessons.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSourceLessons.paginator) {
-      this.dataSourceLessons.paginator.firstPage();
+  viewSubjects(){
+    let params={
+      grade:this.gradeSelected
     }
+
+    this.firebase.getSubjectsByGrade(params).then(response=>{
+      this.dataSourceSubjects = new MatTableDataSource(response);
+      this.dataSourceSubjects.paginator = this.paginator.first;
+      this.dataSourceSubjects.sort = this.sort.first;
+    });
   }
+ 
 
   //Metodo para mostrar las materias de cierto grado seleccionado
   searchSubjects(){ 
     if (this.gradeSelected){
-      let params={
-        grade:this.gradeSelected
-      }
-
-      this.api.getSubjectsGrade(params).subscribe(response=>{
-        this.materias=true
-        this.arrayLessons=response as Array<Subject>
-        this.dataSourceLessons = new MatTableDataSource(this.arrayLessons);
-        this.dataSourceLessons.paginator = this.paginator.first;
-        this.dataSourceLessons.sort = this.sort.first;
-      });
+      this.viewSubjects();
     }
   }
 
@@ -201,8 +169,6 @@ export class ClassGComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(response=>{
         if(response){
-          let subject:Subject= new Subject(response.materia, response.grado, 3, false, 1 );
-
           //añadiendo a Firebase la nueva materia
           let classGData = {
             subject: response.materia,
@@ -210,50 +176,15 @@ export class ClassGComponent implements OnInit {
             professor: response.profesor,
           }
           this.firebase.addSubject(classGData);
-
-          this.api.addSubject(subject).subscribe(response=>{
-            if(response){
-              let params={ 
-                grade:this.gradeSelected
-              }
-          
-              this.api.getSubjectsGrade(params).subscribe(response=>{
-                this.materias=true
-                this.arrayLessons=response as Array<any>
-                /**MOSTRAR NOTIFICACION */
-                this.openCustomerSnackBarLesson();
-
-                this.dataSourceLessons = new MatTableDataSource(this.arrayLessons);
-                this.dataSourceLessons.paginator = this.paginator.first;
-                this.dataSourceLessons.sort = this.sort.first;
-              });
-            }
-          })
-          
+        
+          this.viewSubjects();
+          this.openCustomerSnackBarLesson();         
         } 
            
     })
   }
 
 
-  /**
-   * Metood para eliminar a todo seleccionado
-   */
-  async removeSelectedRows() {
-    this.selection.selected.forEach(item => {
-      let index: number = this.arrayStudents.findIndex(d => d === item);
-      //console.log(this.arrayStudents.findIndex(d => d === item));
-      let temp:any = this.arrayStudents.find(d => d === item)
-      //console.log(temp)
-      
-      this.api.deleteLessonIdUser(temp.id_user).subscribe(response=>{
-        this.arrayStudents.splice(index,1)
-        this.dataSource = new MatTableDataSource<User>(this.arrayStudents);
-      })
-
-    });
-    this.selection = new SelectionModel<User>(true, []);
-  }
 
   //metodo para regresar al menu principal
   menuP(){

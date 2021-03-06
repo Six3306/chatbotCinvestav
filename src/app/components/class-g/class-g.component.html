@@ -25,11 +25,12 @@
     <div class="row containerTables">
         <div class="subjects">
             <h3 style="text-align: center;">Materias</h3>
-            <mat-table class="subjectsTable" mat-table [dataSource]="dataSourceLessons" matSort>
+
+            <mat-table class="subjectsTable" mat-table [dataSource]="dataSourceSubjects" matSort>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Materia </mat-header-cell>
                     <mat-cell class="celdas" *matCellDef="let row"> {{row.name}} </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
 
@@ -41,17 +42,23 @@
                     <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Grado </mat-header-cell>
                     <mat-cell class="celdas" *matCellDef="let row"> {{row.grade}} </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-
                 </ng-container>
 
 
-                <!-- Deleted Column -->
-                <ng-container matColumnDef="deleted">
-                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Desactivar </mat-header-cell>
+                <!-- Status Column -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
                     <mat-cell class="celdas" *matCellDef="let row"> <button mat-flat-button style="background-color: #515e80; color: white;" (click)="deleted(row)">Desactivar</button> </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-
                 </ng-container>
+
+                <!-- Profesor Column -->
+                <ng-container matColumnDef="professor">
+                    <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Profesor </mat-header-cell>
+                    <mat-cell class="celdas" *matCellDef="let row"> {{row.professor}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
 
                 <mat-header-row *matHeaderRowDef="displayedColumnsLessons"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumnsLessons;">

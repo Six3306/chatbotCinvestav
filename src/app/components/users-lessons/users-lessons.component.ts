@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { APIService } from 'src/app/services/api/api.service';
 import { User } from 'src/app/models/User.model';
-import { Subject } from 'src/app/models/Subject.model';
 import { AddStudentComponent } from 'src/app/dialogs/add-student/add-student.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
