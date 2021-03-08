@@ -26,7 +26,7 @@
 
     <div class="example-container mat-elevation-z8">
 
-        <mat-table [dataSource]="dataSource" matSort>
+        <mat-table [dataSource]="dataSourceStudent" matSort>
 
             <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -44,10 +44,10 @@
 
             <!-- <span *ngIf="row.type == 'Alumno'"> -->
             <!-- ID Column -->
-            <ng-container matColumnDef="id">
+            <!-- <ng-container matColumnDef="id">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-            </ng-container>
+            </ng-container> -->
 
             <!-- ID Column -->
             <ng-container matColumnDef="email">

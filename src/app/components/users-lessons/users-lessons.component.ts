@@ -6,6 +6,7 @@ import { AddStudentComponent } from 'src/app/dialogs/add-student/add-student.com
 import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Student } from '../../models/Student.model';
  
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
@@ -60,13 +61,17 @@ export class UsersLessonsComponent implements OnInit {
   /**
    * Columnas a mostrar para los alumnos
    */
-  displayedColumns: string[] = ['select','id', 'name','grade', 'group','delet'];
+  displayedColumns: string[] = ['select', 'name','email', 'delet'];
   
   /**
    * Tabla donde estan los datos de los usuarios
    */
   dataSource: MatTableDataSource<User>;
 
+    /**
+   * Tabla donde estan los datos de los estudiantes
+   */
+  dataSourceStudent: MatTableDataSource<Student>;
 
   /**
    * Contiene el valor del grado seleccionado
@@ -152,16 +157,23 @@ export class UsersLessonsComponent implements OnInit {
 	      "group":this.groupSelected
       }
       
-      this.api.getUsersInLesson(params).subscribe(response=>{
-        this.estudiantes=true;
-
-        this.arrayStudents=response as Array<User>
-
-          this.dataSource = new MatTableDataSource(this.arrayStudents);
-          this.dataSource.paginator = this.paginator.last;
-          this.dataSource.sort = this.sort.last;
-  
+      //buscar en firebase los alumnos segun grado y grupo seleccionado
+      this.firebase.getStudentssByGradeGroup(params).then(response=>{
+        this.dataSourceStudent = new MatTableDataSource(response);
+        this.dataSourceStudent.paginator = this.paginator.last;
+        this.dataSourceStudent.sort = this.sort.last;
       });
+
+      // this.api.getUsersInLesson(params).subscribe(response=>{
+      //   this.estudiantes=true;
+
+      //   this.arrayStudents=response as Array<User>
+
+      //     this.dataSource = new MatTableDataSource(this.arrayStudents);
+      //     this.dataSource.paginator = this.paginator.last;
+      //     this.dataSource.sort = this.sort.last;
+  
+      // });
     }
   }
  
@@ -171,17 +183,18 @@ export class UsersLessonsComponent implements OnInit {
    * @param filterValue Valor a filtrar en la tabla de alumnos
    */
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if(this.gradeSelected && this.groupSelected){
+      this.dataSourceStudent.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+      if (this.dataSourceStudent.paginator) {
+        this.dataSourceStudent.paginator.firstPage();
+      }
     }
   }
 
   /**
    * Metodo para añadir un estudiante 
    */
-
   addStudent(){
     //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
     const dialogRef = this.dialog.open(AddStudentComponent,{
@@ -192,10 +205,15 @@ export class UsersLessonsComponent implements OnInit {
     });
     //despues de cerrar el cuadro de dialogo
     dialogRef.afterClosed().subscribe(responseDialog=>{
+      console.log("RESPUESTA:");
+      
+      console.log(responseDialog);
         if(responseDialog){
 
           for (let index = 0; index < responseDialog.length; index++) {
-
+            console.log("sii:");
+            console.log(responseDialog[index]);
+            
             //añadiendo a Firebase el grado y grupo de un usuario
             let dataU = {
               email: responseDialog[index].email,
@@ -204,30 +222,45 @@ export class UsersLessonsComponent implements OnInit {
               group: responseDialog[index].group
             }
             this.firebase.setGradeGroup(dataU);
+           
 
-            this.api.addUserInLesson(responseDialog[index]).subscribe(response=>{
-              if(response){
+            // this.api.addUserInLesson(responseDialog[index]).subscribe(response=>{
+            //   if(response){
 
-                let params={
-                  "grade":this.gradeSelected,
-                  "group":this.groupSelected
-                }
+            //     let params={
+            //       "grade":this.gradeSelected,
+            //       "group":this.groupSelected
+            //     }
   
-                this.api.getUsersInLesson(params).subscribe(response=>{
-                  this.estudiantes=true;
+            //     this.api.getUsersInLesson(params).subscribe(response=>{
+            //       this.estudiantes=true;
           
-                  this.arrayStudents=response as Array<User>
+            //       this.arrayStudents=response as Array<User>
 
-                  this.openCustomerSnackBarStudent();
+            //       this.openCustomerSnackBarStudent();
           
-                    this.dataSource = new MatTableDataSource(this.arrayStudents);
-                    this.dataSource.paginator = this.paginator.last;
-                    this.dataSource.sort = this.sort.last;
+            //         this.dataSource = new MatTableDataSource(this.arrayStudents);
+            //         this.dataSource.paginator = this.paginator.last;
+            //         this.dataSource.sort = this.sort.last;
             
-                });
-              }
-            })
+            //     });
+            //   }
+            // })
           }
+
+          let params={
+            "grade":this.gradeSelected,
+            "group":this.groupSelected
+          }
+
+          //buscar en firebase los alumnos segun grado y grupo seleccionado
+this.firebase.getStudentssByGradeGroup(params).then(response=>{
+  this.dataSourceStudent = new MatTableDataSource(response);
+  this.dataSourceStudent.paginator = this.paginator.last;
+  this.dataSourceStudent.sort = this.sort.last;
+});
+
+
   
         }    
     })

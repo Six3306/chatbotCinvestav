@@ -5,7 +5,9 @@ import { MatTableDataSource, MatPaginator, MatSort, MAT_DIALOG_DATA } from '@ang
 import { APIService } from 'src/app/services/api/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
-import { group } from '@angular/animations';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Student } from '../../models/Student.model';
+
 
 @Component({
   selector: 'app-add-student',
@@ -35,13 +37,17 @@ export class AddStudentComponent implements OnInit {
   /**
    * columnas de la tabla
    */
-  displayedColumns: string[] = ['select','id', 'email', 'name'];
+  displayedColumns: string[] = ['select', 'email', 'name'];
   
   /**
    * tabla con los datos de los estudiantes
    */
   dataSource: MatTableDataSource<User>;
  
+    /**
+   * tabla con los datos de los estudiantes
+   */
+     dataSourceStudent: MatTableDataSource<Student>;
 
   /**
    *  Propiedad que sirve para tener los grados de los alumnos
@@ -52,10 +58,7 @@ export class AddStudentComponent implements OnInit {
   grades:Grade[] = [
     {value: '1', viewValue:"1°"},
     {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"},
-    {value: '4', viewValue:"4°"},
-    {value: '5', viewValue:"5°"},
-    {value: '6', viewValue:"6°"}
+    {value: '3', viewValue:"3°"}
   ];
 
   /**
@@ -70,7 +73,11 @@ export class AddStudentComponent implements OnInit {
     {value: 'C', viewValue:"C"},
     {value: 'D', viewValue:"D"},
     {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"}
+    {value: 'F', viewValue:"F"},
+    {value: 'E', viewValue:"G"},
+    {value: 'F', viewValue:"H"},
+    {value: 'E', viewValue:"I"},
+    {value: 'F', viewValue:"J"}
   ];
 
   /**
@@ -83,6 +90,7 @@ export class AddStudentComponent implements OnInit {
     private api: APIService,
     public formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public  data:any, 
+    private firebase: FirebaseService
   ) {
     this.formStudent = this.formBuilder.group({
       grade:['', [Validators.required]],
@@ -105,24 +113,31 @@ export class AddStudentComponent implements OnInit {
     }
 
     if (this.formStudent.valid) {
-      
-      this.api.getUsersNotLesson().subscribe(response=>{
-        this.estudiantes=true;
 
-        this.arrayStudentsT = response as Array<User>;
-        
-        for (let index = 0; index < this.arrayStudentsT.length; index++) {
-           if(this.arrayStudentsT[index].type==="Alumno"){
-            this.arrayStudentsT[index].email = this.arrayStudentsT[index].email.split("@")[0];
-            this.arrayStudents.push(this.arrayStudentsT[index]);
-           }
-        }
-      
-          this.dataSource = new MatTableDataSource(this.arrayStudents);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-  
+      //obtener a los estudiantes que no tienen ni grado ni grupo
+      this.firebase.getStudentsWithoutGradeGroup().then(response=>{
+        this.dataSourceStudent = new MatTableDataSource(response);
+          this.dataSourceStudent.paginator = this.paginator;
+          this.dataSourceStudent.sort = this.sort;
       });
+      
+      // this.api.getUsersNotLesson().subscribe(response=>{
+        
+
+      //   this.arrayStudentsT = response as Array<User>;
+        
+      //   for (let index = 0; index < this.arrayStudentsT.length; index++) {
+      //      if(this.arrayStudentsT[index].type==="Alumno"){
+      //       this.arrayStudentsT[index].email = this.arrayStudentsT[index].email.split("@")[0];
+      //       this.arrayStudents.push(this.arrayStudentsT[index]);
+      //      }
+      //   }
+      
+      //     this.dataSource = new MatTableDataSource(this.arrayStudents);
+      //     this.dataSource.paginator = this.paginator;
+      //     this.dataSource.sort = this.sort;
+  
+      // });
     }
 
   }
@@ -132,10 +147,10 @@ export class AddStudentComponent implements OnInit {
    * @param filterValue Valor a filtrar en la busqueda
    */
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSourceStudent.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.dataSourceStudent.paginator) {
+      this.dataSourceStudent.paginator.firstPage();
     }
   }
 
@@ -143,20 +158,31 @@ export class AddStudentComponent implements OnInit {
   check(){
     let studentsArray = [];
 
-    if(this.dataSource!=undefined || this.dataSource!=null){
+    if(this.dataSourceStudent!=undefined || this.dataSourceStudent!=null){      
 
-      this.dataSource.data.forEach(row => { 
-            if(this.selection.isSelected(row)){
-              let studentTmp = {
-                id_user: row.id,
-                email: row.email,
-                username: row.username,
-                grade: this.data.grade,
-                group: this.data.group,
-              };
-              studentsArray.push(studentTmp);
-            }
-        });
+      this.dataSourceStudent.data.forEach(row => {
+        if(this.selection.isSelected(row)){
+          let studentTmp = {
+            email: row.email,
+            username: row.username,
+            grade: this.formStudent.get('grade').value,
+            group: this.formStudent.get('group').value,
+          };
+          studentsArray.push(studentTmp);
+        }
+      });
+    //   this.dataSource.data.forEach(row => { 
+    //         if(this.selection.isSelected(row)){
+    //           let studentTmp = {
+    //             id_user: row.id,
+    //             email: row.email,
+    //             username: row.username,
+    //             grade: this.data.grade,
+    //             group: this.data.group,
+    //           };
+    //           studentsArray.push(studentTmp);
+    //         }
+    //     });
       }
     
     return studentsArray;
@@ -166,7 +192,7 @@ export class AddStudentComponent implements OnInit {
    */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSourceStudent.data.length;
     return numSelected === numRows;
   }
 
@@ -176,26 +202,26 @@ export class AddStudentComponent implements OnInit {
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
-      this.dataSource.data.forEach(row => { this.selection.select(row);
+      this.dataSourceStudent.data.forEach(row => { this.selection.select(row);
     });
   }
-
-  /**
-   * Funcion para remover las filas seleccionadas
-   */
-  async removeSelectedRows() {
-    this.selection.selected.forEach(item => {
-      let index: number = this.arrayStudents.findIndex(d => d === item);
-      // console.log(this.arrayStudents.findIndex(d => d === item));
-      let temp:any = this.arrayStudents.find(d => d === item)
-      // console.log(temp)
+ 
+  // /**
+  //  * Funcion para remover las filas seleccionadas
+  //  */
+  // async removeSelectedRows() {
+  //   this.selection.selected.forEach(item => {
+  //     let index: number = this.arrayStudents.findIndex(d => d === item);
+  //     // console.log(this.arrayStudents.findIndex(d => d === item));
+  //     let temp:any = this.arrayStudents.find(d => d === item)
+  //     // console.log(temp)
       
-      this.api.deleteLessonIdUser(temp.id_user).subscribe(response=>{
-        this.arrayStudents.splice(index,1)
-        this.dataSource = new MatTableDataSource<User>(this.arrayStudents);
-      })
+  //     this.api.deleteLessonIdUser(temp.id_user).subscribe(response=>{
+  //       this.arrayStudents.splice(index,1)
+  //       this.dataSource = new MatTableDataSource<User>(this.arrayStudents);
+  //     })
 
-    });
-    this.selection = new SelectionModel<User>(true, []);
-  }
+  //   });
+  //   this.selection = new SelectionModel<User>(true, []);
+  // }
 }

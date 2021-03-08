@@ -3,6 +3,8 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/User.model';
 import { APIService } from 'src/app/services/api/api.service';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+
 
 @Component({
   selector: 'app-validate-users',
@@ -30,6 +32,7 @@ export class ValidateUsersComponent implements OnInit {
   constructor(
     private api: APIService,
     private router: Router,
+    private firebase: FirebaseService
   ) {
 
   }
@@ -57,6 +60,13 @@ export class ValidateUsersComponent implements OnInit {
    */
   changeActivated(activated:Boolean, user : User){
     user.activated=activated;
+  //cambiando status en firebase
+    let data={
+      email: user.email,
+      status: user.activated
+    }
+    this.firebase.updateStatusUser(data);
+
     this.api.updateUser(user).subscribe(response=>{
       // console.log(response)
     })

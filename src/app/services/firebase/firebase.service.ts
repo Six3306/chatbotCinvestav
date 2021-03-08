@@ -4,6 +4,7 @@ import { User } from 'src/app/models/User.model';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { SubjectG } from 'src/app/models/SubjectG.model';
+import { Student } from 'src/app/models/Student.model';
 
 
 @Injectable({
@@ -74,7 +75,8 @@ export class FirebaseService {
     }
     
     getSubjectsByGrade(data){
-      let arraySubject: Array<SubjectG>= [];
+      let arraySubject: Array<SubjectG>= [];     
+
       return this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
         const value = snapshot.val();
         if (value !== null) {
@@ -85,15 +87,58 @@ export class FirebaseService {
         }
         return arraySubject;
       }); 
-      
+    }
+
+    getStudentssByGradeGroup(data){
+      let arrayStudent: Array<Student>= [];     
+
+      return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              if(value[val].grado==data.grade && value[val].grupo==data.group){
+                // console.log(value[val]);
+                let student = new Student(value[val].nombre, value[val].grado, value[val].grupo, value[val].correo, value[val].estatus);
+                arrayStudent.push(student);
+              }
+            }
+        }
+        return arrayStudent;
+      });
+    }
+
+    getStudentsWithoutGradeGroup(){
+      let arrayStudent: Array<Student>= [];
+
+      return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              if(value[val].estatus==1 && value[val].grupo=="" && value[val].grado==""){
+                console.log(value[val]);
+                let student = new Student(value[val].nombre, "", "", value[val].correo, value[val].estatus);
+                arrayStudent.push(student);
+              }
+            }
+        }
+        return arrayStudent;
+      });
     }
 
     updateStatusSubject(row){
-      console.log(row.status);
       let n:number;
       row.status==true? n=1 : n=0;
-      
+      // this.database.database.ref(`Clases/${row.grade}/Materias/${row.name}/`).remove();
       this.database.database.ref(`Clases/${row.grade}/Materias/${row.name}/`).update({estatus:n});
+      
+      
+    }
+
+    updateStatusUser(data){
+      let n:number;
+      var nameU = data.email.split("@");
+      data.status==true? n=1 : n=0;
+      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}/`).update({estatus:n});
     }
 
     getProfessors(){
@@ -121,7 +166,9 @@ export class FirebaseService {
 
 
    setGradeGroup(data){
-    this.database.database.ref(`Usuarios/Alumnos/${data.email}`).set({grado:data.grade, grupo:data.group, nombre:data.username});
+    var nameU = data.email.split("@");
+    console.log(nameU[0]+" ... "+data.group+" ... "+data.grade);
+    this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}/`).update({grado:data.grade, grupo:data.group});
    }
 
   //funcion para obtener todas las calificaciones
@@ -153,10 +200,10 @@ export class FirebaseService {
   addUser(usuario:User):boolean { 
     var nameU = usuario.email.split("@");
     if(usuario.type=='Profesor'){
-      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({keyG:usuario.username, nombre:usuario.username});
+      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({keyG:usuario.username, nombre:usuario.username, correo:usuario.email, estatus:0});
       return true;
     }else if(usuario.type=='Alumno'){
-      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({nombre:usuario.username, grado:'', grupo:''});
+      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({nombre:usuario.username, grado:'', grupo:'', correo:usuario.email, estatus:0});
       return true;
     }
  } 

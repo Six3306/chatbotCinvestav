@@ -43,8 +43,7 @@
             <button mat-raised-button style="background-color: #515e80; color: white;" (click)="removeSelectedRows()">
                         Remover alumnos seleccionados
             </button>
-            <mat-table mat-table [dataSource]="dataSource" matSort style="overflow: auto; max-height: 300px;">
-
+            <mat-table mat-table [dataSource]="dataSourceStudent" matSort style="overflow: auto; max-height: 300px;">
 
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
@@ -60,12 +59,12 @@
 
                 </ng-container>
 
-                <!-- ID Column -->
+                <!-- ID Column
                 <ng-container matColumnDef="id">
                     <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
@@ -75,16 +74,23 @@
                 </ng-container>
 
                 <!-- Grade Column -->
-                <ng-container matColumnDef="grade">
+                <ng-container matColumnDef="grade" style="display: none">
                     <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Grado </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.grade}} </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                 </ng-container>
 
                 <!-- Group Column -->
-                <ng-container matColumnDef="group">
+                <ng-container matColumnDef="group" style="display: none">
                     <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.group}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Correo </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                 </ng-container>
 
