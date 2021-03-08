@@ -89,6 +89,22 @@ export class FirebaseService {
       }); 
     }
 
+    getSubjectsNameByGrade(grado){
+      let arraySubjectName: Array<String>= [];     
+
+      return this.database.database.ref(`Clases/${grado}/Materias/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              arraySubjectName.push(value[val].nombreMateria);
+              console.log("MAT: "+value[val].nombreMateria);
+              
+            }
+        }
+        return arraySubjectName;
+      }); 
+    }
+
     getStudentssByGradeGroup(data){
       let arrayStudent: Array<Student>= [];     
 
@@ -125,13 +141,21 @@ export class FirebaseService {
       });
     }
 
+    deleteGradeGroupStudent(email){
+      this.database.database.ref(`Usuarios/Alumnos/${email}/`).update({grado:"", grupo:""});
+    }
+
+    removeStudentScoreClass(data, subjects){
+      for (var i in subjects) {
+        this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/${data.userName}`).remove();
+      }
+    }
+
     updateStatusSubject(row){
       let n:number;
       row.status==true? n=1 : n=0;
       // this.database.database.ref(`Clases/${row.grade}/Materias/${row.name}/`).remove();
       this.database.database.ref(`Clases/${row.grade}/Materias/${row.name}/`).update({estatus:n});
-      
-      
     }
 
     updateStatusUser(data){
@@ -167,9 +191,25 @@ export class FirebaseService {
 
    setGradeGroup(data){
     var nameU = data.email.split("@");
-    console.log(nameU[0]+" ... "+data.group+" ... "+data.grade);
     this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}/`).update({grado:data.grade, grupo:data.group});
    }
+
+   setStudentScoreClass(data, subjects){
+    // var nameU = data.email.split("@");
+    for(var i in subjects){
+      this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/${data.username}`).set({b1:0, b2:0, b3:0, b4:0, b5:0, nombreAlumno:data.username});
+    }
+    // this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+    //   const value = snapshot.val();
+    //   if (value !== null) {
+    //       for (var val in value) {
+    //         this.database.database.ref(`Clases/${data.grade}/Materias/${value[val]}/`)
+    //       }
+    //   }
+
+    // }); 
+   }
+
 
   //funcion para obtener todas las calificaciones
    getScores() { 
