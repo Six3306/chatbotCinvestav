@@ -63,7 +63,8 @@ export class ValidateUsersComponent implements OnInit {
   //cambiando status en firebase
     let data={
       email: user.email,
-      status: user.activated
+      status: user.activated,
+      type: user.type
     }
     this.firebase.updateStatusUser(data);
 

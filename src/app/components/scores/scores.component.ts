@@ -8,6 +8,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ScoreUserComponent } from 'src/app/dialogs/score-user/score-user.component';
 import { HtmlParser } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { Scores } from 'src/app/models/Scores.model';
 
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
@@ -92,24 +93,16 @@ export class ScoresComponent implements OnInit {
   /**
    * Columnas a mostrar para los alumnos
    */
-  displayedColumns: string[] = ['id', 'name','grade', 'group', 'calificar'];
+  displayedColumns: string[] = ['nameStudent', 'b1', 'b2', 'b3', 'b4', 'b5', 'calificar'];
   
   /**
    * Tabla donde estan los datos de los usuarios
    */
   dataSource: MatTableDataSource<User>;
 
-  /**
-   * Columnas a mostrar para las materias
-   */
-  displayedColumnsLessons: string[] = ['name','grade', 'deleted'];
+//dataSource para la tabla de calificaciones
+dataSourceScores: MatTableDataSource<Scores>;
   
-  
-  /**
-   * Tabla donde estan los datos de los usuarios
-   */
-  dataSourceLessons: MatTableDataSource<Subject>;
-
   /**
    * Contiene el valor del grado seleccionado
    */
@@ -120,7 +113,6 @@ export class ScoresComponent implements OnInit {
    */
   groupSelected:String
 
-  status;
   /**
    * Contiene el valor del grupo seleccionado
    */
@@ -132,27 +124,21 @@ export class ScoresComponent implements OnInit {
    * 
    */
  retornaGrados(){
-
   this.user= JSON.parse(localStorage.getItem("user"));
-
-  // console.log(this.user.id);
-  
-   this.api.getSubjectsByProfesor(this.user.id).subscribe(response=>{
-          this.arraySubjects=response as Array<Subject>  
-          // console.log(this.arraySubjects);
-          let grades: Grade[] = [];
-          for (let i = 0; i < this.arraySubjects.length; i++) {
-            var grado = this.arraySubjects[i].grade;
-            grades.push({value: grado, viewValue: grado});
-          }
-          this.grades = grades;
-  });
-
- }
+  //obtenemos la lista de los grados en los que da clase el profesor actualmente logeado
+  let grades: Grade[] = [];
+  for (let i = 1; i <= 3; i++) {
+    this.firebase.getGradesProfesor(this.user.username,i).then(response=>{
+      if(response==true){
+        grades.push({value: i, viewValue: i});
+      }
+    })
+  }
+  this.grades = grades;
+}
 
   subjects:Materia[];
   grades:Grade[];
-  statusBtn:string="hidden";
 
   /**
    * Propiedad que indica 
@@ -166,7 +152,11 @@ export class ScoresComponent implements OnInit {
     {value: 'C', viewValue:"C"},
     {value: 'D', viewValue:"D"},
     {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"}
+    {value: 'F', viewValue:"F"},
+    {value: 'E', viewValue:"G"},
+    {value: 'F', viewValue:"H"},
+    {value: 'E', viewValue:"I"},
+    {value: 'F', viewValue:"J"}
   ];
 
     /**
@@ -184,7 +174,6 @@ export class ScoresComponent implements OnInit {
    * @param dialog variable para hacer llamada a un dialog externo
    */
   constructor(
-    private api: APIService,
     public firebase: FirebaseService,
     public dialog : MatDialog,
     private router: Router,
@@ -203,120 +192,76 @@ export class ScoresComponent implements OnInit {
   searchStudents(){ 
     
     if (this.gradeSelected){
-
-      let parms={
-        "grade":this.gradeSelected,
-        "profesor_id":this.user.id
-      }
-
-    //llamamos a las materias que da el profesor en dicho grado para llenar la lista
-    this.api.getSubjectsByGradeProfesor(parms).subscribe(response=>{
-      this.arrayMaterias=response as Array<Subject>  
-
       let subjects: Materia[] = [];
-      for (let i = 0; i < this.arrayMaterias.length; i++) {
-        subjects.push({value: this.arrayMaterias[i].id, viewValue: this.arrayMaterias[i].name});
-      }
-      this.subjects = subjects;
-    });
+      let data={
+        grade: this.gradeSelected,
+        group: this.groupSelected,
+        professor: this.user.username
+      };
 
-      let params={
-        grade:this.gradeSelected
-      }
-
-      this.api.getSubjectsByProfesor(params).subscribe(response=>{
-        this.materias=true
-        this.arrayLessons=response as Array<Subject>
-
-        this.dataSourceLessons = new MatTableDataSource(this.arrayLessons);
-        this.dataSourceLessons.paginator = this.paginator.first;
-        this.dataSourceLessons.sort = this.sort.first;
+      this.firebase.getSubjectsByProfessorGrade(data).then(response=>{
+        response.forEach(element => {
+          subjects.push({value: element, viewValue: element});
+        });
+        this.subjects = subjects;
       });
     }
 
-    if (this.gradeSelected != null && this.groupSelected != null) {
-      let params={
-        "grade":this.gradeSelected,
-	      "group":this.groupSelected
-      }
-      
-      this.api.getUsersInLesson(params).subscribe(response=>{
-        this.estudiantes=true;
-
-        this.arrayStudents=response as Array<User>
-
-          this.dataSource = new MatTableDataSource(this.arrayStudents);
-          this.dataSource.paginator = this.paginator.last;
-          this.dataSource.sort = this.sort.last;
-        });
+    if (this.gradeSelected != null && this.groupSelected != null && this.materiaSelected != null) {
+      this.showScores();
     }
-
   }
 
+  showScores(){
+    let params={
+      grade: this.gradeSelected,
+      group: this.groupSelected,
+      subject: this.materiaSelected
+    }  
+    this.firebase.getScoresStudentsInLesson(params).then(response=>{
+      this.dataSourceScores = new MatTableDataSource(response);
+      this.dataSourceScores.paginator = this.paginator.last;
+      this.dataSourceScores.sort = this.sort.last;
+    });
+  }
 
   //ver la info de un usuario dado click en su boton de calificar, ademas el metodo permite modificar o bien registrar
   //una nueva calificacion en el sistema, tanto a nivel mysql como a firebase
   setScores(row){
     const dialogRef = this.dialog.open(ScoreUserComponent,{
       data: {
-        subject_id:this.materiaSelected,
-        user_id:row.id_user,
-        nombreAlumno: row.username,
+        subject:this.materiaSelected,
+        grade: this.gradeSelected,
+        group: this.groupSelected,
+        b1: row.b1,
+        b2: row.b2,
+        b3: row.b3,
+        b4: row.b4,
+        b5: row.b5,
+        nameStudent: row.nameStudent,
       }
     });
     dialogRef.afterClosed().subscribe(response=>{
         if(response){
-          let params={
-            id:response.idScore,
-            user_id: row.id_user,
-            subject_id: this.materiaSelected,
-            bi1: response.bim1,
-            bi2: response.bim2,
-            bi3: response.bim3,
-            bi4: response.bim4,
-            bi5: response.bim5,
-          }    
-
           let data={
-            id:response.idScore,
-            user_id: row.id_user,
-            subject_id: this.materiaSelected,
-            nombreMateria: null,
-            bi1: response.bim1,
-            bi2: response.bim2,
-            bi3: response.bim3,
-            bi4: response.bim4,
-            bi5: response.bim5,
+            subject: this.materiaSelected,
+            grade: this.gradeSelected,
+            group: this.groupSelected,
+            b1: response.bim1,
+            b2: response.bim2,
+            b3: response.bim3,
+            b4: response.bim4,
+            b5: response.bim5,
+            nameStudent: response.nameStud
           };
 
-          if(response.exits=="insert"){
-            //añade MySQL
-            this.api.addScore(params).subscribe(response=>{ });
-            this.api.showLesson(this.materiaSelected).subscribe(response=>{
-              data.nombreMateria = (response as Subject).name;
-              //añade FIREBASE
-              this.firebase.updateScore(data, row.username);
-
-              this.openCustomerSnackBar();
-            });
-          }
-
-          if(response.exits=="update"){   
-            //modifica MySQL
-            this.api.updateScore(params).subscribe(response=>{ });
-            this.api.showLesson(this.materiaSelected).subscribe(response=>{
-              data.nombreMateria = (response as Subject).name;
-              //modifica FIREBASE
-              this.firebase.updateScore(data, row.username);
-              this.openCustomerSnackBar();  
-            });
-          }        
-
+          this.firebase.refreshStudentScoreClass(data);
+          this.showScores();
+          this.openCustomerSnackBar();  
         } 
     })
     
   }
-
 
 //metodo para regresar al menu principal
   menuP(){
@@ -329,7 +274,6 @@ export class ScoresComponent implements OnInit {
   }
 
 }
-
 
 @Component({
   selector: 'custom-snackbar',

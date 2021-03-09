@@ -140,3 +140,25 @@
     box-shadow: 2px 2px 5px #999;
     background: #162138;
 }
+
+.mat-column-nameStudent {
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 48% !important;
+    font-size: 13.5px;
+}
+
+.mat-column-b1,
+.mat-column-b2,
+.mat-column-b3,
+.mat-column-b4,
+.mat-column-b5 {
+    white-space: unset !important;
+    flex: 0 0 10% !important;
+    width: 10% !important;
+    font-size: 11px;
+}
+
+.mat-header-cell {
+    font-weight: bold;
+}

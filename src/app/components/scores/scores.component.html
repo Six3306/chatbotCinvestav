@@ -28,7 +28,7 @@
 
             <mat-form-field style=" font-size: 14px;">
                 <mat-label>Materia</mat-label>
-                <mat-select [(ngModel)]="materiaSelected">
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="materiaSelected">
                     <mat-option *ngFor="let subject of subjects" [value]="subject.value">
                         {{subject.viewValue}}
                     </mat-option>
@@ -43,33 +43,47 @@
 
     <!-- tabla de alumnos -->
     <div class="example-container centrado">
-        <mat-table mat-table [dataSource]="dataSource" matSort style="max-height: 300px;">
-
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
+        <mat-table mat-table [dataSource]="dataSourceScores" matSort style="max-height: 300px;">
 
             <!-- Name Column -->
-            <ng-container matColumnDef="name">
+            <ng-container matColumnDef="nameStudent">
                 <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-                <mat-cell mat-cell *matCellDef="let row"> {{row.username}} </mat-cell>
+                <mat-cell mat-cell *matCellDef="let row"> {{row.nameStudent}} </mat-cell>
                 <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
 
-            <!-- Grade Column -->
-            <ng-container matColumnDef="grade">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Grado </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.grade}} </mat-cell>
+            <!-- B1 Column -->
+            <ng-container matColumnDef="b1">
+                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Bimestre 1 </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.b1}} </mat-cell>
                 <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
 
-            <!-- Group Column -->
-            <ng-container matColumnDef="group">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Grupo </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.group}} </mat-cell>
+            <!-- B1 Column -->
+            <ng-container matColumnDef="b2">
+                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Bimestre 2 </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.b2}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <!-- B1 Column -->
+            <ng-container matColumnDef="b3">
+                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Bimestre 3 </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.b3}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <!-- B1 Column -->
+            <ng-container matColumnDef="b4">
+                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Bimestre 4 </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.b4}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <!-- B5 Column -->
+            <ng-container matColumnDef="b5">
+                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Bimestre 5 </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.b5}} </mat-cell>
                 <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
 

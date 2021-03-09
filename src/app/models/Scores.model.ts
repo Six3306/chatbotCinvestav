@@ -11,7 +11,7 @@ export class Scores {
      * @param deleted Indica el estado de la clase 
      * @param id Id respectivo de la clase
      */
-      constructor(public user_id: number, public subject_id: number, public b1:number, public b2:number, public b3:number, public b4:number, public b5:number, public deleted:boolean, public id) {}
+      constructor(public nameStudent: String, public b1:number, public b2:number, public b3:number, public b4:number, public b5:number) {}
   
      
       
