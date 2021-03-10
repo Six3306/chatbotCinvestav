@@ -48,28 +48,28 @@
     <!--MOSTRAR AVISOS REGISTRADOS-->
 
 
+    <div class="containerTables">
+        <!--AGREGAR NUEVOS AVISOS-->
+        <br><br>
 
-    <!--AGREGAR NUEVOS AVISOS-->
-    <br><br>
+        <mat-form-field class="contentMsg">
+            <textarea matInput id="textAreaReminder" [(ngModel)]="textAreaReminder" placeholder="Ingresa el aviso a registrar"></textarea>
+        </mat-form-field>
 
-    <mat-form-field class="contentMsg">
-        <textarea matInput id="textAreaReminder" [(ngModel)]="textAreaReminder" placeholder="Ingresa el aviso a registrar"></textarea>
-    </mat-form-field>
+        <!-- <textarea ng-model="myTextArea" [(ngModel)]="textAreaReminder" id="textAreaReminder" placeholder="Ingresa el aviso a registrar"></textarea> -->
 
-    <!-- <textarea ng-model="myTextArea" [(ngModel)]="textAreaReminder" id="textAreaReminder" placeholder="Ingresa el aviso a registrar"></textarea> -->
+        <br><br>
+        <button class="btn btn-info centrado" id="btnAddRemind" (click)="registerReminder()">Registrar Aviso</button>
+        <!--AGREGAR NUEVOS AVISOS-->
 
-    <br><br>
-    <button class="btn btn-info centrado" id="btnAddRemind" (click)="registerReminder()">Registrar Aviso</button>
-    <!-- <button class="btn btn-info centrado" (click)="openSnackBar('Mensaje a poner','X')">NOTI</button> -->
-    <!-- <button class="btn btn-info centrado" (click)="openCustomerSnackBar()">MOSTRAR</button> -->
-    <!--AGREGAR NUEVOS AVISOS-->
+    </div>
 
     <div id="boxR">
         <button class="btn-return" (click)="menuP()">
-        <i class="material-icons">
-            navigate_before
-        </i>       
-    </button>
+            <i class="material-icons">
+                navigate_before
+            </i>       
+        </button>
     </div>
 
 </div>

@@ -5,6 +5,21 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 
+
+export interface Group{
+  /*** value es el valor real que tendra */
+  value: any,
+  /**   * es el valor a mostrar de a interface*/
+  viewValue: any
+}
+
+ export interface Grade{
+  /**   * value es el valor real que tendra    */
+  value: any,
+  /**   * es el valor a mostrar de a interface   */
+  viewValue: any
+}
+
 @Component({
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
@@ -12,6 +27,25 @@ import { Router } from '@angular/router';
   providers: [MatSnackBar]
 })
 export class RemindersComponent implements OnInit {
+
+  groups:Group[] = [
+    {value: 'A', viewValue:"A"},
+    {value: 'B', viewValue:"B"},
+    {value: 'C', viewValue:"C"},
+    {value: 'D', viewValue:"D"},
+    {value: 'E', viewValue:"E"},
+    {value: 'F', viewValue:"F"},
+    {value: 'E', viewValue:"G"},
+    {value: 'F', viewValue:"H"},
+    {value: 'E', viewValue:"I"},
+    {value: 'F', viewValue:"J"}
+  ];
+
+  grades:Grade[] = [
+    {value: '1', viewValue:"1°"},
+    {value: '2', viewValue:"2°"},
+    {value: '3', viewValue:"3°"}
+  ];
 
   dataSource: MatTableDataSource<Reminder>;
   displayedColumns: string[] = ['idKey','reminder','publication', 'delet'];

@@ -61,7 +61,11 @@ export class AddFilesComponent implements OnInit {
     {value: 'C', viewValue:"C"},
     {value: 'D', viewValue:"D"},
     {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"}
+    {value: 'F', viewValue:"F"},
+    {value: 'E', viewValue:"G"},
+    {value: 'F', viewValue:"H"},
+    {value: 'E', viewValue:"I"},
+    {value: 'F', viewValue:"J"}
   ];
 
   arrayMaterias: Array<Subject>;
@@ -86,12 +90,13 @@ export class AddFilesComponent implements OnInit {
    * @param grupo el grupo para los alumnos del archivo
    * @param materia la materia a la que pertenece el archivo
    */
-  data={
+   data={
+    title:"",
     url:"",
-    descripcion:"",
-    grado:"",
-    grupo: "",
-    materia:"Materia",
+    description:"",
+    grade:"",
+    group: "",
+    subject:"Materia",
   };
   /**
    * 
@@ -101,7 +106,6 @@ export class AddFilesComponent implements OnInit {
    * @param message mensaje a recibir de la ventana que invoca al dialog
    */
   constructor(
-    private api: APIService,
     public formBuilder: FormBuilder,
     public dialogRef : MatDialogRef<AddFilesComponent>,
     public firebase: FirebaseService,
@@ -109,18 +113,18 @@ export class AddFilesComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) { 
     this.formFile = this.formBuilder.group({
+      title:['', [Validators.required]],
       url:['', [Validators.required]],
-      descripcion:['', [Validators.required]],
-      grado:['', [Validators.required]],
-      grupo: ['', [Validators.required]],
-      materia:['Materia', [Validators.required]],
-
+      description:['', [Validators.required]],
+      grade:['', [Validators.required]],
+      group: ['', [Validators.required]],
+      subject:['Materia', [Validators.required]],
     });
 
   }
 
   /**
-   * Funcion para cerrar el dialog 
+   * Funcion para cerrar el dialog  
    */
   onClickNo():void{
     this.dialogRef.close()
@@ -131,49 +135,42 @@ export class AddFilesComponent implements OnInit {
 
   //metodo para obtener los grados del profe actual
   retornaGrados(){
-
     this.user= JSON.parse(localStorage.getItem("user"));
-      
-     this.api.getSubjectsByProfesor(this.user.id).subscribe(response=>{
-            this.arraySubjects=response as Array<Subject>  
-            let grades: Grade[] = [];
-            for (let i = 0; i < this.arraySubjects.length; i++) {
-              var grado = this.arraySubjects[i].grade;
-              grades.push({value: grado, viewValue: grado});
-            }
-            this.grades = grades;
-    });
-  
-   }
+    let grades: Grade[] = [];
+    for (let i = 1; i <= 3; i++) {
+      this.firebase.getGradesProfesor(this.user.username,i).then(response=>{
+        if(response==true){
+          grades.push({value: i, viewValue: i});
+        }
+      })
+    }
+    this.grades = grades;
+  }
 
   /**
    * Funcion para enviar el archivo
    */ 
   sendFile(){
     this.data=this.formFile.value;   
-    this.data.grado = this.data.grado+"°";
-    this.response = this.firebase.addFiles(this.data);
+    console.log(this.data);
+    this.firebase.addLinkMaterial(this.data);
     this.openCustomerSnackBar();  
   }
 
   //metodo para listar las materias que da un profesor en determinado grado
-  darMaterias(){
-    
+  darMaterias(){  
     if (this.gradeSelected){
+      let subjects: Materia[] = [];
+      let data={
+        grade: this.gradeSelected,
+        group: this.groupSelected,
+        professor: this.user.username
+      };
 
-        let parms={
-          "grade":this.gradeSelected,
-          "profesor_id":this.user.id
-        }
-  
-      //llamamos a las materias que da el profesor en dicho grado para llenar la lista
-      this.api.getSubjectsByGradeProfesor(parms).subscribe(response=>{
-        this.arrayMaterias=response as Array<Subject>  
-
-        let subjects: Materia[] = [];
-        for (let i = 0; i < this.arrayMaterias.length; i++) {
-          subjects.push({value: this.arrayMaterias[i].name, viewValue: this.arrayMaterias[i].name});
-        }
+      this.firebase.getSubjectsByProfessorGrade(data).then(response=>{
+        response.forEach(element => {
+          subjects.push({value: element, viewValue: element});
+        });
         this.subjects = subjects;
       });
     }

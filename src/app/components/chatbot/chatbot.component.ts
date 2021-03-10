@@ -47,7 +47,6 @@ export const MY_FORMATS = {
 
 export class ChatbotComponent implements OnInit {
  
-
   /**
    * @param date es el parametro con el cual obtenemos la fecha del datepicker ´date´
   */
@@ -141,9 +140,10 @@ export class ChatbotComponent implements OnInit {
   openDialogAddFile(){
     const dialogRef = this.dialog.open(AddFilesComponent);
     dialogRef.afterClosed().subscribe(response=>{  
-      
     })
   }
+
+  
   /**
    * Metodo para obtener la fecha de un calendario 
    * @param data fecha obtenida 

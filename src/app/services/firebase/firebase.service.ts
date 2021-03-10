@@ -37,16 +37,11 @@ export class FirebaseService {
   }
 
      /**
-      * Funcion para guardar un archivo en firebase
+      * Funcion para guardar un material en firebase
       * @param file arhivo a guardar de firebase este es un json de tipo file
       */
-    addFiles(file):Boolean{
-      this.database.database.ref("Material").push(file).then(response=>{
-        return true;
-      }, error=>{
-        return false;
-      })
-      return false;
+    addLinkMaterial(data){
+      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.title}`).set({link: data.url, descripcion: data.description});
     }
 
     addKeyInBD(data):Boolean{
