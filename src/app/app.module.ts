@@ -14,7 +14,7 @@ import { LoginComponent, CustomSnackBarComponentLogin } from './components/login
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { HeaderComponent } from './components/header/header.component';
-import {MatInputModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, MatSnackBarModule} from '@angular/material';
+import {MatInputModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, MatSnackBarModule, MAT_CHIPS_DEFAULT_OPTIONS} from '@angular/material';
 import { RegisterComponent, CustomSnackBarComponentRegister } from './components/register/register.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { MenuComponent } from './components/menu/menu.component';
@@ -29,6 +29,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ClipboardModule } from 'ngx-clipboard';
+import {MatChipsModule} from '@angular/material/chips'
 
 
 import { AngularFireModule } from '@angular/fire';
@@ -52,6 +53,7 @@ import { RemindersComponent, CustomSnackBarComponent } from './components/remind
 import { GenerateKeyComponent } from './dialogs/generate-key/generate-key.component';
 import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
 import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson } from './components/class-g/class-g.component';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -73,7 +75,7 @@ const angularMaterial=[
   MatNativeDateModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSnackBarModule
+  MatSnackBarModule, 
 ]
 @NgModule({
   declarations: [
@@ -121,9 +123,14 @@ const angularMaterial=[
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     ClipboardModule,
-         
+    MatChipsModule
   ],
-  providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard],
+  providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,{
+    provide: MAT_CHIPS_DEFAULT_OPTIONS,
+    useValue: {
+      separatorKeyCodes: [ENTER, COMMA]
+    }
+  }],
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,AddFilesComponent, AddSubjectComponent, 
     AddStudentComponent, ScoreUserComponent, GenerateKeyComponent, CustomSnackBarComponent,

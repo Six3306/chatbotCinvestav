@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { File } from 'src/app/models/File.model';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/User.model';
-import { APIService } from 'src/app/services/api/api.service';
 import { Subject } from 'src/app/models/Subject.model';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 export interface Grade{
   /**
@@ -40,12 +40,24 @@ export interface Materia{
   viewValue: any
 }
 
+export interface Url {
+  url: string;
+}
+
 @Component({
   selector: 'app-add-files',
   templateUrl: './add-files.component.html',
   styleUrls: ['./add-files.component.css']
 })
 export class AddFilesComponent implements OnInit {
+
+  //elementos para las etiquedas de url
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  urls: Url[] = [];
 
   grades:Grade[];
   user:User; 
@@ -84,7 +96,6 @@ export class AddFilesComponent implements OnInit {
 
   /**
    * Variable que tiene los datos a guardar del archivo
-   * @param url la url de donde se ubica el archivo
    * @param descripcion la descripcion del archivo
    * @param grado el grado para los alumnos del archivo
    * @param grupo el grupo para los alumnos del archivo
@@ -92,7 +103,6 @@ export class AddFilesComponent implements OnInit {
    */
    data={
     title:"",
-    url:"",
     description:"",
     grade:"",
     group: "",
@@ -114,7 +124,6 @@ export class AddFilesComponent implements OnInit {
   ) { 
     this.formFile = this.formBuilder.group({
       title:['', [Validators.required]],
-      url:['', [Validators.required]],
       description:['', [Validators.required]],
       grade:['', [Validators.required]],
       group: ['', [Validators.required]],
@@ -146,14 +155,15 @@ export class AddFilesComponent implements OnInit {
     }
     this.grades = grades;
   }
-
+ 
   /**
    * Funcion para enviar el archivo
    */ 
   sendFile(){
     this.data=this.formFile.value;   
-    console.log(this.data);
-    this.firebase.addLinkMaterial(this.data);
+    let date: Date = new Date();
+    let publicationDate:String= date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+    this.firebase.addLinkMaterial(this.data, this.urls, publicationDate);
     this.openCustomerSnackBar();  
   }
 
@@ -173,6 +183,27 @@ export class AddFilesComponent implements OnInit {
         });
         this.subjects = subjects;
       });
+    }
+  }
+
+  //para añadir a las url
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      this.urls.push({url: value});
+    }
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  //remueve las url
+  remove(url: Url): void {
+    const index = this.urls.indexOf(url);
+    if (index >= 0) {
+      this.urls.splice(index, 1);
     }
   }
 

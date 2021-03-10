@@ -8,11 +8,20 @@
             <input matInput formControlName="title" placeholder="Titulo del material">
         </mat-form-field>
         <p></p>
-        <!--para ingresar la url-->
-        <mat-form-field>
-            <input matInput formControlName="url" placeholder="¿Cual es la URL?">
+
+        <!--Para añadir links-->
+        <mat-form-field class="example-chip-list">
+            <mat-label>Urls de apoyo</mat-label>
+            <mat-chip-list #chipList aria-label="Url selection">
+                <mat-chip *ngFor="let u of urls" [selectable]="selectable" [removable]="removable" (removed)="remove(u)">
+                    {{u.url| slice:0:14}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Nueva url..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
         </mat-form-field>
         <p></p>
+
         <!--para asignar el grado-->
         <mat-form-field>
             <mat-label>Grado</mat-label>
