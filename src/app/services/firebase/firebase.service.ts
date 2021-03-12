@@ -272,6 +272,16 @@ export class FirebaseService {
   }
 
 
+  addEventG(data, arr){
+    for (let i = 0; i < arr.length; i++) {
+      this.database.database.ref(`AvisosGenerales/${arr[i].grade}/${arr[i].group}/${data.title}`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content});
+    }
+    if(data.professor){
+      this.database.database.ref(`AvisosGenerales/Profesores/${data.title}`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content});
+    }
+  }
+
+
     /**
      * Función para guardar un usuario e firebase se hizo se probo pero actualmente los usuarios ya no se almacenan ahi  
      * @param data objeto tipo usuario  

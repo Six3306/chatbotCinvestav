@@ -32,10 +32,9 @@ table {
 
 .example-container {
     overflow: auto;
-    margin-left: 10%;
-    margin-right: 10%;
     display: flex;
     flex-direction: column;
+    width: 83%;
 }
 
 .mat-form-field {
@@ -89,11 +88,6 @@ th {
     font-size: 40px;
 }
 
-#tableUsers {
-    width: 70%;
-    text-align: center;
-}
-
 .btn {
     font-size: medium;
     background: #1D2B46;
@@ -107,18 +101,33 @@ th {
 }
 
 .contentMsg {
-    width: 53%;
-    margin-left: 25%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     float: center;
+    text-align: center;
+}
+
+#textAreaReminder {
+    width: 100%;
 }
 
 .containerTables {
     margin-right: auto;
     margin-left: auto;
-    max-width: 80%;
+    padding: 3.8%;
+    max-width: 60%;
+    background-color: white;
+}
+
+.mat-accordion {
+    width: 80%!important;
 }
 
 #btnAddRemind {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
     border-color: black;
     background: #3A445D;
 }
@@ -135,4 +144,34 @@ th {
 .mat-header-cell {
     font-weight: bold;
     font-size: 15px;
+}
+
+.mat-expansion-panel-header {
+    text-align: center;
+}
+
+UL.col5 {
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    FLOAT: left;
+    PADDING-BOTTOM: 0px;
+    WIDTH: 100%;
+    PADDING-TOP: 3%;
+    LIST-STYLE-TYPE: none
+}
+
+UL.col5 LI {
+    PADDING-RIGHT: 2%;
+    DISPLAY: inline;
+    PADDING-LEFT: 2%;
+    FLOAT: center;
+    /* margin-right: 12%; */
+    PADDING-BOTTOM: 2%;
+    WIDTH: 15%;
+    PADDING-TOP: 4%;
+}
+
+.nRem,
+.mat-accordion {
+    text-align: center;
 }

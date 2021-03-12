@@ -30,6 +30,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ClipboardModule } from 'ngx-clipboard';
 import {MatChipsModule} from '@angular/material/chips'
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import { AngularFireModule } from '@angular/fire';
@@ -54,6 +55,7 @@ import { GenerateKeyComponent } from './dialogs/generate-key/generate-key.compon
 import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
 import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson } from './components/class-g/class-g.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -76,6 +78,7 @@ const angularMaterial=[
   MatTableModule,
   MatPaginatorModule,
   MatSnackBarModule, 
+  MatExpansionModule,
 ]
 @NgModule({
   declarations: [
@@ -130,7 +133,8 @@ const angularMaterial=[
     useValue: {
       separatorKeyCodes: [ENTER, COMMA]
     }
-  }],
+  },{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,AddFilesComponent, AddSubjectComponent, 
     AddStudentComponent, ScoreUserComponent, GenerateKeyComponent, CustomSnackBarComponent,
