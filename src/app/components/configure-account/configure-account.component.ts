@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/User.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { APIService } from 'src/app/services/api/api.service';
 
 @Component({
   selector: 'app-configure-account',
@@ -11,6 +12,7 @@ export class ConfigureAccountComponent implements OnInit {
 
   user:User;
   name:String;
+  idU:String;
 
   //para el switch boton
   isChecked = false ;
@@ -24,6 +26,7 @@ export class ConfigureAccountComponent implements OnInit {
   formUpdateUser : FormGroup; 
 
   constructor(
+    private api: APIService,
     private formbuilder : FormBuilder,
     ) {
     this.user= JSON.parse(localStorage.getItem("user"));
@@ -35,7 +38,9 @@ export class ConfigureAccountComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.name= this.user.username;
+    this.name = this.user.username;
+    this.idU = this.user.id;
+    
     this.formUpdateUser.disable({ emitEvent: false });
     this.formUpdateUser.invalid;
   }
@@ -47,10 +52,18 @@ export class ConfigureAccountComponent implements OnInit {
       // console.log(this.formRegister.value)
       //this.openCustomerSnackBarLesson();
       // return;
-      console.log("SI CAMBIAMOS");
+
+      let params= {
+        id : this.idU,
+        password: this.formUpdateUser.get("password").value
+      }
+      console.log(params);
+
+      this.api.changePassword(params).subscribe(response=>{
+        console.log("CAMBIADA..."+response.message);
+      });
     }else{
       console.log("NO CAMBIAMOS");
-      
     }
     //this.register();
     this.submitted=false;

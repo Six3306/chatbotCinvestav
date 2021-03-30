@@ -69,6 +69,15 @@ export class APIService {
       return this.http.post(`${this.api}login/`, params, httpOptions);
     }
 
+    changePassword(params):Observable<any>{
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          
+        })
+      }
+      return this.http.put(`${this.api}change_password/${params.id}`, params, httpOptions);
+    }
     
     /**
      * Función para obtener a todos los usuarios que no han sido activados
