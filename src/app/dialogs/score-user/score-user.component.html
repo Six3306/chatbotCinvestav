@@ -35,8 +35,8 @@
     <!--botones para cancelar o bien guardar las calificaciones-->
     <div id="botons">
         <div mat-dialog-actions id="buttons">
-            <button mat-button (click)="onClickNo()" class="btn btn-danger">Cancelar</button>
-            <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" class="btn btn-success">Registrar</button>
+            <button mat-button (click)="onClickNo()" class="btn" id="btnCancel">Cancelar</button>
+            <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" class="btn" id="btnReg">Registrar</button>
         </div>
     </div>
 </form>

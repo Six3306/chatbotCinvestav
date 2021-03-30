@@ -14,7 +14,8 @@
         <div class="navbar-nav">
             <!--ADMINISTRADOR-->
             <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminUsers" (click)="adminUsers()">Usuarios</a><span class="space"> &nbsp;&nbsp; </span>
-            <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminCourStud" (click)="adminCourStud()">Gestionar Grupos/Materias/Estudiantes</a><span class="space"> &nbsp;&nbsp; </span>
+            <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminCourStud" (click)="adminCourStud()">Gestionar Grupos/Estudiantes</a><span class="space"> &nbsp;&nbsp; </span>
+            <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminGClass" (click)="admingClass()">Gestionar Clases</a><span class="space"> &nbsp;&nbsp; </span>
             <a *ngIf="typeMenu=='Administrador' && status==true" class="nav-item nav-link" id="adminRemind" (click)="adminRemind()">Avisos</a><span class="space"> &nbsp;&nbsp; </span>
             <!--PROFESOR Y ALUMNOS-->
             <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class="nav-item nav-link" id="goToGeneralFiles" (click)="goToGeneralFiles()">Gestion de Archivos y Mensajes</a><span class="space"> &nbsp;&nbsp; </span>

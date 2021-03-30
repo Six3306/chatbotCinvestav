@@ -8,7 +8,7 @@
     <br><br>
     <div class="row centrado">
         <mat-toolbar-row>
-            <mat-form-field style="font-size: 14px; margin-left: 0%;">
+            <mat-form-field id="sGrade">
                 <mat-label>Grado</mat-label>
                 <mat-select (selectionChange)="searchStudents()" [(ngModel)]="gradeSelected">
                     <mat-option *ngFor="let grade of grades" [value]="grade.value">
@@ -17,7 +17,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field style=" font-size: 14px; margin-right: 0%;">
+            <mat-form-field id="sGroup">
                 <mat-label>Grupo</mat-label>
                 <mat-select (selectionChange)="searchStudents()" [(ngModel)]="groupSelected">
                     <mat-option *ngFor="let group of groups" [value]="group.value">
@@ -30,9 +30,13 @@
     <!--/Buscador-->
 
     <br>
-    <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
+
+    <div id="divFilterS">
+        <mat-form-field id="filterS">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+    </div>
+
 
     <br>
 

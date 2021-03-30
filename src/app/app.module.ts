@@ -31,6 +31,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ClipboardModule } from 'ngx-clipboard';
 import {MatChipsModule} from '@angular/material/chips'
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 import { AngularFireModule } from '@angular/fire';
@@ -56,6 +57,7 @@ import { ConfigureAccountComponent } from './components/configure-account/config
 import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson } from './components/class-g/class-g.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { ViewReminderComponent } from './dialogs/view-reminder/view-reminder.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -112,6 +114,8 @@ const angularMaterial=[
     CustomSnackBarComponentLogin,
     ConfigureAccountComponent,
     ClassGComponent,
+    ViewReminderComponent,
+    
   ],
   imports: [
     BrowserAnimationsModule,
@@ -126,7 +130,8 @@ const angularMaterial=[
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     ClipboardModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTabsModule
   ],
   providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,{
     provide: MAT_CHIPS_DEFAULT_OPTIONS,
@@ -141,7 +146,7 @@ const angularMaterial=[
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,
-    CustomSnackBarComponentLogin,
+    CustomSnackBarComponentLogin,ViewReminderComponent,
   ]
 })
 export class AppModule { }

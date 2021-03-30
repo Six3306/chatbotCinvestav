@@ -15,14 +15,6 @@
     overflow: auto;
 }
 
-.mat-form-field {
-    font-size: 24px;
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
-    /* text-align: center; */
-}
-
 .mat-paginator {
     font-size: 14px;
     width: 100%;
@@ -78,7 +70,6 @@
     margin-right: auto;
     margin-left: auto;
     max-width: 50%;
-    background-color: white;
 }
 
 .containerTables {
@@ -141,4 +132,27 @@
     border-color: black;
     background: #3A445D;
     color: white;
+}
+
+#sGrade {
+    margin-right: 3%;
+    text-align: center;
+}
+
+#sGroup {
+    margin-left: 3%;
+    text-align: center;
+}
+
+.mat-toolbar-row {
+    justify-content: center
+}
+
+#divFilterS {
+    text-align: center;
+}
+
+#filterS {
+    width: 50%;
+    text-align: center;
 }

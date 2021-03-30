@@ -13,11 +13,14 @@
     overflow: auto;
 }
 
-.mat-form-field {
-    font-size: 24px;
+
+/* .mat-form-field {*/
+
+.gGR {
     width: 32%;
     margin-left: 2%;
     margin-right: 2%;
+    text-align: center;
     /* text-align: center; */
 }
 
@@ -80,7 +83,7 @@
     margin-right: auto;
     margin-left: 16%;
     max-width: 71%;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .containerTables {
@@ -161,4 +164,15 @@
 
 .mat-header-cell {
     font-weight: bold;
+}
+
+#selrepSemester {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#repSemester {
+    text-align: center;
+    width: 20%;
 }

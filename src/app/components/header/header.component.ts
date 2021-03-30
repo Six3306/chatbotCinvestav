@@ -80,6 +80,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl("Users-lessons")
   }
 
+  admingClass(){
+    this.router.navigateByUrl("Class-g")
+  }
+
   adminRemind(){
     this.router.navigateByUrl("reminders")
   }

@@ -1,4 +1,4 @@
-import { Injectable, ɵɵpipeBind1 } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from 'src/app/models/User.model';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -6,6 +6,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { SubjectG } from 'src/app/models/SubjectG.model';
 import { Student } from 'src/app/models/Student.model';
 import { Scores } from 'src/app/models/Scores.model';
+import { Reminder } from 'src/app/models/Reminder.model';
 
 
 @Injectable({
@@ -47,18 +48,6 @@ export class FirebaseService {
     addKeyInBD(data):Boolean{
       this.database.database.ref(`KeyProfesor/${data.nameProfesor}`).set({keyG: data.keyG}); 
       return true;
-    }
-
-    /**
-      * Funcion para guardar pruebas de calificaciones
-      */
-     addScore(data,usuario):Boolean{
-      this.database.database.ref(`Calificaciones/${data.nombreMateria}/${usuario}`).push(data).then(response=>{
-        return true;
-      }, error=>{
-        return false;
-      })
-      return false;
     }
 
     //agrega una materia
@@ -150,7 +139,7 @@ export class FirebaseService {
     //remueve las calificaciones de un alumno en cierta clase
     removeStudentScoreClass(data, subjects){
       for (var i in subjects) {
-        this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/${data.userName}`).remove();
+        this.database.database.ref(`Clases/${data.grade}/Materias/Estudiantes/${subjects[i]}/${data.group}/Calificaciones/Estudiantes/${data.userName}`).remove();
       }
     }
 
@@ -189,6 +178,21 @@ export class FirebaseService {
       }); 
     }
 
+    getEmailProfessors(){
+      let arrayProfes: Array<String>=[];
+      return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              if(value[val].estatus==1){
+                arrayProfes.push(value[val].correo+"#"+value[val].nombre);              
+              }
+            }
+        }
+        return arrayProfes;
+      });
+    }
+
     //obtiene si en cierto grado da clases cierto profesor
     getGradesProfesor(nameProfesor, grade){
       let band:Boolean;
@@ -225,7 +229,7 @@ export class FirebaseService {
     //obtiene las calificaciones de los alumnos inscritos en cierta clase:
     getScoresStudentsInLesson(data){
       let arrayScores: Array<Scores>=[];
-      return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/`).once('value').then((snapshot) => {
+      return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/Estudiantes/`).once('value').then((snapshot) => {
         const value = snapshot.val();
         if (value !== null) {
             for (var val in value) {
@@ -247,6 +251,22 @@ export class FirebaseService {
       // this.database.database.ref(`Recordatorios/${id}`).set({delet:remin.delet,publication:remin.publication,reminder:remin.reminder}); 
    } 
 
+  //asigna hasta que punto (bimestre) se ha calificado cierta materia
+   setbimReport(data){     
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/`).update({bimestreReportado: data.bimR});
+   }
+
+   //obtiene hasta que punto (bimestre) se ha calificado cierta materia
+   getbimReport(data){
+     let bimR:number=1;
+      return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            bimR = value['bimestreReportado'];
+        }
+        return bimR;
+      });
+   }  
 
    //asigna a cierto alumno su grado y grupo
    setGradeGroup(data){
@@ -257,28 +277,46 @@ export class FirebaseService {
    //da las calificaciones de un alumno a las clases en donde se esta inscrito
    setStudentScoreClass(data, subjects){
     for(var i in subjects){
-      this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/${data.username}`).set({b1:0, b2:0, b3:0, b4:0, b5:0, nombreAlumno:data.username});
+      this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/Estudiantes/${data.username}`).set({b1:0, b2:0, b3:0, b4:0, b5:0, nombreAlumno:data.username});
     }
    }
 
    //actualiza la calificacion de un estudiante
    refreshStudentScoreClass(data){
-    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/${data.nameStudent}/`).update({b1: data.b1, b2: data.b2, b3: data.b3, b4: data.b4, b5: data.b5});
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/Estudiantes/${data.nameStudent}/`).update({b1: data.b1, b2: data.b2, b3: data.b3, b4: data.b4, b5: data.b5});
    }
 
-  //funcion para obtener todas las calificaciones
-   getScores() { 
-    return this.firestore.collection("Calificaciones/").snapshotChanges();
+  addEventG(data, arr){
+    // for (let i = 0; i < arr.length; i++) {
+    //   this.database.database.ref(`AvisosGenerales/${arr[i].grade}/${arr[i].group}/${data.title}`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content});
+    // }
+    if(data.professor){
+      this.database.database.ref(`AvisosGenerales/${data.title}/`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content, status: 1, destinatarios:arr, profesores:1});
+    }else{
+      this.database.database.ref(`AvisosGenerales/${data.title}/`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content, status: 1, destinatarios:arr, profesores:0});
+    }
   }
 
+  getRemindersG(){
+    let arrayReminders: Array<Reminder>= [];
 
-  addEventG(data, arr){
-    for (let i = 0; i < arr.length; i++) {
-      this.database.database.ref(`AvisosGenerales/${arr[i].grade}/${arr[i].group}/${data.title}`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content});
-    }
-    if(data.professor){
-      this.database.database.ref(`AvisosGenerales/Profesores/${data.title}`).set({titulo:data.title, fechaPub: data.datePub,fechaExp:data.dateExp, contenido: data.content});
-    }
+      return this.database.database.ref(`AvisosGenerales/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              if(value[val].status==1){
+                let rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, value[val].status);
+                let arrayDest: Array<String>= [];
+                for(var d in value[val].destinatarios){
+                  arrayDest.push(value[val].destinatarios[d].grade+"° "+value[val].destinatarios[d].group);
+                }
+                rem.setDestinatarys(arrayDest);
+                arrayReminders.push(rem);
+              }
+            }
+        }
+        return arrayReminders;
+      });
   }
 
 
@@ -320,6 +358,30 @@ export class FirebaseService {
   getUsers() { 
     return this.firestore.collection("usuarios/").snapshotChanges();
   }
+
+  userExists(email){
+      let band:Boolean=false;
+      return this.database.database.ref(`Usuarios/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for(var val in value['Alumnos']){
+              if(val==email){
+                band = true;
+                break;
+              }
+            }
+            if(!band){
+              for(var val in value['Profesores']){
+                if(val==email){
+                  band = true;
+                  break;
+                }
+              }
+          }
+        }
+        return band;
+      });
+  }
  
  /**
   * Función para actualizar un usuario esta funcion esta en proceso 
@@ -347,23 +409,15 @@ export class FirebaseService {
     });
    } 
 
-   addReminder(data){
-    this.database.database.ref(`Recordatorios/`).push(data);
-   }
-
-   updateReminderActivated(id, remin) {
+   updateReminderActivated(title, status) {
     // this.firestore.collection("Recordatorios/id").doc(id).set({ delet: remin.delet },{ merge: true }); 
-    this.database.database.ref(`Recordatorios/${id}`).set({delet:remin.delet,publication:remin.publication,reminder:remin.reminder}); 
+    this.database.database.ref(`AvisosGenerales/${title}`).update({status: status}); 
  }
 
   //Tarea para subir y guardar el archivo
   public tareaCloudStorage(carpeta:string, nombreArchivo: string, datos: any) {
     return this.storage.upload(`${carpeta}/`+nombreArchivo, datos);
   }
-
-  /////
-  /////
-  /////
 
   //METODO 2 PARA GUARDAR
   public guarda2(userEmailDestinity:string, userEmailOrigin:string, dateInfo:string, description:string, datos: any){

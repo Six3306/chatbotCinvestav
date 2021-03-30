@@ -1,6 +1,10 @@
 export class Reminder{
 
-    constructor(public idKey:string, public reminder:string, public publication:string, public delet:number){
+    constructor(public title:string, public contentReminder:string, public datePublication:string, public dateExpiration:string, public professors:number, public status:number, public destinatary?:Array<String>){
 
+    }
+
+    setDestinatarys(arr:Array<String>){
+        this.destinatary = arr;
     }
 }

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Grade, Group } from 'src/app/components/users-lessons/users-lessons.component';
 import { User } from 'src/app/models/User.model';
 import { MatTableDataSource, MatPaginator, MatSort, MAT_DIALOG_DATA } from '@angular/material';
-import { APIService } from 'src/app/services/api/api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
@@ -87,7 +86,6 @@ export class AddStudentComponent implements OnInit {
    * @param data informacion que viene del que invoco al dialog 
    */
   constructor(
-    private api: APIService,
     public formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public  data:any, 
     private firebase: FirebaseService

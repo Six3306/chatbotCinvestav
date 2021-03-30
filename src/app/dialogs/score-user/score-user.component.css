@@ -24,3 +24,12 @@
     margin-right: auto;
     align-items: center;
 }
+
+.btnCancel:hover {
+    background: #4d4d53;
+}
+
+#btnReg:hover {
+    background: #261c63;
+    color: white;
+}

@@ -6,94 +6,201 @@
 
     <p class="title">Control de Archivos</p>
 
-    <div class="centrado2">
-        <!--formulario para enviar nuevos archivos-->
-        <form [formGroup]="formFile" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">
+    <br>
 
-            <label class="labelEti">Correo de Destino:</label><br>
-            <mat-form-field class="addrEmail">
-                <input matInput formControlName="correoDestinity" placeholder="Ingresa el correo al que quieres enviar el archivo (La direccion debe ser la misma a la que se escribió cuando se creó la cuenta)" type="email" id="correoDestinity" autocomplete="off" required>
-            </mat-form-field>
+    <mat-tab-group>
+        <mat-tab label="Enviar Archivo">
+            <br>
+            <div class="centrado2">
 
-            <!-- <input type="email" class="form-control" id="correoDestinity" formControlName="correoDestinity" placeholder="Ingresa el correo al que quieres enviar el archivo (La direccion debe ser la misma a la que se escribió cuando se creó la cuenta)" required /> -->
-            <p></p>
+                <!--formulario para seleccionar los destinatarios-->
+                <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form">
+                    <br>
+                    <h3>Seleccionar destinatarios:</h3>
 
-            <label class="labelEti">Descripción del Archivo a Enviar:</label><br>
-            <mat-form-field class="contentMsg">
-                <textarea matInput formControlName="description" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
-            </mat-form-field>
+                    <h4>Alumnos:</h4><br>
 
-            <!-- <textarea type="form-control" class="md-textarea form-control" mdbInput id="description" formControlName="description" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea> -->
-            <p></p>
-            <input class="file-input" type="file" formControlName="archivo" (change)="cambioArchivo($event)">
-            <p></p>
-            <button [disabled]="!formFile.valid" class="uploadFileBtn">Subir archivo</button>
-        </form>
+                    <mat-toolbar-row>
+                        <mat-form-field id="sGrade">
+                            <mat-label>Grado</mat-label>
+                            <mat-select (selectionChange)="searchStudents()" [(ngModel)]="gradeSelected" formControlName="gradeSel">
+                                <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                                    {{grade.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-        <button (click)="listar2()" class="btn btn-success" id="btn-refresh">
-            <i class="material-icons" id="iconoR">refresh</i>
-        </button>
+                        <mat-form-field id="sGroup">
+                            <mat-label>Grupo</mat-label>
+                            <mat-select (selectionChange)="searchStudents()" [(ngModel)]="groupSelected" formControlName="groupSel">
+                                <mat-option *ngFor="let group of groups" [value]="group.value">
+                                    {{group.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-toolbar-row>
 
-    </div>
+                </form>
+
+
+                <mat-table mat-table [dataSource]="dataSourceStudent" matSort style="overflow: auto; max-height: 300px;">
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                        <mat-cell mat-cell *matCellDef="let row"> {{row.username | slice:0:7}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Correo </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <!-- addStudent Column -->
+
+                    <ng-container matColumnDef="addStudent">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Añadir </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> <button mat-raised-button style="background-color: #515e80; color: white;" (click)="addStudent(row)">Añadir</button> </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsS; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsS;">
+                    </mat-row>
+
+                    <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumnsS; sticky: true" class="example-first-footer-row"></mat-footer-row>
+                    <!-- <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row> -->
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+                <br>
+                <h4>Profesores:</h4><br>
+
+                <mat-toolbar-row>
+                    <mat-form-field id="sProfessor">
+                        <mat-label>Profesor</mat-label>
+                        <mat-select [(ngModel)]="professorSelected" (selectionChange)="addProfessor()">
+                            <mat-option *ngFor="let p of profes" [value]="p.value">
+                                {{p.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </mat-toolbar-row>
+
+                <br>
+                <mat-form-field class="example-chip-list">
+                    <mat-label>Destinatarios seleccionados</mat-label>
+                    <mat-chip-list #chipList aria-label="Url selection">
+                        <mat-chip *ngFor="let e of emails" [selectable]="selectable" [removable]="removable" (removed)="remove(e)">
+                            {{e.email| slice:0:14}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="Nuevo destinatario..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+                </mat-form-field>
+
+
+                <!--formulario para enviar nuevos archivos-->
+                <h3>Archivo a enviar:</h3>
+                <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">
+
+
+                    <!-- <textarea type="form-control" class="md-textarea form-control" mdbInput id="description" formControlName="description" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea> -->
+                    <br>
+                    <p></p>
+                    <input class="file-input" type="file" formControlName="archivo" (change)="cambioArchivo($event)">
+                    <p></p>
+                    <br>
+                    <mat-form-field class="contentMsg">
+                        <textarea matInput formControlName="description" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
+                    </mat-form-field>
+                    <br>
+                    <button [disabled]="!formFileSend.valid" class="uploadFileBtn">Subir archivo</button>
+                </form>
+
+            </div>
+
+            <br><br>
+
+
+        </mat-tab>
+        <mat-tab label="Archivos Recibidos">
+            <br>
+            <button (click)="listar2()" class="btn btn-success" id="btn-refresh">
+                <i class="material-icons" id="iconoR">refresh</i>
+            </button>
+            <br><br>
+            <div class="example-container centrado">
+                <mat-table mat-table [dataSource]="dataSource" matSort style="max-height: 300px;">
+
+
+                    <!-- Name NOMBRE -->
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                        <mat-cell mat-cell *matCellDef="let row"> {{row.nameFile}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <!-- Grade REMITENTE -->
+                    <ng-container matColumnDef="origen">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Remitente </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.remitente}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <!-- Group FECHA-HORA -->
+                    <ng-container matColumnDef="fecha">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Fecha-Hora </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.timeSend}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+
+                    <!-- Set Score DESCRIPCION -->
+                    <ng-container matColumnDef="info">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <!-- ID LINK -->
+                    <ng-container matColumnDef="link">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> <a href="{{row.url}}" class="linkFileD" target="_blank">IR</a> </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;">
+                    </mat-row>
+
+                    <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" class="example-first-footer-row"></mat-footer-row>
+                </mat-table>
+
+                <mat-paginator [pageSizeOptions]="[3, 10, 25, 100]"></mat-paginator>
+            </div>
+
+        </mat-tab>
+    </mat-tab-group>
+
+
+
 
     <br>
     <!--tabla para mostrar los mensajes y archivos que han sido recibidor-->
-    <div class="example-container centrado">
-        <mat-table mat-table [dataSource]="dataSource" matSort style="max-height: 300px;">
 
-
-            <!-- Name NOMBRE -->
-            <ng-container matColumnDef="name">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-                <mat-cell mat-cell *matCellDef="let row"> {{row.nameFile}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
-
-            <!-- Grade REMITENTE -->
-            <ng-container matColumnDef="origen">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Remitente </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.remitente}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
-
-            <!-- Group FECHA-HORA -->
-            <ng-container matColumnDef="fecha">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Fecha-Hora </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.timeSend}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
-
-
-            <!-- Set Score DESCRIPCION -->
-            <ng-container matColumnDef="info">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
-
-            <!-- ID LINK -->
-            <ng-container matColumnDef="link">
-                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
-                <mat-cell *matCellDef="let row"> <a href="{{row.url}}" class="linkFileD" target="_blank">IR</a> </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;">
-            </mat-row>
-
-            <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" class="example-first-footer-row"></mat-footer-row>
-        </mat-table>
-
-        <mat-paginator [pageSizeOptions]="[3, 10, 25, 100]"></mat-paginator>
-    </div>
-    <!--Para retornar-->
+    <!-- Para retornar
     <div id="boxR">
         <button class="btn-return" (click)="menuP()">
         <i class="material-icons">
             navigate_before
         </i>       
     </button>
-    </div>
+    </div> -->
 
 </div>

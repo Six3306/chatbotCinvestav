@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular/material';
 import { Reminder } from 'src/app/models/Reminder.model';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import { ViewReminderComponent } from '../../dialogs/view-reminder/view-reminder.component';
 
 
 export interface Group{
@@ -93,7 +94,7 @@ export class RemindersComponent implements OnInit {
   allComplete3: boolean = false;
 
   dataSource: MatTableDataSource<Reminder>;
-  displayedColumns: string[] = ['idKey','reminder','publication', 'delet'];
+  displayedColumns: string[] = ['title','datePublication', 'dateExpiration', 'status'];
   textAreaReminder: string="";
   titleReminder:string="";
 
@@ -102,10 +103,10 @@ export class RemindersComponent implements OnInit {
 
 
   constructor(
-    private database: AngularFireDatabase,
     public firebase: FirebaseService,
     private router: Router,
     private snackBar: MatSnackBar,
+    public dialog: MatDialog,
     ) {
       
      }
@@ -116,22 +117,28 @@ export class RemindersComponent implements OnInit {
 
   //para obtener los avisos que anteriormente han sido registrados en el sistema
   getRemind(){
-    let arrayReminders: Array<Reminder>=[];        
-    this.database.database.ref('Recordatorios/').once('value').then((snapshot) => {
-      const value = snapshot.val();     
-      if (value !== null || value!==undefined) {
-          for (var val in value) {
-              let remindr = new Reminder(val,value[val].reminder, value[val].publication, value[val].delet);
-              if(remindr){
-                arrayReminders.push(remindr);
-              
-              }
-          }
-      }
-      this.dataSource = new MatTableDataSource(arrayReminders);
+    this.firebase.getRemindersG().then(response=>{
+      this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-  });
+    });
+    
+  //   let arrayReminders: Array<Reminder>=[];        
+  //   this.database.database.ref('Recordatorios/').once('value').then((snapshot) => {
+  //     const value = snapshot.val();     
+  //     if (value !== null || value!==undefined) {
+  //         for (var val in value) {
+  //             let remindr = new Reminder(val,value[val].reminder, value[val].publication, value[val].delet);
+  //             if(remindr){
+  //               arrayReminders.push(remindr);
+              
+  //             }
+  //         }
+  //     }
+  //     this.dataSource = new MatTableDataSource(arrayReminders);
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  // });
 
 } 
 
@@ -139,17 +146,7 @@ export class RemindersComponent implements OnInit {
   registerReminder(){
 
     let dateAct: Date = new Date();
-    // let data={
-    //   reminder:this.textAreaReminder,
-    //   publication: 
-    //   delet: 1,
-    // };
-    // this.firebase.addReminder(data);  
 
-    // this.openCustomerSnackBar();
-
-    // this.getRemind();
-    // this.textAreaReminder = "";
     let arraySelects: Array<any>= [];   
     this.task.subtasks1.forEach(v =>{
       if(v.completed){
@@ -188,31 +185,34 @@ export class RemindersComponent implements OnInit {
         professor: this.profesSelect
       }
       this.firebase.addEventG(data, arraySelects);
+      this.openCustomerSnackBar();
+      this.clearForm();
     }else{
       console.log("ERROR");
     }
-
-    
-   // this.firebase.addEventG(data, arraySelects);
-
   }
 
-
+  //para limpiar el formulario
+  clearForm(){
+    this.titleReminder= "";
+    this.setAll(false);
+    this.setAll1(false);
+    this.setAll2(false);
+    this.setAll3(false);
+    this.profesSelect = false;
+    this.createAt = "";
+    this.textAreaReminder = "";
+  }
 
   //para cambiar el estado de un aviso, de activado a desactivado y viceversa
   changeActivated(activated:Boolean, remin : Reminder){
     if(activated){
-      remin.delet=1;      
+      remin.status=1;
+      this.firebase.updateReminderActivated(remin.title, 1);      
     }else{
-      remin.delet=0;
+      remin.status=0;
+      this.firebase.updateReminderActivated(remin.title, 0);   
     }
-    let data={
-      reminder:remin.reminder,
-      publication: remin.publication,
-      delet: remin.delet,
-    };
-    // console.log(remin); 
-    this.firebase.updateReminderActivated(remin.idKey, data);
   }
 
 
@@ -308,6 +308,25 @@ export class RemindersComponent implements OnInit {
   menuP(){
     this.router.navigateByUrl("Menu");
   } 
+
+  openDialog(row) {
+    //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
+    const dialogRef = this.dialog.open(ViewReminderComponent,{     
+      data: {
+        title: row.title,
+        content: row.contentReminder,
+        destinatarys: row.destinatary,
+        professors: row.professors,
+      }
+    });
+    //despues de cerrar el cuadro de dialogo
+    dialogRef.afterClosed().subscribe(responseDialog=>{
+        if(responseDialog){
+
+        }    
+    })
+  }
+
 }
 
 @Component({

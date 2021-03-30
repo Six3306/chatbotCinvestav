@@ -4,7 +4,39 @@ import { Router } from '@angular/router';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { GeneralFile } from 'src/app/models/GeneralFile.model';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
+import { User } from 'src/app/models/User.model';
+import { Student } from 'src/app/models/Student.model';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
 
+
+export interface Grade{
+  /**
+   * value es el valor real que tendra 
+   */
+  value: any,
+  /**
+   * es el valor a mostrar de a interface
+   */
+  viewValue: any
+}
+/**
+ * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
+ */
+export interface Group{
+  /**
+   * value es el valor real que tendra 
+   */
+  value: any,
+  /**
+   * es el valor a mostrar de a interface
+   */
+  viewValue: any
+}
+
+export interface Email {
+  email: string;
+}
 
 @Component({
   selector: 'app-general-files',
@@ -15,20 +47,79 @@ import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } fro
 export class GeneralFilesComponent implements OnInit {
 
   displayedColumns: string[] = ['name','origen', 'fecha', 'info','link'];
+  
+  rols: string[] = ['Profesor', 'Alumno']; 
 
-  formFile: FormGroup;
+  professorSelected:string="";
+
+  grades:Grade[] = [
+    {value: '1', viewValue:"1°"},
+    {value: '2', viewValue:"2°"},
+    {value: '3', viewValue:"3°"}
+  ];
+
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  emails: Email[] = [];
+
+
+    /**
+   * Columnas a mostrar para los alumnos
+   */
+     displayedColumnsS: string[] = ['name','email', 'addStudent'];
+
+  /**
+   * Propiedad que indica 
+   * @param value es el valor que tendra como tal la seleccion 
+   * @param viewValue es el valor que que se muestra para la seleccion 
+   * 
+   */
+  groups:Group[] = [
+    {value: 'A', viewValue:"A"},
+    {value: 'B', viewValue:"B"},
+    {value: 'C', viewValue:"C"},
+    {value: 'D', viewValue:"D"},
+    {value: 'E', viewValue:"E"},
+    {value: 'F', viewValue:"F"},
+    {value: 'E', viewValue:"G"},
+    {value: 'F', viewValue:"H"},
+    {value: 'E', viewValue:"I"},
+    {value: 'F', viewValue:"J"}
+  ];
+
+  groupSelected:String="";
+  gradeSelected:String="";
+  
+
+  formFileSend: FormGroup;
+  formFileDes: FormGroup;
+
   public nombreArchivo = "";
   generalFiles: GeneralFile[];
   dataSource: MatTableDataSource<GeneralFile>;
 
+  dataSourceUsers: MatTableDataSource<User>;
+
+  displayedColumnsUsers: string[] = ['name', 'email','activated'];
 
   //email de quien va a enviar los archivos
-  public nameUserAct = JSON.parse(localStorage.getItem("user")).email;
+  public nameUserAct = (JSON.parse(localStorage.getItem("user")).email).split("@")[0];
 
   public datosFormulario = new FormData();//obtener y almacenar todos los valores del input (los archivos q selecciona el user)
 
   @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
   @ViewChildren(MatSort)  sort:QueryList< MatSort>;
+
+  /**
+   * Arreglo que contiene a todos los estudiantes buscados
+   */
+   arrStudents: Array<Student>;
+       /**
+   * Tabla donde estan los datos de los estudiantes
+   */
+  dataSourceStudent: MatTableDataSource<Student>;
 
 
   constructor (
@@ -37,12 +128,18 @@ export class GeneralFilesComponent implements OnInit {
     private formbuilder : FormBuilder,
     private firebaseStorage : FirebaseService,
     private snackBar: MatSnackBar,
+    private firebase: FirebaseService,
   ) {
 
-    this.formFile = this.formbuilder.group({
+    this.formFileSend = this.formbuilder.group({
       archivo : ['',[Validators.required]],
-      correoDestinity : ['',[Validators.required]],
       description : [''],
+    });
+
+    this.formFileDes = this.formbuilder.group({
+      rol: ['',Validators.required],
+      gradeSel: ['',Validators.required],
+      groupSel: ['',Validators.required],
     });
  }
 
@@ -62,26 +159,150 @@ export class GeneralFilesComponent implements OnInit {
     }
   }
 
+  searchStudents(){
+    if (this.gradeSelected != null && this.groupSelected != null) {
+      this.listarDesti();
+    }
+  }
+
+  listarDesti(){
+    let params={
+      "grade":this.gradeSelected,
+      "group":this.groupSelected
+    }
+     //buscar en firebase los alumnos segun grado y grupo seleccionado
+    this.firebase.getStudentssByGradeGroup(params).then(response=>{
+      this.arrStudents=response;
+    
+      this.dataSourceStudent = new MatTableDataSource(response);
+      this.dataSourceStudent.paginator = this.paginator.last;
+      this.dataSourceStudent.sort = this.sort.last;
+    });
+  }
+
+  showStudentsByGradeGroup(){
+    let params={
+      "grade":this.gradeSelected,
+      "group":this.groupSelected
+    }
+    //buscar en firebase los alumnos segun grado y grupo seleccionado
+    // this.firebase.getStudentssByGradeGroup(params).then(response=>{
+    //   this.arrStudents=response;
+    
+    //   this.dataSourceStudent = new MatTableDataSource(response);
+    //   this.dataSourceStudent.paginator = this.paginator.last;
+    //   this.dataSourceStudent.sort = this.sort.last;
+    // });
+  }
+
+  //remueve las url
+  remove(email: Email): void {
+    const index = this.emails.indexOf(email);
+    if (index >= 0) {
+      this.emails.splice(index, 1);
+    }
+  }
+
+    //para añadir a las url
+    add(event: MatChipInputEvent): void {
+      const input = event.input;
+      const value = event.value;
+  
+      if ((value || '').trim()) {
+        this.emails.push({email: value});
+      }
+      if (input) {
+        input.value = '';
+      }
+    }
+
+  //metodo que permite retornar todos los profesores registrados en el sistema
+  retornaProfes(){
+     
+    this.firebase.getEmailProfessors().then(response=>{
+      let profes: Grade[] = [];
+      for (let i = 0; i < response.length; i++) {
+        profes.push({value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1]});
+      }
+      this.profes = profes;
+    });
+  
+   }
+  
+   profes:Grade[];
+
+  verifyNotExitsinList(nEmail){
+    let b:boolean=false;
+    for (let i = 0; i < this.emails.length; i++) {
+      if(this.emails[i].email==nEmail){
+        b=true;
+        break
+      }
+    }
+    if(!b){
+      this.emails.push({email: nEmail});
+    }
+  }
+
+  addStudent(row){
+    let em = row.email.split("@")[0];
+    this.verifyNotExitsinList(em);
+  }
+
+  addProfessor(){
+    console.log("V: "+this.professorSelected);
+    
+    if(this.professorSelected==""){
+      console.log("Selecciona un profesor");
+    }else{     
+      this.verifyNotExitsinList(this.professorSelected);
+    }
+  }
+
+
+
   //Sube el archivo a Cloud Storage
   public subirArchivo() {
-    //obtenemos datos del formulario y los ligamos
     let archivo = this.datosFormulario.get('archivo');
-    let correoDestinity =this.formFile.get('correoDestinity').value;
-    let description =this.formFile.get('description').value;
+    let description =this.formFileSend.get('description').value;
 
-    if(correoDestinity===""){
-        alert("Favor de ingresar el correo electronico del destinatario. \n(Debe ser el mismo correo que su destinatatio registro en la plataforma)");
+    if(archivo ===null){
+          alert("Seleccione el archivo a enviar!");
     }else{
-      if(archivo ===null){
-        alert("Seleccione el archivo a enviar!");
-      }else{    
-        //obtenemos fecha y hora del sistema actualmente
-        let fecha = new Date();
-        let fechaStr = fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" - "+fecha.getHours()+":"+fecha.getMinutes();
-        this.firebaseStorage.guarda2(correoDestinity.toString(), this.nameUserAct, fechaStr, description, archivo);
-        this.openCustomerSnackBar();
-      }   
-    }    
+      let fecha = new Date();
+      let fechaStr = fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" - "+fecha.getHours()+":"+fecha.getMinutes();
+      for (let i = 0; i < this.emails.length; i++) {    
+        this.firebase.userExists(this.emails[i].email).then(response=>{
+          // console.log(response+" - "+this.emails[i].email);
+          if(response==true){
+            this.firebaseStorage.guarda2(this.emails[i].email, this.nameUserAct, fechaStr, description, archivo);
+            this.openCustomerSnackBar();
+          }
+        });
+      }
+    }
+      
+    
+    
+    // //obtenemos datos del formulario y los ligamos
+    // let archivo = this.datosFormulario.get('archivo');
+    // let correoDestinity =this.formFile.get('correoDestinity').value;
+    // let description =this.formFile.get('description').value;
+
+    
+    // if(correoDestinity===""){
+    //     alert("Favor de ingresar el correo electronico del destinatario. \n(Debe ser el mismo correo que su destinatatio registro en la plataforma)");
+    // }else{
+    //   if(archivo ===null){
+    //     alert("Seleccione el archivo a enviar!");
+    //   }else{    
+    //     //obtenemos fecha y hora del sistema actualmente
+    //     let fecha = new Date();
+    //     let fechaStr = fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" - "+fecha.getHours()+":"+fecha.getMinutes();
+    //     this.firebaseStorage.guarda2(correoDestinity.toString(), this.nameUserAct, fechaStr, description, archivo);
+    //     this.openCustomerSnackBar();
+    //   }   
+    // }    
   }
 
   //lista los mensajes y archivos que han sido recibidos por el usuario que actualmente esta activo en el sistema, obteniendo además
@@ -110,6 +331,8 @@ export class GeneralFilesComponent implements OnInit {
         });
         
       }).then(()=>{
+        console.log("SI"+this.nameUserAct);
+        
         this.generalFiles = nGFilesTmp;
         this.dataSource = new MatTableDataSource(this.generalFiles);
         this.dataSource.paginator = this.paginator.first;
@@ -120,6 +343,7 @@ export class GeneralFilesComponent implements OnInit {
   //inicialmente listamos los archivos que han llegado invocando a la funcion de listar2
   ngOnInit() { 
     this.listar2();
+    this.retornaProfes();
    }
 
    //para regresar al menu principal

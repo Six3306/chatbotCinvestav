@@ -116,7 +116,9 @@ dataSourceScores: MatTableDataSource<Scores>;
   /**
    * Contiene el valor del grupo seleccionado
    */
-  materiaSelected:String
+  materiaSelected:String;
+  bimRepSelected:number;
+
   /**
    *  Propiedad que sirve para tener los grados de los alumnos
    * @param value es el valor que tendra como tal la seleccion 
@@ -159,6 +161,8 @@ dataSourceScores: MatTableDataSource<Scores>;
     {value: 'F', viewValue:"J"}
   ];
 
+  bimReportArray:number[] = [1,2,3,4,5];
+
     /**
    * @param user usuario actual del sistema
    */
@@ -196,7 +200,7 @@ dataSourceScores: MatTableDataSource<Scores>;
       let data={
         grade: this.gradeSelected,
         group: this.groupSelected,
-        professor: this.user.username
+        professor: this.user.username,
       };
 
       this.firebase.getSubjectsByProfessorGrade(data).then(response=>{
@@ -209,6 +213,29 @@ dataSourceScores: MatTableDataSource<Scores>;
 
     if (this.gradeSelected != null && this.groupSelected != null && this.materiaSelected != null) {
       this.showScores();
+      let dataN = {
+        subject: this.materiaSelected,
+        grade: this.gradeSelected,
+        group: this.groupSelected,
+      }
+      this.firebase.getbimReport(dataN).then(response=>{
+        console.log(response);
+        
+        this.bimRepSelected = response;
+      });
+    }
+  }
+
+  bimReport(){
+    if (this.gradeSelected && this.groupSelected && this.materiaSelected){
+      // this.firebase.setbimReport();
+      let data = {
+        subject: this.materiaSelected,
+        grade: this.gradeSelected,
+        group: this.groupSelected,
+        bimR: this.bimRepSelected,
+      }
+      this.firebase.setbimReport(data);
     }
   }
 

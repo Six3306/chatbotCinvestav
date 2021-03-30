@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
-import { APIService } from 'src/app/services/api/api.service';
 import { User } from 'src/app/models/User.model';
 import { AddStudentComponent } from 'src/app/dialogs/add-student/add-student.component';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -134,7 +133,6 @@ export class UsersLessonsComponent implements OnInit {
    * @param dialog variable para hacer llamada a un dialog externo
    */
   constructor(
-    private api: APIService,
     public dialog : MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,

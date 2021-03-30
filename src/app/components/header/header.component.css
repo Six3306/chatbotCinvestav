@@ -20,6 +20,7 @@
 
 #adminUsers,
 #adminCourStud,
+#adminGClass,
 #adminRemind,
 #goToGeneralFiles,
 #goToChatbot,
@@ -31,6 +32,7 @@
 #adminCourStud:hover,
 #adminUsers:hover,
 #adminRemind:hover,
+#adminGClass:hover,
 #goToGeneralFiles:hover,
 #goToChatbot:hover,
 #goToScoresUsers:hover {
