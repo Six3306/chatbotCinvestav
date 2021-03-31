@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/User.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { APIService } from 'src/app/services/api/api.service';
+import { MatSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'app-configure-account',
   templateUrl: './configure-account.component.html',
-  styleUrls: ['./configure-account.component.css']
+  styleUrls: ['./configure-account.component.css'],
+  providers: [MatSnackBar]
 })
 export class ConfigureAccountComponent implements OnInit {
 
@@ -28,6 +31,7 @@ export class ConfigureAccountComponent implements OnInit {
   constructor(
     private api: APIService,
     private formbuilder : FormBuilder,
+    private snackBar: MatSnackBar,
     ) {
     this.user= JSON.parse(localStorage.getItem("user"));
     this.formUpdateUser = this.formbuilder.group({
@@ -49,10 +53,6 @@ export class ConfigureAccountComponent implements OnInit {
     this.submitted=true;
     if(this.isChecked && (this.formUpdateUser.get("password").value == this.formUpdateUser.get("confirmPassword").value ) && 
     (this.formUpdateUser.get("password").value!="" && this.formUpdateUser.get("confirmPassword").value!="" )){
-      // console.log(this.formRegister.value)
-      //this.openCustomerSnackBarLesson();
-      // return;
-
       let params= {
         id : this.idU,
         password: this.formUpdateUser.get("password").value
@@ -60,12 +60,13 @@ export class ConfigureAccountComponent implements OnInit {
       console.log(params);
 
       this.api.changePassword(params).subscribe(response=>{
-        console.log("CAMBIADA..."+response.message);
+        this.openCustomerSnackBar();
+        this.formUpdateUser.setValue({password: '', confirmPassword: ''});
+        this.isChecked = false;
       });
     }else{
       console.log("NO CAMBIAMOS");
     }
-    //this.register();
     this.submitted=false;
   }
 
@@ -81,4 +82,16 @@ export class ConfigureAccountComponent implements OnInit {
     }
   }
 
+   //metodo para mostrar una notificacion emergente de que la contraseña fue modificada correctamente
+   openCustomerSnackBar(){
+    return this.snackBar.openFromComponent(CustomSnackBarComponentUpdatePassword, {duration: 4000});
+  }
+
 }
+
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Contraseña Actualizada Correctamente</strong></span>`
+})
+export class CustomSnackBarComponentUpdatePassword{}

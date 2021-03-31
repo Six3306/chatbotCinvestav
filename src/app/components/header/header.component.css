@@ -23,6 +23,7 @@
 #adminGClass,
 #adminRemind,
 #goToGeneralFiles,
+#goToProgressGroup,
 #goToChatbot,
 #goToScoresUsers,
 #exitAccount {
@@ -34,6 +35,7 @@
 #adminRemind:hover,
 #adminGClass:hover,
 #goToGeneralFiles:hover,
+#goToProgressGroup:hover,
 #goToChatbot:hover,
 #goToScoresUsers:hover {
     color: hsl(233, 18%, 81%);

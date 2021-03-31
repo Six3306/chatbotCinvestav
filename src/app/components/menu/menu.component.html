@@ -77,6 +77,12 @@
         </div>
         <!-- Boton para ver alumnos como administrador-->
 
+        <!-- Boton para entrar al progreso de estudiantes -->
+
+        <div *ngIf="(typeMenu=='Profesor') && status==true" class="horizontal">
+            <img src="../assets/pictures/progresoGrupos.png" (click)="goToProgressGroup()" id="progressClassI">
+        </div>
+
     </div>
 
     <div class="foot">

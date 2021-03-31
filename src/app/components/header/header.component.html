@@ -22,7 +22,7 @@
             <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class="nav-item nav-link" id="goToChatbot" (click)="goToChatbot()">Chatbot</a><span class="space"> &nbsp;&nbsp; </span>
             <!--PROFESOR-->
             <a *ngIf="typeMenu=='Profesor' && status==true" class="nav-item nav-link" id="goToScoresUsers" (click)="goToScoresUsers()">Calificar</a><span class="space"> &nbsp;&nbsp; </span>
-
+            <a *ngIf="typeMenu=='Profesor' && status==true" class="nav-item nav-link" id="goToProgressGroup" (click)="progressGroup()">Progreso de Grupos</a><span class="space"> &nbsp;&nbsp; </span>
             <!--TODOS-->
             <a *ngIf="existUser" class="nav-item nav-link" id="exitAccount" (click)="exitAcount()">Cerrar Sesión</a>
         </div>

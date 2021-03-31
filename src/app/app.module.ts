@@ -53,11 +53,12 @@ import { ScoreUserComponent } from './dialogs/score-user/score-user.component';
 import { GeneralFilesComponent, CustomSnackBarComponentSendGeneralFile } from './components/general-files/general-files.component';
 import { RemindersComponent, CustomSnackBarComponent } from './components/reminders/reminders.component';
 import { GenerateKeyComponent } from './dialogs/generate-key/generate-key.component';
-import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
+import { ConfigureAccountComponent, CustomSnackBarComponentUpdatePassword } from './components/configure-account/configure-account.component';
 import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson } from './components/class-g/class-g.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ViewReminderComponent } from './dialogs/view-reminder/view-reminder.component';
+import { ProgressGroupComponent } from './components/progress-group/progress-group.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -115,7 +116,8 @@ const angularMaterial=[
     ConfigureAccountComponent,
     ClassGComponent,
     ViewReminderComponent,
-    
+    CustomSnackBarComponentUpdatePassword,
+    ProgressGroupComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -146,7 +148,7 @@ const angularMaterial=[
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,
-    CustomSnackBarComponentLogin,ViewReminderComponent,
+    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword,
   ]
 })
 export class AppModule { }

@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
-import { APIService } from 'src/app/services/api/api.service';
 import { User } from 'src/app/models/User.model';
 import { Subject } from 'src/app/models/Subject.model';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ScoreUserComponent } from 'src/app/dialogs/score-user/score-user.component';
-import { HtmlParser } from '@angular/compiler';
 import { Router } from '@angular/router';
 import { Scores } from 'src/app/models/Scores.model';
 

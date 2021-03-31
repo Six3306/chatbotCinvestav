@@ -88,6 +88,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl("reminders")
   }
 
+  progressGroup(){
+    this.router.navigateByUrl("Progress-group")
+  }
+
     /**
    * Metodo para dirigirse a la vista para calificar usuarios 
    */

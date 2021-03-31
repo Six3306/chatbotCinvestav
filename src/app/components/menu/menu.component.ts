@@ -79,6 +79,14 @@ export class MenuComponent implements OnInit {
   }
 
   /**
+   * Metodo para dirigirse a la vista del progress-class
+   */
+   goToProgressGroup(){
+    this.router.navigateByUrl("Progress-group")
+  }
+
+
+  /**
    * Metodo para dirigirse a la vista de las materias 
    */
   goToMaterias(){
