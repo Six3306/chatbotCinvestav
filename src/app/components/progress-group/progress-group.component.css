@@ -20,3 +20,24 @@
     color: black;
     font-size: 40px;
 }
+
+.mat-tab-group {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.mat-toolbar-row {
+    justify-content: center
+}
+
+#sGrade {
+    margin-right: 3%;
+    text-align: center;
+}
+
+#sGroup {
+    margin-left: 3%;
+    text-align: center;
+}

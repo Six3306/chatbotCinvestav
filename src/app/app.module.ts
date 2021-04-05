@@ -33,6 +33,7 @@ import {MatChipsModule} from '@angular/material/chips'
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 
+import { ChartsModule } from 'ng2-charts';
 
 import { AngularFireModule } from '@angular/fire';
 import {AngularFireDatabaseModule } from '@angular/fire/database';
@@ -59,6 +60,10 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ViewReminderComponent } from './dialogs/view-reminder/view-reminder.component';
 import { ProgressGroupComponent } from './components/progress-group/progress-group.component';
+import { GeneralProgressComponent } from './components/graphics/general-progress/general-progress.component';
+import { PassFailComponent } from './components/graphics/pass-fail/pass-fail.component';
+import { RatingPercentagesComponent } from './components/graphics/rating-percentages/rating-percentages.component';
+import { IndividualProgressComponent } from './components/graphics/individual-progress/individual-progress.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -118,6 +123,10 @@ const angularMaterial=[
     ViewReminderComponent,
     CustomSnackBarComponentUpdatePassword,
     ProgressGroupComponent,
+    GeneralProgressComponent,
+    PassFailComponent,
+    RatingPercentagesComponent,
+    IndividualProgressComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -133,7 +142,8 @@ const angularMaterial=[
     AngularFireDatabaseModule,
     ClipboardModule,
     MatChipsModule,
-    MatTabsModule
+    MatTabsModule,
+    ChartsModule,
   ],
   providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,{
     provide: MAT_CHIPS_DEFAULT_OPTIONS,

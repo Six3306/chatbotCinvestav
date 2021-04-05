@@ -5,4 +5,47 @@
     <br><br><br><br>
     <p class="title">Progresos de Grupos</p>
 
+    <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form">
+        <mat-toolbar-row>
+            <mat-form-field id="sGrade">
+                <mat-label>Grado</mat-label>
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="gradeSelected" formControlName="gradeSel">
+                    <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                        {{grade.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field id="sGroup">
+                <mat-label>Grupo</mat-label>
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="groupSelected" formControlName="groupSel">
+                    <mat-option *ngFor="let group of groups" [value]="group.value">
+                        {{group.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar-row>
+
+    </form>
+
+    <br><br>
+    <mat-tab-group>
+        <mat-tab label="Progreso General">
+            <br>
+            <app-general-progress [grade]="this.gradeSelected" [group]="this.groupSelected"></app-general-progress>
+        </mat-tab>
+        <mat-tab label="Aprobados/Reprobados">
+            <br>
+            <app-pass-fail [grade]="this.gradeSelected" [group]="this.groupSelected"></app-pass-fail>
+        </mat-tab>
+        <mat-tab label="Porcentajes de Calificaciones">
+            <br>
+            <app-rating-percentages [grade]="this.gradeSelected" [group]="this.groupSelected"></app-rating-percentages>
+        </mat-tab>
+        <mat-tab label="Progreso Individual">
+            <br>
+            <app-individual-progress [grade]="this.gradeSelected" [group]="this.groupSelected"></app-individual-progress>
+        </mat-tab>
+    </mat-tab-group>
+
 </div>

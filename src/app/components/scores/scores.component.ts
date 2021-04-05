@@ -224,6 +224,7 @@ dataSourceScores: MatTableDataSource<Scores>;
     }
   }
 
+  //para indicar hasta que bimestre se ha evaluado
   bimReport(){
     if (this.gradeSelected && this.groupSelected && this.materiaSelected){
       // this.firebase.setbimReport();
@@ -237,6 +238,7 @@ dataSourceScores: MatTableDataSource<Scores>;
     }
   }
 
+  //muestra las calificaciones
   showScores(){
     let params={
       grade: this.gradeSelected,
