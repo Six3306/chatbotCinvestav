@@ -33,7 +33,7 @@ import {MatChipsModule} from '@angular/material/chips'
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 
-import { ChartsModule } from 'ng2-charts';
+import { ChartsModule, ThemeService  } from 'ng2-charts';
 
 import { AngularFireModule } from '@angular/fire';
 import {AngularFireDatabaseModule } from '@angular/fire/database';
@@ -145,7 +145,7 @@ const angularMaterial=[
     MatTabsModule,
     ChartsModule,
   ],
-  providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,{
+  providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,ThemeService,{
     provide: MAT_CHIPS_DEFAULT_OPTIONS,
     useValue: {
       separatorKeyCodes: [ENTER, COMMA]

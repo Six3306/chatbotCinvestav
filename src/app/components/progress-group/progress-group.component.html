@@ -2,10 +2,10 @@
 
     <app-header></app-header>
 
-    <br><br><br><br>
+    <br><br>
     <p class="title">Progresos de Grupos</p>
 
-    <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form">
+    <form [formGroup]="formFileDes" autocomplete="off" class="md-form">
         <mat-toolbar-row>
             <mat-form-field id="sGrade">
                 <mat-label>Grado</mat-label>
@@ -24,27 +24,61 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        </mat-toolbar-row>
 
+            <mat-form-field id="gGR">
+                <mat-label>Materia</mat-label>
+                <mat-select (selectionChange)="searchStudentsTwo()" [(ngModel)]="materiaSelected" formControlName="subjectSel">
+                    <mat-option *ngFor="let subject of subjects" [value]="subject.value">
+                        {{subject.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar-row>
     </form>
 
-    <br><br>
-    <mat-tab-group>
+    <br>
+
+    <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Progreso General">
             <br>
-            <app-general-progress [grade]="this.gradeSelected" [group]="this.groupSelected"></app-general-progress>
+            <app-general-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimRepSelected"></app-general-progress>
         </mat-tab>
         <mat-tab label="Aprobados/Reprobados">
             <br>
-            <app-pass-fail [grade]="this.gradeSelected" [group]="this.groupSelected"></app-pass-fail>
+            <mat-toolbar-row *ngIf="gradeSelected!=null && groupSelected!=null && (materiaSelected!=null || materiaSelected!=undefined)">
+                <mat-form-field id="bimSelect">
+                    <mat-label>Bimestre seleccionado</mat-label>
+                    <mat-select [(ngModel)]="bimSelected">
+                        <mat-option *ngFor="let b of bimes" [value]="b.value">
+                            {{b.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-toolbar-row>
+
+            <br>
+            <app-pass-fail [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimSelected]="this.bimSelected" [bimes]="this.bimes.length"></app-pass-fail>
         </mat-tab>
         <mat-tab label="Porcentajes de Calificaciones">
             <br>
-            <app-rating-percentages [grade]="this.gradeSelected" [group]="this.groupSelected"></app-rating-percentages>
+            <mat-toolbar-row *ngIf="gradeSelected!=null && groupSelected!=null && (materiaSelected!=null || materiaSelected!=undefined)">
+                <mat-form-field id="bimSelect2">
+                    <mat-label>Bimestre seleccionado</mat-label>
+                    <mat-select [(ngModel)]="bimSelected2">
+                        <mat-option *ngFor="let b of bimes" [value]="b.value">
+                            {{b.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-toolbar-row>
+
+            <br>
+            <app-rating-percentages [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimSelected2]="this.bimSelected2"></app-rating-percentages>
         </mat-tab>
+
         <mat-tab label="Progreso Individual">
             <br>
-            <app-individual-progress [grade]="this.gradeSelected" [group]="this.groupSelected"></app-individual-progress>
+            <app-individual-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimTI"></app-individual-progress>
         </mat-tab>
     </mat-tab-group>
 

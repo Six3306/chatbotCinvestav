@@ -22,22 +22,31 @@
 }
 
 .mat-tab-group {
-    width: 85%;
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
 
 .mat-toolbar-row {
-    justify-content: center
+    justify-content: center;
+    text-align: center;
 }
 
 #sGrade {
-    margin-right: 3%;
     text-align: center;
 }
 
 #sGroup {
     margin-left: 3%;
+    margin-right: 3%;
+    text-align: center;
+}
+
+#bimSelect {
+    text-align: center;
+}
+
+#bimSelect2 {
     text-align: center;
 }

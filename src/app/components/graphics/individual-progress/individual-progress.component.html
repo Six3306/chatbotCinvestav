@@ -1,2 +1,33 @@
-<p>individual-progress works!</p>
-<p>{{grade}}-{{group}}</p>
+<div id="selectorStudent">
+    <mat-toolbar-row *ngIf="grade!=null && group!=null && (subject!=null || subject!=undefined)">
+        <mat-form-field id="listStudents">
+            <mat-label>Alumno</mat-label>
+            <mat-select (selectionChange)="getScoresByStudentName()" [(ngModel)]="listStudents">
+                <mat-option *ngFor="let s of lStudents" [value]="s.value">
+                    {{s.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-toolbar-row>
+</div>
+
+<br>
+
+
+<table id="tableI">
+    <tr>
+        <td id="listStudents">Una columna {{bimRepSelected}}</td>
+        <td id="graphS">
+
+            <div class="flex">
+                <div class="flex-item">
+                    <div style="display: block;">
+                        <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [colors]="lineChartColors" [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+        </td>
+    </tr>
+</table>

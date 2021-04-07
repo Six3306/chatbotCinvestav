@@ -1,2 +1,27 @@
-<p>pass-fail works!</p>
-<p>{{grade}}-{{group}}</p>
+<table id="tableI">
+    <tr>
+        <td id="listStudents">
+            <h4>Alumnos Reprobados:</h4>
+            <li *ngFor="let fS of failStudents" id="listSF">
+                <ul>{{fS}}</ul>
+            </li>
+        </td>
+        <td id="graphS">
+
+            <div id="graDon">
+                <div style="display: block">
+                    <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="doughnutChartColors" [legend]="doughnutChartLegend">
+                </canvas>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<br><br>
+
+<div id="graphB">
+    <div style="display: block">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
+        </canvas>
+    </div>
+</div>

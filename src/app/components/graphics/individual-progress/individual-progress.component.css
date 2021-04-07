@@ -1,0 +1,24 @@
+#tableI {
+    width: 100%;
+}
+
+#lstStudents {
+    width: 30%;
+}
+
+#graphS {
+    width: 70%;
+}
+
+.mat-form-field {
+    text-align: center;
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flex {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
