@@ -50,16 +50,6 @@ export class IndividualProgressComponent implements OnInit {
   public lineChartLegend = true;
   public lineChartType: ChartType = 'line';
 
-  public randomize(): void {
-    let _lineChartData:Array<any> = new Array(1);
-    _lineChartData[0]= {data: new Array(this.lineChartData[0].data.length), label: this.lineChartData[0].label};
-     for (let j = 0; j < 5; j++) {
-      _lineChartData[0].data[j] = Math.round(Math.random()*10);
-     
-    }
-    this.lineChartData = _lineChartData;
-  }
-
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }

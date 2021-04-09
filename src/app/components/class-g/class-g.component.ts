@@ -185,7 +185,9 @@ export class ClassGComponent implements OnInit {
             grade: response.grado,
             professor: response.profesor,
           }
-          this.firebase.addSubject(classGData);
+          if(this.firebase.addSubject(classGData)==true){
+            this.firebase.setStudentsOnNewSubject(response.materia, response.grado);
+          }
         
           this.viewSubjects();
           this.openCustomerSnackBarLesson();         

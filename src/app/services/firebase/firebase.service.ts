@@ -51,13 +51,31 @@ export class FirebaseService {
     }
 
     //agrega una materia
-    addSubject(data){
+    addSubject(data):boolean{
       this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}`).set({profesor: data.professor, nombreMateria: data.subject, estatus:1}); 
       var arrG:string[] = ["A","B","C","D","E","F","G","H","I","J"];
       for (let i = 0; i < arrG.length; i++) {
-        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}`).set({Tareas: "", Materiales: "", RecordatorioClase: "", Examenes: "", DudasAlumnos: "", Calificaciones: ""}); 
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}`).set({Tareas: "", Materiales: "", RecordatorioClase: "", Examenes: "", DudasAlumnos: "", Calificaciones: ""}).then(response=>{
+          this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}/Calificaciones/`).update({bimestreReportado:0});
+        }); 
       }
       return true;
+    }
+
+    //obtiene la informacion de un alumno dado su nombre
+    getInfoStudent(name, email){
+        let student: Student;     
+        return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+          const value = snapshot.val();
+          if (value !== null) {
+              for (var val in value) {
+                if(value[val].nombre==name && value[val].correo==email){
+                  student = new Student(value[val].nombre, value[val].grado, value[val].grupo, value[val].correo, value[val].estatus);
+                }
+              }
+          }
+          return student;
+        });
     }
     
     //obtiene las materias de cierto grado
@@ -84,9 +102,7 @@ export class FirebaseService {
         const value = snapshot.val();
         if (value !== null) {
             for (var val in value) {
-              arraySubjectName.push(value[val].nombreMateria);
-              console.log("MAT: "+value[val].nombreMateria);
-              
+              arraySubjectName.push(value[val].nombreMateria);             
             }
         }
         return arraySubjectName;
@@ -105,6 +121,23 @@ export class FirebaseService {
                 // console.log(value[val]);
                 let student = new Student(value[val].nombre, value[val].grado, value[val].grupo, value[val].correo, value[val].estatus);
                 arrayStudent.push(student);
+              }
+            }
+        }
+        return arrayStudent;
+      });
+    }
+
+    //asgina alumnos (y calificaciones) a una nueva materia
+    setStudentsOnNewSubject(nameSubject, grade){
+      let arrayStudent: Array<Student>= [];
+
+      return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            for (var val in value) {
+              if(value[val].estatus==1 && value[val].grupo!="" && value[val].grado==grade){ 
+                this.database.database.ref(`Clases/${value[val].grado}/Materias/${nameSubject}/${value[val].grupo}/Calificaciones/Estudiantes/${value[val].nombre}/`).update({b1: 0, b2: 0, b3: 0, b4: 0, b5: 0, nombreAlumno: value[val].nombre});
               }
             }
         }
@@ -241,6 +274,18 @@ export class FirebaseService {
       });
     }
 
+    //obtiene las calificaciones un alumno en cierta clase:
+    getScoresIndividualStudentInLesson(data){
+      let scores: Scores;
+      return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/Estudiantes/${data.name}`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+            scores = new Scores(value.nombreAlumno, value.b1, value.b2, value.b3, value.b4, value.b5);
+        }
+        return scores;
+      });
+    }
+
     /**
      * Funcion para actualizar calificaciones
      */
@@ -274,7 +319,7 @@ export class FirebaseService {
     this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}/`).update({grado:data.grade, grupo:data.group});
    }
 
-   //da las calificaciones de un alumno a las clases en donde se esta inscrito
+   //asigna inicialmente las calificaciones de un alumno a las clases en donde se esta inscrito
    setStudentScoreClass(data, subjects){
     for(var i in subjects){
       this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/Estudiantes/${data.username}`).set({b1:0, b2:0, b3:0, b4:0, b5:0, nombreAlumno:data.username});

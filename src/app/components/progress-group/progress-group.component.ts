@@ -3,7 +3,6 @@ import { FirebaseService } from '../../services/firebase/firebase.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../models/User.model';
 import { Scores } from 'src/app/models/Scores.model';
-import { GeneralProgressComponent } from '../graphics/general-progress/general-progress.component';
 
 export interface Grade{
   value: any,

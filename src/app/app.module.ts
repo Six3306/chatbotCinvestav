@@ -64,6 +64,8 @@ import { GeneralProgressComponent } from './components/graphics/general-progress
 import { PassFailComponent } from './components/graphics/pass-fail/pass-fail.component';
 import { RatingPercentagesComponent } from './components/graphics/rating-percentages/rating-percentages.component';
 import { IndividualProgressComponent } from './components/graphics/individual-progress/individual-progress.component';
+import { ProgressStudentComponent } from './components/progress-student/progress-student.component';
+import { GeneralProgressStudentComponent } from './components/graphics/general-progress-student/general-progress-student.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -127,6 +129,8 @@ const angularMaterial=[
     PassFailComponent,
     RatingPercentagesComponent,
     IndividualProgressComponent,
+    ProgressStudentComponent,
+    GeneralProgressStudentComponent,
   ],
   imports: [
     BrowserAnimationsModule,

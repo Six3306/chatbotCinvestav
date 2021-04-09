@@ -17,6 +17,7 @@ import { RemindersComponent } from './components/reminders/reminders.component';
 import { ConfigureAccountComponent } from './components/configure-account/configure-account.component';
 import { ClassGComponent } from './components/class-g/class-g.component';
 import { ProgressGroupComponent } from './components/progress-group/progress-group.component';
+import { ProgressStudentComponent } from './components/progress-student/progress-student.component';
 
 const routes: Routes = [
   { path: 'xyz', component: XyzComponent, },
@@ -35,7 +36,9 @@ const routes: Routes = [
   { path: 'Class-g', component: ClassGComponent, canActivate:[AdminGuardianGuard] },
   { path: 'reminders',component: RemindersComponent, canActivate:[AdminGuardianGuard]  },
   { path: 'Configure-account',component: ConfigureAccountComponent, canActivate:[RouteGuardGuard]  },
-  { path: 'Progress-group',component: ProgressGroupComponent, canActivate:[RouteGuardGuard]  }
+  { path: 'Progress-group',component: ProgressGroupComponent, canActivate:[RouteGuardGuard]  },
+  { path: 'Progress-student',component: ProgressStudentComponent, canActivate:[RouteGuardGuard]  }
+
 ];
 
 @NgModule({

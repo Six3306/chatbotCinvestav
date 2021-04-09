@@ -41,9 +41,14 @@
         <!-- /Boton para ver archivos -->
 
         <!-- Boton para entrar al chatbot -->
-
         <div *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class="horizontal">
             <img src="../assets/pictures/chatbot.png" (click)="goToChatbot()" id="chatbotI">
+        </div>
+        <!-- /Boton para entrar al chatbot -->
+
+        <!-- Boton para entrar al progreso de estudiantes -->
+        <div *ngIf="(typeMenu== 'Alumno') && status==true" class="horizontal">
+            <img src="../assets/pictures/progresoEstudiante.png" (click)="goToProgressStudent()" id="progressStudentI">
         </div>
         <!-- /Boton para entrar al chatbot -->
 

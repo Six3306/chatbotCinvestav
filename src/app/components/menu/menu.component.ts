@@ -78,6 +78,13 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl("Chatbot")
   }
 
+    /**
+   * Metodo para dirigirse a la vista del progreso de un estudiante
+   */
+  goToProgressStudent(){
+    this.router.navigateByUrl("Progress-student")
+  }
+
   /**
    * Metodo para dirigirse a la vista del progress-class
    */

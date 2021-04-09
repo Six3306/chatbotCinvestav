@@ -26,6 +26,7 @@
 #goToProgressGroup,
 #goToChatbot,
 #goToScoresUsers,
+#goToProgressStudent,
 #exitAccount {
     transition: color 0.2s linear 0.2s;
 }
@@ -36,6 +37,7 @@
 #adminGClass:hover,
 #goToGeneralFiles:hover,
 #goToProgressGroup:hover,
+#goToProgressStudent:hover,
 #goToChatbot:hover,
 #goToScoresUsers:hover {
     color: hsl(233, 18%, 81%);

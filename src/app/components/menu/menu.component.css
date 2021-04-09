@@ -159,3 +159,7 @@ img:hover {
     bottom: 0;
     z-index: 999999;
 }
+
+#progressStudentI {
+    margin-left: 20%;
+}

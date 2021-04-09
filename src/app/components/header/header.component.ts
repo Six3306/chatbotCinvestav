@@ -107,6 +107,13 @@ export class HeaderComponent implements OnInit {
   }
 
     /**
+   * Metodo para dirigirse a la vista del progreso de un estudiante
+   */
+     goToProgressStudent(){
+      this.router.navigateByUrl("Progress-student")
+    }
+    
+    /**
    * Metodo para dirigirse a la vista de archivos
    */
   goToGeneralFiles(){
