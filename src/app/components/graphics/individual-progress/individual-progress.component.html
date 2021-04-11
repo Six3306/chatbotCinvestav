@@ -16,7 +16,28 @@
 
 <table id="tableI">
     <tr>
-        <td id="listStudents">Una columna {{bimRepSelected}}</td>
+        <br>
+        <div id="contentObs">
+            <h4>Observaciones:</h4>
+            <br>
+            <p *ngIf="this.statusSubject!=''" id="tNotScore">{{statusSubject}}</p>
+            <div *ngIf="this.statusSubject=='' && this.listStudents">
+                <h5><b>Promedio:</b></h5>
+                <p>{{averageInd}}</p>
+                <h5><b>Calificación más alta:</b></h5>
+                <p>{{betterInd}}</p>
+                <h5><b>Calificación más baja:</b></h5>
+                <p>{{worstInd}}</p>
+                <br>
+                <div id="msgObs">
+                    <p>{{msgObs}}</p>
+                    <p *ngIf="this.msgObsR">Bimestres Reprobados: {{msgObsR}}</p>
+                    <p>{{msgObsT}}</p>
+                </div>
+            </div>
+        </div>
+
+
         <td id="graphS">
 
             <div class="flex">

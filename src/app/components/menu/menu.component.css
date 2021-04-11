@@ -151,7 +151,12 @@ img:hover {
 }
 
 #avisosI {
+    margin-top: 4%;
     margin-left: 10%;
+}
+
+#progressClassI {
+    margin-top: 8%;
 }
 
 .foot {

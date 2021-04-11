@@ -25,12 +25,14 @@
     width: 100%;
 }
 
-#lstStudents {
-    width: 25%;
+#graphS {
+    width: 70%;
 }
 
-#graphS {
-    width: 75%;
+#obsI {
+    width: 30%;
+    text-align: center;
+    vertical-align: top;
 }
 
 .mat-form-field {
@@ -41,7 +43,7 @@
 }
 
 .flex {
-    width: 50%;
+    width: 60%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -50,4 +52,12 @@
     width: 45%;
     margin-left: auto;
     margin-right: auto;
+}
+
+#tNotScore {
+    color: #3A445D;
+}
+
+#msgObs {
+    color: #3A445D;
 }

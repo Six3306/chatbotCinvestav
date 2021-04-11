@@ -23,3 +23,7 @@
 #listSF {
     list-style: none;
 }
+
+#listStudents {
+    vertical-align: top;
+}

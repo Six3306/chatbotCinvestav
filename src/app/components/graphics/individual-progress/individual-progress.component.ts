@@ -31,6 +31,14 @@ export class IndividualProgressComponent implements OnInit {
 
   listStudents:any
   lStudents:opStudent[];
+  betterInd:number=0;
+  worstInd:number=0;
+  averageInd:number=0;
+  msgObs: string = "";
+  msgObsR: string = "";
+  msgObsT: string = "";
+  statusSubject:string="";
+
 
   constructor(private firebase: FirebaseService
   ) { }
@@ -116,6 +124,69 @@ export class IndividualProgressComponent implements OnInit {
     }
     this.lineChartLabels = _lineChartLabels;
     this.lineChartData = _lineChartData;
+    this.generateObs();
+  }
+
+  generateObs(){
+    this.msgObsR = "";
+    if(this.lineChartData[0].data.length==0){
+      this.statusSubject = "Materia No Calificada";
+    }else{
+      this.statusSubject="";
+      if(this.lineChartData[0].data.length==1){
+        this.averageInd = this.lineChartData[0].data[0] as number;
+      }else{
+        let sum = 0;
+        
+        this.betterInd = (this.lineChartData[0].data[0] as number);
+        this.worstInd = (this.lineChartData[0].data[0] as number);
+
+        for (let i = 0; i < this.lineChartData[0].data.length; i++) {
+          if(this.betterInd<(this.lineChartData[0].data[i] as number)){
+            this.betterInd = (this.lineChartData[0].data[i] as number);
+          }
+          if(this.worstInd>(this.lineChartData[0].data[i] as number)){
+            this.worstInd = (this.lineChartData[0].data[i] as number);
+          }
+          if((this.lineChartData[0].data[i] as number)<6){
+            if(this.msgObsR!=""){
+              this.msgObsR += ", bim. "+(i+1);
+            }else{
+              this.msgObsR += " bim. "+(i+1);
+            }
+          }
+          sum += this.lineChartData[0].data[i] as number;
+        }
+        this.averageInd = sum/ this.lineChartData[0].data.length;
+        //verificamos si el promedio es bajo o alto
+        
+        if(this.lineChartData[0].data.length>=2){
+          
+          if(this.lineChartData[0].data[this.lineChartData[0].data.length-1] > this.lineChartData[0].data[this.lineChartData[0].data.length-2]){
+            this.msgObsT = "Para los útlimos bimestres ha tenido una tendicia a mejorar";
+          }else if(this.lineChartData[0].data[this.lineChartData[0].data.length-1] < this.lineChartData[0].data[this.lineChartData[0].data.length-2]){
+            this.msgObsT = "Para los útlimos bimestres ha tenido una tendicia a decaer en sus calificaciones";
+          }else{
+            this.msgObsT = "Para los útlimos bimestres ha mantenido el mismo nivel de calificaciones";
+          }
+        }
+        if(this.averageInd < 6){
+          this.msgObs = "Promedio insuficiente"
+        }else if(this.averageInd < 7){
+          this.msgObs = "Promedio bajo";
+        }else if(this.averageInd < 8){
+          this.msgObs = "Promedio de bajo a regular";
+        }else if(this.averageInd < 9){
+          this.msgObs = "Promedio regular";
+        }else if(this.averageInd < 10){
+          this.msgObs = "Promedio bueno";
+        }else if(this.averageInd == 10){
+          this.msgObs = "Promedio excelente";
+        }
+
+      }
+    }
+    
   }
 
 }
