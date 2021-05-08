@@ -185,14 +185,14 @@ export class GeneralFilesComponent implements OnInit {
       "grade":this.gradeSelected,
       "group":this.groupSelected
     }
-    //buscar en firebase los alumnos segun grado y grupo seleccionado
-    // this.firebase.getStudentssByGradeGroup(params).then(response=>{
-    //   this.arrStudents=response;
+    // buscar en firebase los alumnos segun grado y grupo seleccionado
+    this.firebase.getStudentssByGradeGroup(params).then(response=>{
+      this.arrStudents=response;
     
-    //   this.dataSourceStudent = new MatTableDataSource(response);
-    //   this.dataSourceStudent.paginator = this.paginator.last;
-    //   this.dataSourceStudent.sort = this.sort.last;
-    // });
+      this.dataSourceStudent = new MatTableDataSource(response);
+      this.dataSourceStudent.paginator = this.paginator.last;
+      this.dataSourceStudent.sort = this.sort.last;
+    });
   }
 
   //remueve las url

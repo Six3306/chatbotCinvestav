@@ -13,6 +13,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import { GenerateKeyComponent } from 'src/app/dialogs/generate-key/generate-key.component';
 
 import { Router } from '@angular/router';
+import { AddHomeworkComponent } from '../../dialogs/add-homework/add-homework.component';
 
 /**
  * variable para obtneer el dia
@@ -222,6 +223,13 @@ export class ChatbotComponent implements OnInit {
   generateKeyProfesor(){
     const dialogRef = this.dialog.open(GenerateKeyComponent);
     dialogRef.afterClosed().subscribe(response=>{      
+    })
+  }
+
+  //metodo para abrir un dialog para enviar una tarea
+  openDialogAddHomework(){
+    const dialogRef = this.dialog.open(AddHomeworkComponent);
+    dialogRef.afterClosed().subscribe(response=>{  
     })
   }
 

@@ -269,22 +269,29 @@ dataSourceScores: MatTableDataSource<Scores>;
       }
     });
     dialogRef.afterClosed().subscribe(response=>{
+        console.log(response);
+        
         if(response){
-          let data={
-            subject: this.materiaSelected,
-            grade: this.gradeSelected,
-            group: this.groupSelected,
-            b1: response.bim1,
-            b2: response.bim2,
-            b3: response.bim3,
-            b4: response.bim4,
-            b5: response.bim5,
-            nameStudent: response.nameStud
-          };
 
-          this.firebase.refreshStudentScoreClass(data);
-          this.showScores();
-          this.openCustomerSnackBar();  
+          this.firebase.getEmailStudent(response.nameStud).then(response2=>{
+
+            let data={
+              subject: this.materiaSelected,
+              grade: this.gradeSelected,
+              group: this.groupSelected,
+              b1: response.bim1,
+              b2: response.bim2,
+              b3: response.bim3,
+              b4: response.bim4,
+              b5: response.bim5,
+              nameStudent: response.nameStud,
+              email: response2.split("@")[0]
+            };
+
+            this.firebase.refreshStudentScoreClass(data);
+            this.showScores();
+            this.openCustomerSnackBar();
+          });      
         } 
     })
     

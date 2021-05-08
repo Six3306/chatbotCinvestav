@@ -43,6 +43,24 @@
                         </button>
 
                     </form>
+
+                    <form *ngIf="user.type=='Alumno'" class="horizontal row">
+                        <button [matMenuTriggerFor]="menu" class="add">
+                        <i class="material-icons">
+                            add
+                        </i>       
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="openDialogAddHomework()">
+                                <mat-icon>file_copy</mat-icon>
+                                <span>Enviar una Tarea</span>
+                            </button>
+
+                        </mat-menu>
+
+                        </button>
+
+                    </form>
+
                     <div class="horizontal">
 
                     </div>

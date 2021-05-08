@@ -66,6 +66,8 @@ import { RatingPercentagesComponent } from './components/graphics/rating-percent
 import { IndividualProgressComponent } from './components/graphics/individual-progress/individual-progress.component';
 import { ProgressStudentComponent } from './components/progress-student/progress-student.component';
 import { GeneralProgressStudentComponent } from './components/graphics/general-progress-student/general-progress-student.component';
+import { PushNotificationService } from './services/push-notification.service';
+import { AddHomeworkComponent } from './dialogs/add-homework/add-homework.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -102,6 +104,7 @@ const angularMaterial=[
     ChatbotComponent,
     AlertComponent,
     AddFilesComponent,
+    AddHomeworkComponent,
     ValidateUsersComponent,
     UsersLessonsComponent,
     LessonsComponent,
@@ -131,6 +134,7 @@ const angularMaterial=[
     IndividualProgressComponent,
     ProgressStudentComponent,
     GeneralProgressStudentComponent,
+    AddHomeworkComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -149,7 +153,7 @@ const angularMaterial=[
     MatTabsModule,
     ChartsModule,
   ],
-  providers: [RouteGuardGuard, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,ThemeService,{
+  providers: [RouteGuardGuard, PushNotificationService, LoginRegisterGuard, MatDatepickerModule, AdminGuardianGuard,ThemeService,{
     provide: MAT_CHIPS_DEFAULT_OPTIONS,
     useValue: {
       separatorKeyCodes: [ENTER, COMMA]
@@ -157,7 +161,7 @@ const angularMaterial=[
   },{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
   
   bootstrap: [AppComponent],
-  entryComponents: [AlertComponent,AddFilesComponent, AddSubjectComponent, 
+  entryComponents: [AlertComponent,AddFilesComponent, AddHomeworkComponent,AddSubjectComponent, 
     AddStudentComponent, ScoreUserComponent, GenerateKeyComponent, CustomSnackBarComponent,
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,

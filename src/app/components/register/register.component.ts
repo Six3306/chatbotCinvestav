@@ -111,8 +111,7 @@ export class RegisterComponent implements OnInit {
     this.api.verifyEmail(user.email).subscribe(response=>{
       
 console.log(response['data']);
-
-
+ 
       if(response['data']==false){//no existe
         this.api.register(user).subscribe(response =>{
 
@@ -130,7 +129,6 @@ console.log(response['data']);
           console.log(error);
         });
       }else{//si existe
-        console.log("YA EXISTE!");
         this.router.navigateByUrl("Register");
       }
       

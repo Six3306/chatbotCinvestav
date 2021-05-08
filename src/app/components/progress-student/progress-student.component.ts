@@ -54,6 +54,7 @@ export class ProgressStudentComponent implements OnInit, AfterViewChecked {
     if(this.nVal==this.arrScores.length && this.band==false){
       this.band=true;
       this.grapScoresGeneral();
+      this.changeStatusNotification();      
     }
   }
 
@@ -250,6 +251,10 @@ export class ProgressStudentComponent implements OnInit, AfterViewChecked {
       _radarChartData.push(this.arrGScores[i].score);
     }
     this.radarChartData[0].data = _radarChartData;
+  }
+
+  changeStatusNotification(){
+    this.firebase.updateStatusNotification(this.user.email.split("@")[0]);
   }
 
 }

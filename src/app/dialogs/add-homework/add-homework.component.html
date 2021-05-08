@@ -1,0 +1,49 @@
+<div class="contenedor">
+
+    <div class="centrado2">
+
+        <!--formulario para seleccionar los destinatarios-->
+        <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form">
+            <br>
+            <h4>Enviar Tarea</h4>
+
+            <!--para asignar materia-->
+            <mat-form-field class="selectsSubjectHomework">
+                <mat-label>Materia</mat-label>
+                <mat-select (selectionChange)="searchHomeworks()" formControlName="subject" [(ngModel)]="materiaSelected">
+                    <mat-option *ngFor="let subject of subjects" [value]="subject.value">
+                        {{subject.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!--para asignar la tarea-->
+            <mat-form-field class="selectsSubjectHomework">
+                <mat-label>Tarea a Enviar</mat-label>
+                <mat-select formControlName="subject" [(ngModel)]="homeworkSelected">
+                    <mat-option *ngFor="let homework of homeworks" [value]="homework.value">
+                        {{homework.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </form>
+
+        <!--formulario para enviar nuevos archivos-->
+        <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">
+            <!-- <textarea type="form-control" class="md-textarea form-control" mdbInput id="description" formControlName="description" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea> -->
+            <br>
+            <p></p>
+            <input class="file-input" type="file" formControlName="archivo" (change)="cambioArchivo($event)">
+            <p></p>
+            <br>
+            <mat-form-field class="contentMsg">
+                <textarea matInput formControlName="description" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
+            </mat-form-field>
+            <br>
+            <button [disabled]="!formFileSend.valid" class="uploadFileBtn">Subir archivo</button>
+        </form>
+
+    </div>
+
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PushNotificationService } from '../../services/push-notification.service';
 
 @Component({
   selector: 'app-abc',
@@ -7,15 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AbcComponent implements OnInit {
 
-  nowYear;
+  // nowYear;
+  // messageReceived = '';
 
-  constructor() { }
+  constructor(
+  ) {
+    // notificacion.requestPermission().then(token=>{
+    //   console.log(token);
+    // })
+   }
 
   ngOnInit() {
 
-    var fecha = new Date();
+    // var fecha = new Date();
 
-    this.nowYear = fecha.getFullYear();
+    // this.nowYear = fecha.getFullYear();
+
+
+    // this.notificacion.receiveMessage().subscribe(payload=>{
+    //   console.log(payload);      
+    }
 
     // fecha
 
@@ -43,6 +55,6 @@ export class AbcComponent implements OnInit {
 
 
 
-  }
+  // }
 
 }

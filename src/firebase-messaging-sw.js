@@ -1,3 +1,7 @@
+// importScripts('https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js');
+// importScripts('https://www.gstatic.com/firebasejs/6.6.2/firebase-messaging.js');
+
+
 firebase.initializeApp({
     apiKey: "AIzaSyBVxtwsbQsucNfC5uW9C9i0rY36u9tWt48",
     authDomain: "chatcinvestav.firebaseapp.com",
@@ -10,4 +14,4 @@ firebase.initializeApp({
 })
 
 //messaging recepciona las notificaciones push
-const messaging = firebase.messaging();
+// const messaging = firebase.messaging();
