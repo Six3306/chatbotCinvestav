@@ -120,14 +120,14 @@ export class FirebaseService {
     });
   }
 
-  getHomeworksBySubject(student, subjectName){
+  getHomeworksBySubject(student, subjectName) {
     let arrayHomeworks: Array<Homework> = [];
 
     return this.database.database.ref(`Clases/${student.grade}/Materias/${subjectName}/${student.group}/Tareas/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          let nHomework = new Homework(val ,value[val].tema, value[val].descripcion, student.grade, student.group, value[val].diaLimite, value[val].horaLimite, value[val].estatus);
+          let nHomework = new Homework(val, value[val].tema, value[val].descripcion, student.grade, student.group, value[val].diaLimite, value[val].horaLimite, value[val].estatus);
           arrayHomeworks.push(nHomework);
         }
       }
@@ -408,7 +408,7 @@ export class FirebaseService {
 
 
       });
-    }else {
+    } else {
       this.database.database.ref(`AvisosGenerales/${data.title}/`).set({ titulo: data.title, fechaPub: data.datePub, fechaExp: data.dateExp, contenido: data.content, status: 1, destinatarios: arr, profesores: 0 });
       this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
         const value = snapshot.val();
@@ -565,17 +565,52 @@ export class FirebaseService {
   }
 
   public saveHomework(data, dateInfo: string, description: string, datos: any) {
-    var metadata = {
-      customMetadata: {
-        'alumno': data.userEmail,
-        'fecha': dateInfo,
-        'description': description,
+
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/`).once('value').then((snapshot) => {
+      var band = true;
+      const value = snapshot.val();
+      if (value !== null) {
+        var tiempoAct = new Date();
+        var dAct = value["diaLimite"].split("-");
+        var hAct = value["horaLimite"].split(":");
+
+        if (parseInt(dAct[0]) < tiempoAct.getFullYear()) {
+          band = false;
+        } else if (parseInt(dAct[0]) == tiempoAct.getFullYear() && parseInt(dAct[1]) < tiempoAct.getMonth() + 1) {
+          band = false;
+        } else if (parseInt(dAct[0]) == tiempoAct.getFullYear() && parseInt(dAct[1]) == (tiempoAct.getMonth() + 1) && parseInt(dAct[2]) < tiempoAct.getDate()) {
+          band = false;
+        } else if (parseInt(dAct[0]) == tiempoAct.getFullYear() && parseInt(dAct[1]) == (tiempoAct.getMonth() + 1) && parseInt(dAct[2]) == tiempoAct.getDate()) {
+          if (parseInt(hAct[0]) < tiempoAct.getUTCHours() - 5) {
+            band = false;
+          } else if (parseInt(hAct[0]) == tiempoAct.getUTCHours() - 5 && parseInt(hAct[1]) < tiempoAct.getMinutes()) {
+            band = false;
+          } else if (parseInt(hAct[0]) == tiempoAct.getUTCHours() - 5 && parseInt(hAct[1]) == tiempoAct.getMinutes() && parseInt(hAct[2]) < tiempoAct.getSeconds()) {
+            band = false;
+          } else if (parseInt(hAct[0]) == tiempoAct.getUTCHours() - 5 && parseInt(hAct[1]) == tiempoAct.getMinutes() && parseInt(hAct[2]) == tiempoAct.getSeconds()) {
+            band = false;
+          }
+        }
+        return band;
       }
-    };
-
-    // this.database.database.ref(`Usuarios/Alumnos/${userEmailDestinity}/notificaciones/`).update({ tareas: 1 });
-
-    return this.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/`).child(`${data.idHomework}/` + data.userEmail).put(datos, metadata);
+    }).then(response => {
+      if (response) {
+        //status no entregado (0), entregado a tiempo (1), entregado fuera de tiempo (2)
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatus: 1 });
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/`).update({ estatus: 0 });
+      } else {
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatus: 2 });
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/`).update({ estatus: 0 });
+      }
+      var metadata = {
+        customMetadata: {
+          'alumno': data.userEmail,
+          'fecha': dateInfo,
+          'description': description,
+        }
+      };
+      return this.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/`).child(`${data.idHomework}/` + data.title).put(datos, metadata);
+    });
   }
 
   //METODO 2 PARA LISTAR

@@ -165,7 +165,7 @@ export class AddHomeworkComponent implements OnInit {
           alert("Seleccione el archivo a enviar!");
     }else{
       let fecha = new Date();
-      let fechaStr = fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+fecha.getFullYear()+" T "+fecha.getHours()+":"+fecha.getMinutes();
+      let fechaStr = fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+fecha.getFullYear()+" T "+fecha.getHours()+":"+fecha.getMinutes()+":"+fecha.getSeconds();
 
       var data = {
         'userEmail': this.student.email,
@@ -173,6 +173,8 @@ export class AddHomeworkComponent implements OnInit {
         'group': this.student.group, 
         'idHomework': this.homeworkSelected,
         'subject': this.materiaSelected,
+        'title': this.homeworkSelected+"--"+this.student.username, 
+        'nameStudent': this.student.username,
       };
 
       // for (let i = 0; i < this.emails.length; i++) {    
