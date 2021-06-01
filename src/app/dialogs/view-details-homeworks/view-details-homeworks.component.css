@@ -1,0 +1,43 @@
+#nameStudent {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #261c63;
+}
+
+#botons {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.scor {
+    text-align: center;
+}
+
+.inp {
+    width: 35%;
+    margin-left: 10%;
+}
+
+.btnCancel:hover {
+    background: #4d4d53;
+}
+
+#status1 {
+    width: 25%;
+    background: rgb(5, 168, 13);
+    border-radius: 50%;
+}
+
+#status2 {
+    width: 25%;
+    background: rgb(231, 199, 55);
+    border-radius: 50%;
+}
+
+#status0 {
+    width: 25%;
+    background: rgb(196, 14, 50);
+    border-radius: 50%;
+}

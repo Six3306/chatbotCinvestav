@@ -92,6 +92,11 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl("Progress-group")
   }
 
+  //metodo para dirigirse a la vista de homeworks
+  goToHomeworks(){
+    this.router.navigateByUrl("Homeworks")
+  }
+
 
   /**
    * Metodo para dirigirse a la vista de las materias 

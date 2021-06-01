@@ -18,7 +18,7 @@ export class ScoreUserComponent implements OnInit {
  enviado: Boolean;
 
   nombreAlumno:any;
-
+ 
  /**
   * 
   * @param formBuilder Constructor clasico de un form 

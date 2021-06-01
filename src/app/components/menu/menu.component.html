@@ -88,6 +88,10 @@
             <img src="../assets/pictures/progresoGrupos.png" (click)="goToProgressGroup()" id="progressClassI">
         </div>
 
+        <div *ngIf="(typeMenu=='Profesor') && status==true" class="horizontal">
+            <img src="../assets/pictures/tareas.png" (click)="goToHomeworks()" id="homeworksI">
+        </div>
+
     </div>
 
     <div class="foot">

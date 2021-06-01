@@ -120,6 +120,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl("General-files");
   }
 
+  //metodo para dirigirse a la vista de homeworks
+  goToHomeworks(){
+    this.router.navigateByUrl("Homeworks")
+  }
+
   /*Dirige al menu principal*/
   goMenuPrincipal(){
     this.router.navigateByUrl("Menu");
@@ -129,4 +134,6 @@ export class HeaderComponent implements OnInit {
     goConfigureAccount(){
       this.router.navigateByUrl("Configure-account");
     }
+
+    
 }

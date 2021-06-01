@@ -119,21 +119,39 @@ export class FirebaseService {
       return arraySubjectName;
     });
   }
-
-  getHomeworksBySubject(student, subjectName) {
+  
+  //regresa las tareas por materia
+  getHomeworksBySubject(data, subjectName) {
     let arrayHomeworks: Array<Homework> = [];
 
-    return this.database.database.ref(`Clases/${student.grade}/Materias/${subjectName}/${student.group}/Tareas/`).once('value').then((snapshot) => {
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${subjectName}/${data.group}/Tareas/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          let nHomework = new Homework(val, value[val].tema, value[val].descripcion, student.grade, student.group, value[val].diaLimite, value[val].horaLimite, value[val].estatus);
+          let nHomework = new Homework(val, value[val].tema, value[val].descripcion, data.grade, data.group, value[val].diaLimite, value[val].horaLimite, value[val].estatus);
           arrayHomeworks.push(nHomework);
         }
       }
       return arrayHomeworks;
     });
   }
+
+
+  //retorna los estatus de tareas
+  getHomeworkStudentsStatus(data){
+    let arrayHomeworks: Array<String> = [];
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var val in value) {
+          arrayHomeworks.push(value[val].estatus+"@"+val);
+        }
+      }
+      return arrayHomeworks;
+    });
+  }
+
+
 
   //obtiene los estudiantes
   getStudentssByGradeGroup(data) {
@@ -470,7 +488,7 @@ export class FirebaseService {
       this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, correo: usuario.email, estatus: 0, clave: usuario.password, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
-      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
+      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
       return true;
     }
   }
@@ -617,6 +635,12 @@ export class FirebaseService {
   public referenciaCloudStorageList2(userEmail: string) {
     this.database.database.ref(`Usuarios/Alumnos/${userEmail}/notificaciones/`).update({ archivos: 1 });
     return this.storage.storage.ref(`Files/${userEmail}/`).listAll();
+  }
+
+
+  //lista lo contenido en la tarea de cierto alumno
+  public listHomeworkFileStudents(data) {
+    return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/`).listAll();
   }
 
 

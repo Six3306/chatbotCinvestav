@@ -68,6 +68,8 @@ import { ProgressStudentComponent } from './components/progress-student/progress
 import { GeneralProgressStudentComponent } from './components/graphics/general-progress-student/general-progress-student.component';
 import { PushNotificationService } from './services/push-notification.service';
 import { AddHomeworkComponent } from './dialogs/add-homework/add-homework.component';
+import { HomeworksComponent } from './components/homeworks/homeworks.component';
+import { ViewDetailsHomeworksComponent } from './dialogs/view-details-homeworks/view-details-homeworks.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -112,6 +114,7 @@ const angularMaterial=[
     AddStudentComponent,
     ScoresComponent,
     ScoreUserComponent,
+    ViewDetailsHomeworksComponent,
     GeneralFilesComponent,
     RemindersComponent,
     GenerateKeyComponent,
@@ -135,6 +138,8 @@ const angularMaterial=[
     ProgressStudentComponent,
     GeneralProgressStudentComponent,
     AddHomeworkComponent,
+    HomeworksComponent,
+    ViewDetailsHomeworksComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -162,7 +167,7 @@ const angularMaterial=[
   
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,AddFilesComponent, AddHomeworkComponent,AddSubjectComponent, 
-    AddStudentComponent, ScoreUserComponent, GenerateKeyComponent, CustomSnackBarComponent,
+    AddStudentComponent, ScoreUserComponent, ViewDetailsHomeworksComponent, GenerateKeyComponent, CustomSnackBarComponent,
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,

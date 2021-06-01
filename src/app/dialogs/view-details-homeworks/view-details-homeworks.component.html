@@ -1,0 +1,26 @@
+<h4 id="nameStudent">{{nombreAlumno|uppercase}}</h4><br>
+<form>
+
+
+    <div mat-dialog-content>
+        <mat-label><b>Fecha y Hora de Recepción:  </b>{{timeSend}}</mat-label>
+
+        <p></p>
+        <mat-label><b>Descripción:  </b>{{description}}</mat-label>
+
+        <p></p>
+        <mat-label><b>Estatus:  </b>{{status}}&nbsp;
+            <a id="status0" *ngIf="status=='No entregada'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a id="status1" *ngIf="status=='Entregada a tiempo'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a id="status2" *ngIf="status=='Entregada fuera de tiempo'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+        </mat-label>
+
+        <p></p>
+
+    </div>
+    <!--botones para cancelar o bien guardar las calificaciones-->
+    <div id="botons">
+        <button mat-button (click)="onClickNo()" class="btn" id="btnCancel">Ok</button>
+    </div>
+</form>
