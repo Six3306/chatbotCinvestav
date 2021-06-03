@@ -3,6 +3,7 @@ import { User } from 'src/app/models/User.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { APIService } from 'src/app/services/api/api.service';
 import { MatSnackBar } from '@angular/material';
+import { FirebaseService } from '../../services/firebase/firebase.service';
 
 
 @Component({
@@ -16,9 +17,11 @@ export class ConfigureAccountComponent implements OnInit {
   user:User;
   name:String;
   idU:String;
+  typeUser:any;
 
   //para el switch boton
   isChecked = false ;
+  isCheckedReception;
 
     /**
    * @param submitted es la variable que indica si existe algun error en el formulario de existir su valor se vuelve True
@@ -32,21 +35,27 @@ export class ConfigureAccountComponent implements OnInit {
     private api: APIService,
     private formbuilder : FormBuilder,
     private snackBar: MatSnackBar,
+    private firebase: FirebaseService,
     ) {
     this.user= JSON.parse(localStorage.getItem("user"));
+    this.typeUser = this.user.type;
     this.formUpdateUser = this.formbuilder.group({
-      // archivo : ['',[Validators.required]],
       password : [''],
       confirmPassword : [''],
     });
+
+    if(this.typeUser == "Profesor"){
+      this.firebase.getStatusReception(this.user.email.split("@")[0]).then(response =>{
+        this.isCheckedReception = true ? response==1: response==0;        
+      });
+    }
    }
 
   ngOnInit() {
     this.name = this.user.username;
     this.idU = this.user.id;
-    
     this.formUpdateUser.disable({ emitEvent: false });
-    this.formUpdateUser.invalid;
+    this.formUpdateUser.invalid;    
   }
 
   sendRegister(){
@@ -57,7 +66,6 @@ export class ConfigureAccountComponent implements OnInit {
         id : this.idU,
         password: this.formUpdateUser.get("password").value
       }
-      console.log(params);
 
       this.api.changePassword(params).subscribe(response=>{
         this.openCustomerSnackBar();
@@ -79,6 +87,15 @@ export class ConfigureAccountComponent implements OnInit {
     }else{
       this.formUpdateUser.disable();
       this.formUpdateUser.invalid;
+    }
+  }
+
+  //para cambiar el estatus de poder o no recibir mensajes/arhivos de ciertos alumnos de otros grupos
+  changeReception(){
+    if(this.isCheckedReception){//habilitada
+      this.firebase.setStatusReception(this.user.email.split("@")[0] ,1);
+    }else{//deshabilitada
+      this.firebase.setStatusReception(this.user.email.split("@")[0], 0);
     }
   }
 

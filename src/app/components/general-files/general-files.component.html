@@ -48,7 +48,7 @@
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
                         <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-                        <mat-cell mat-cell *matCellDef="let row"> {{row.username | slice:0:7}} </mat-cell>
+                        <mat-cell mat-cell *matCellDef="let row"> {{row.username}} </mat-cell>
                         <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                     </ng-container>
 
@@ -75,7 +75,7 @@
                     <!-- <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row> -->
                 </mat-table>
 
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                <mat-paginator [pageSizeOptions]="[10, 10, 25, 100]"></mat-paginator>
 
                 <br>
                 <h4>Profesores:</h4><br>
@@ -83,8 +83,8 @@
                 <mat-toolbar-row>
                     <mat-form-field id="sProfessor">
                         <mat-label>Profesor</mat-label>
-                        <mat-select [(ngModel)]="professorSelected" (selectionChange)="addProfessor()">
-                            <mat-option *ngFor="let p of profes" [value]="p.value">
+                        <mat-select [(ngModel)]="professorSelected">
+                            <mat-option *ngFor="let p of profes" [value]="p.value" (click)="addProfessor()">
                                 {{p.viewValue}}
                             </mat-option>
                         </mat-select>

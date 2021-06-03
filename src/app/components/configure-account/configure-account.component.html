@@ -29,9 +29,13 @@
             </div>
 
             <div class="button">
-                <button class="button_update_user" [disabled]="isChecked==false" type="submit" mat-button>Registrar</button>
+                <button class="button_update_user" [disabled]="isChecked==false" type="submit" mat-button>Registrar nueva contraseña</button>
             </div>
 
         </form>
+
+        <br><br>
+        <mat-slide-toggle [(ngModel)]="isCheckedReception" (change)="changeReception()" *ngIf="typeUser == 'Profesor'">¿Deseas recibir mensajes/archivos de alumnos a quienes no impartes clases?</mat-slide-toggle>
+
     </div>
 </div>

@@ -89,6 +89,24 @@ export class FirebaseService {
     });
   }
 
+  //obtiene el grado y grupo de un alumno dado su nombre
+  getGradeGroupStudent(name, email) {
+    let student: string;
+    return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var val in value) {
+          if (value[val].nombre == name && value[val].correo == email) {
+            if (value[val].estatus == 1) {
+              student = value[val].grado + "#" + value[val].grupo;
+            }
+          }
+        }
+      }
+      return student;
+    });
+  }
+
   //obtiene las materias de cierto grado
   getSubjectsByGrade(data) {
     let arraySubject: Array<SubjectG> = [];
@@ -119,7 +137,7 @@ export class FirebaseService {
       return arraySubjectName;
     });
   }
-  
+
   //regresa las tareas por materia
   getHomeworksBySubject(data, subjectName) {
     let arrayHomeworks: Array<Homework> = [];
@@ -138,13 +156,13 @@ export class FirebaseService {
 
 
   //retorna los estatus de tareas
-  getHomeworkStudentsStatus(data){
+  getHomeworkStudentsStatus(data) {
     let arrayHomeworks: Array<String> = [];
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          arrayHomeworks.push(value[val].estatus+"@"+val);
+          arrayHomeworks.push(value[val].estatus + "@" + val);
         }
       }
       return arrayHomeworks;
@@ -162,7 +180,6 @@ export class FirebaseService {
       if (value !== null) {
         for (var val in value) {
           if (value[val].grado == data.grade && value[val].grupo == data.group) {
-            // console.log(value[val]);
             let student = new Student(value[val].nombre, value[val].grado, value[val].grupo, value[val].correo, value[val].estatus);
             arrayStudent.push(student);
           }
@@ -263,12 +280,54 @@ export class FirebaseService {
       if (value !== null) {
         for (var val in value) {
           if (value[val].estatus == 1) {
-            arrayProfes.push(value[val].correo + "#" + value[val].nombre);
+            arrayProfes.push(value[val].correo + "#" + value[val].nombre + "#" + value[val].estatusRecepcion);
           }
         }
       }
       return arrayProfes;
     });
+  }
+
+  //obtiene los profesores que le dan clases en cierto grado y grupo
+  getReceptionProfessorsGradeGroup(grado) {
+    var arrayProfes: Array<String> = [];
+    var nameProfes: Array<String> = [];
+    var cad: string = "", cad2: string = "";
+
+    return this.database.database.ref(`Clases/${grado}/Materias/`).once('value').then((res) => {
+      const valu = res.val();
+      if (valu !== null) {
+        for (var clase in valu) {
+          if (valu[clase].estatus == 1) {
+            if (!cad2.includes(valu[clase].profesor)) {
+              nameProfes.push(valu[clase].profesor);
+              cad2 += valu[clase].profesor;
+            }
+          }
+        }
+        return nameProfes;
+      }
+    }).then(response => {
+      return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+          for (var profe in value) {
+            for (let i = 0; i < response.length; i++) {
+              if (value[profe].nombre == response[i] && value[profe].estatusRecepcion==1) {
+                if (!cad.includes(value[profe].correo + "#" + value[profe].nombre)) {
+                  arrayProfes.push(value[profe].correo + "#" + value[profe].nombre);
+                  cad += value[profe].correo + "#" + value[profe].nombre;
+
+                }
+              }
+            }
+          }
+          return arrayProfes;
+        }
+
+      });
+    });
+
   }
 
   //obtiene si en cierto grado da clases cierto profesor
@@ -340,7 +399,7 @@ export class FirebaseService {
       bi1: data.bi1, bi2: data.bi2, bi3: data.bi3, bi4: data.bi4
       , bi5: data.bi5, id: data.id, nombreMateria: data.nombreMateria, subject_id: data.subject_id, user_id: data.user_id
     });
-    // this.database.database.ref(`Recordatorios/${id}`).set({delet:remin.delet,publication:remin.publication,reminder:remin.reminder}); 
+    // this.database.database.ref(`Recordatorios/${id}`).set({delet:remin.delet,publication:remin.publication,reminder:remin.reminder});
   }
 
   //asigna hasta que punto (bimestre) se ha calificado cierta materia
@@ -463,8 +522,8 @@ export class FirebaseService {
 
 
   /**
-   * Función para guardar un usuario e firebase se hizo se probo pero actualmente los usuarios ya no se almacenan ahi  
-   * @param data objeto tipo usuario  
+   * Función para guardar un usuario e firebase se hizo se probo pero actualmente los usuarios ya no se almacenan ahi
+   * @param data objeto tipo usuario
    */
   //   addUser(data:User) {
   //   let id;
@@ -485,12 +544,29 @@ export class FirebaseService {
   addUser(usuario: User): boolean {
     var nameU = usuario.email.split("@");
     if (usuario.type == 'Profesor') {
-      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, correo: usuario.email, estatus: 0, clave: usuario.password, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
+      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
       this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
       return true;
     }
+  }
+
+  //obtiene el estatus de recepcion
+  getStatusReception(user) {
+    var estatusRecepcion;
+    return this.database.database.ref(`Usuarios/Profesores/${user}/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        estatusRecepcion = value["estatusRecepcion"];
+      }
+      return estatusRecepcion;
+    });
+  }
+
+  //modifica el estatus de recepcion
+  setStatusReception(user, status) {
+    this.database.database.ref(`Usuarios/Profesores/${user}/`).update({ estatusRecepcion: status });
   }
 
   //modifica el estatus de la notificacion (estudiante) en el campo de calificaciones
@@ -531,9 +607,9 @@ export class FirebaseService {
   }
 
   /**
-   * Función para actualizar un usuario esta funcion esta en proceso 
-   * @param id id del usuario a actualizar 
-   * @param user usuario a actualizar 
+   * Función para actualizar un usuario esta funcion esta en proceso
+   * @param id id del usuario a actualizar
+   * @param user usuario a actualizar
    */
   updateUser(id, user: User) {
     return this.firestore
@@ -557,7 +633,7 @@ export class FirebaseService {
   }
 
   updateReminderActivated(title, status) {
-    // this.firestore.collection("Recordatorios/id").doc(id).set({ delet: remin.delet },{ merge: true }); 
+    // this.firestore.collection("Recordatorios/id").doc(id).set({ delet: remin.delet },{ merge: true });
     this.database.database.ref(`AvisosGenerales/${title}`).update({ status: status });
   }
 

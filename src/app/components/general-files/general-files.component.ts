@@ -7,10 +7,10 @@ import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } fro
 import { User } from 'src/app/models/User.model';
 import { Student } from 'src/app/models/Student.model';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
- 
+import { MatChipInputEvent } from '@angular/material/chips';
 
-export interface Grade{
+
+export interface Grade {
   /**
    * value es el valor real que tendra 
    */
@@ -23,7 +23,7 @@ export interface Grade{
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Group{
+export interface Group {
   /**
    * value es el valor real que tendra 
    */
@@ -46,16 +46,16 @@ export interface Email {
 })
 export class GeneralFilesComponent implements OnInit {
 
-  displayedColumns: string[] = ['name','origen', 'fecha', 'info','link'];
-  
-  rols: string[] = ['Profesor', 'Alumno']; 
+  displayedColumns: string[] = ['name', 'origen', 'fecha', 'info', 'link'];
 
-  professorSelected:string="";
+  rols: string[] = ['Profesor', 'Alumno'];
 
-  grades:Grade[] = [
-    {value: '1', viewValue:"1°"},
-    {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"}
+  professorSelected: string = "";
+
+  grades: Grade[] = [
+    { value: '1', viewValue: "1°" },
+    { value: '2', viewValue: "2°" },
+    { value: '3', viewValue: "3°" }
   ];
 
   selectable = true;
@@ -65,10 +65,10 @@ export class GeneralFilesComponent implements OnInit {
   emails: Email[] = [];
 
 
-    /**
-   * Columnas a mostrar para los alumnos
-   */
-     displayedColumnsS: string[] = ['name','email', 'addStudent'];
+  /**
+ * Columnas a mostrar para los alumnos
+ */
+  displayedColumnsS: string[] = ['name', 'email', 'addStudent'];
 
   /**
    * Propiedad que indica 
@@ -76,22 +76,22 @@ export class GeneralFilesComponent implements OnInit {
    * @param viewValue es el valor que que se muestra para la seleccion 
    * 
    */
-  groups:Group[] = [
-    {value: 'A', viewValue:"A"},
-    {value: 'B', viewValue:"B"},
-    {value: 'C', viewValue:"C"},
-    {value: 'D', viewValue:"D"},
-    {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"},
-    {value: 'E', viewValue:"G"},
-    {value: 'F', viewValue:"H"},
-    {value: 'E', viewValue:"I"},
-    {value: 'F', viewValue:"J"}
+  groups: Group[] = [
+    { value: 'A', viewValue: "A" },
+    { value: 'B', viewValue: "B" },
+    { value: 'C', viewValue: "C" },
+    { value: 'D', viewValue: "D" },
+    { value: 'E', viewValue: "E" },
+    { value: 'F', viewValue: "F" },
+    { value: 'E', viewValue: "G" },
+    { value: 'F', viewValue: "H" },
+    { value: 'E', viewValue: "I" },
+    { value: 'F', viewValue: "J" }
   ];
 
-  groupSelected:String="";
-  gradeSelected:String="";
-  
+  groupSelected: String = "";
+  gradeSelected: String = "";
+
 
   formFileSend: FormGroup;
   formFileDes: FormGroup;
@@ -102,46 +102,48 @@ export class GeneralFilesComponent implements OnInit {
 
   dataSourceUsers: MatTableDataSource<User>;
 
-  displayedColumnsUsers: string[] = ['name', 'email','activated'];
+  displayedColumnsUsers: string[] = ['name', 'email', 'activated'];
 
   //email de quien va a enviar los archivos
   public nameUserAct = (JSON.parse(localStorage.getItem("user")).email).split("@")[0];
 
   public datosFormulario = new FormData();//obtener y almacenar todos los valores del input (los archivos q selecciona el user)
 
-  @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
-  @ViewChildren(MatSort)  sort:QueryList< MatSort>;
+  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
   /**
    * Arreglo que contiene a todos los estudiantes buscados
    */
-   arrStudents: Array<Student>;
-       /**
-   * Tabla donde estan los datos de los estudiantes
-   */
+  arrStudents: Array<Student>;
+  /**
+* Tabla donde estan los datos de los estudiantes
+*/
   dataSourceStudent: MatTableDataSource<Student>;
 
+  user: User;
 
-  constructor (
+  constructor(
     private router: Router,
-    public dialog : MatDialog,
-    private formbuilder : FormBuilder,
-    private firebaseStorage : FirebaseService,
+    public dialog: MatDialog,
+    private formbuilder: FormBuilder,
+    private firebaseStorage: FirebaseService,
     private snackBar: MatSnackBar,
     private firebase: FirebaseService,
   ) {
+    this.user = JSON.parse(localStorage.getItem("user"));
 
     this.formFileSend = this.formbuilder.group({
-      archivo : ['',[Validators.required]],
-      description : [''],
+      archivo: ['', [Validators.required]],
+      description: [''],
     });
 
     this.formFileDes = this.formbuilder.group({
-      rol: ['',Validators.required],
-      gradeSel: ['',Validators.required],
-      groupSel: ['',Validators.required],
+      rol: ['', Validators.required],
+      gradeSel: ['', Validators.required],
+      groupSel: ['', Validators.required],
     });
- }
+  }
 
 
   //Evento que se gatilla cuando el input de tipo archivo cambia
@@ -159,40 +161,29 @@ export class GeneralFilesComponent implements OnInit {
     }
   }
 
-  searchStudents(){
+  searchStudents() {
     if (this.gradeSelected != null && this.groupSelected != null) {
       this.listarDesti();
     }
   }
 
-  listarDesti(){
-    let params={
-      "grade":this.gradeSelected,
-      "group":this.groupSelected
+  listarDesti() {
+    let params = {
+      "grade": this.gradeSelected,
+      "group": this.groupSelected
     }
-     //buscar en firebase los alumnos segun grado y grupo seleccionado
-    this.firebase.getStudentssByGradeGroup(params).then(response=>{
-      this.arrStudents=response;
-    
-      this.dataSourceStudent = new MatTableDataSource(response);
-      this.dataSourceStudent.paginator = this.paginator.last;
-      this.dataSourceStudent.sort = this.sort.last;
+    //buscar en firebase los alumnos segun grado y grupo seleccionado
+    this.firebase.getStudentssByGradeGroup(params).then(response => {
+      this.arrStudents = response;
+    }).then(() => {
+      this.showStudentsByGradeGroup();
     });
   }
 
-  showStudentsByGradeGroup(){
-    let params={
-      "grade":this.gradeSelected,
-      "group":this.groupSelected
-    }
-    // buscar en firebase los alumnos segun grado y grupo seleccionado
-    this.firebase.getStudentssByGradeGroup(params).then(response=>{
-      this.arrStudents=response;
-    
-      this.dataSourceStudent = new MatTableDataSource(response);
-      this.dataSourceStudent.paginator = this.paginator.last;
-      this.dataSourceStudent.sort = this.sort.last;
-    });
+  showStudentsByGradeGroup() {
+    this.dataSourceStudent = new MatTableDataSource(this.arrStudents);
+    this.dataSourceStudent.paginator = this.paginator.last;
+    this.dataSourceStudent.sort = this.sort.last;
   }
 
   //remueve las url
@@ -203,58 +194,103 @@ export class GeneralFilesComponent implements OnInit {
     }
   }
 
-    //para añadir a las url
-    add(event: MatChipInputEvent): void {
-      const input = event.input;
-      const value = event.value;
-  
-      if ((value || '').trim()) {
-        this.emails.push({email: value});
-      }
-      if (input) {
-        input.value = '';
-      }
-    }
+  //para añadir a las url
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
 
-  //metodo que permite retornar todos los profesores registrados en el sistema
-  retornaProfes(){
-     
-    this.firebase.getEmailProfessors().then(response=>{
-      let profes: Grade[] = [];
-      for (let i = 0; i < response.length; i++) {
-        profes.push({value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1]});
-      }
-      this.profes = profes;
-    });
-  
-   }
-  
-   profes:Grade[];
-
-  verifyNotExitsinList(nEmail){
-    let b:boolean=false;
-    for (let i = 0; i < this.emails.length; i++) {
-      if(this.emails[i].email==nEmail){
-        b=true;
-        break
-      }
+    if ((value || '').trim()) {
+      this.emails.push({ email: value });
     }
-    if(!b){
-      this.emails.push({email: nEmail});
+    if (input) {
+      input.value = '';
     }
   }
 
-  addStudent(row){
+  //metodo que permite retornar todos los profesores registrados en el sistema
+  retornaProfes() {
+
+
+    if (this.user.type == "Alumno") {
+      this.firebase.getGradeGroupStudent(this.user.username, this.user.email).then((r) => {
+       
+        this.firebase.getReceptionProfessorsGradeGroup(r.split("#")[0]).then(response => {
+         
+          let profes: Grade[] = [];
+          this.profes = profes;
+          for (let i = 0; i < response.length; i++) {
+              profes.push({ value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1] });
+            
+          }
+
+          this.profes = profes;
+        });
+
+      })
+    } else {
+      this.firebase.getEmailProfessors().then(response => {
+        let profes: Grade[] = [];
+        this.profes = profes;
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].split("#")[0].split("@")[0] != this.nameUserAct) {
+            profes.push({ value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1] });
+          }
+        }
+
+        this.profes = profes;
+
+      });
+    }
+
+
+    // this.firebase.getEmailProfessors().then(response => {
+    //   let profes: Grade[] = [];
+
+    //   if (this.user.type == "Alumno") {
+    //     for (let i = 0; i < response.length; i++) {
+    //       if (parseInt(response[i].split("#")[2]) == 1) {
+
+    //       } else {
+    //         profes.push({ value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1] });
+    //       }
+    //     }
+    //   } else {
+    //     for (let i = 0; i < response.length; i++) {
+    //       if (response[i].split("#")[0].split("@")[0] != this.nameUserAct) {
+    //         profes.push({ value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1] });
+    //       }
+    //     }
+    //   }
+
+    //   this.profes = profes;
+    // });
+
+  }
+
+  profes: Grade[];
+
+  verifyNotExitsinList(nEmail) {
+    let b: boolean = false;
+    for (let i = 0; i < this.emails.length; i++) {
+      if (this.emails[i].email == nEmail) {
+        b = true;
+        break
+      }
+    }
+    if (!b) {
+      this.emails.push({ email: nEmail });
+    }
+  }
+
+  addStudent(row) {
     let em = row.email.split("@")[0];
     this.verifyNotExitsinList(em);
   }
 
-  addProfessor(){
-    console.log("V: "+this.professorSelected);
-    
-    if(this.professorSelected==""){
+  addProfessor() {
+    if (this.professorSelected == "") {
       console.log("Selecciona un profesor");
-    }else{     
+    } else {
       this.verifyNotExitsinList(this.professorSelected);
     }
   }
@@ -264,95 +300,73 @@ export class GeneralFilesComponent implements OnInit {
   //Sube el archivo a Cloud Storage
   public subirArchivo() {
     let archivo = this.datosFormulario.get('archivo');
-    let description =this.formFileSend.get('description').value;
+    let description = this.formFileSend.get('description').value;
 
-    if(archivo ===null){
-          alert("Seleccione el archivo a enviar!");
-    }else{
+    if (archivo === null) {
+      alert("Seleccione el archivo a enviar!");
+    } else {
       let fecha = new Date();
-      let fechaStr = fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" - "+fecha.getHours()+":"+fecha.getMinutes();
-      for (let i = 0; i < this.emails.length; i++) {    
-        this.firebase.userExists(this.emails[i].email).then(response=>{
+      let fechaStr = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear() + " - " + fecha.getHours() + ":" + fecha.getMinutes();
+      for (let i = 0; i < this.emails.length; i++) {
+        this.firebase.userExists(this.emails[i].email).then(response => {
           // console.log(response+" - "+this.emails[i].email);
-          if(response==true){
+          if (response == true) {
             this.firebaseStorage.guarda2(this.emails[i].email, this.nameUserAct, fechaStr, description, archivo);
             this.openCustomerSnackBar();
           }
         });
       }
     }
-      
-    
-    
-    // //obtenemos datos del formulario y los ligamos
-    // let archivo = this.datosFormulario.get('archivo');
-    // let correoDestinity =this.formFile.get('correoDestinity').value;
-    // let description =this.formFile.get('description').value;
 
-    
-    // if(correoDestinity===""){
-    //     alert("Favor de ingresar el correo electronico del destinatario. \n(Debe ser el mismo correo que su destinatatio registro en la plataforma)");
-    // }else{
-    //   if(archivo ===null){
-    //     alert("Seleccione el archivo a enviar!");
-    //   }else{    
-    //     //obtenemos fecha y hora del sistema actualmente
-    //     let fecha = new Date();
-    //     let fechaStr = fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" - "+fecha.getHours()+":"+fecha.getMinutes();
-    //     this.firebaseStorage.guarda2(correoDestinity.toString(), this.nameUserAct, fechaStr, description, archivo);
-    //     this.openCustomerSnackBar();
-    //   }   
-    // }    
   }
 
   //lista los mensajes y archivos que han sido recibidos por el usuario que actualmente esta activo en el sistema, obteniendo además
   //los metadatos del archivo como informacion del remitente, fecha, descripción
-  listar2(){
- 
-    let nGFilesTmp: GeneralFile[]=[];
+  listar2() {
 
-      this.firebaseStorage.referenciaCloudStorageList2(this.nameUserAct).then((response)=>{
-        response.items.forEach(function(ite) {         
+    let nGFilesTmp: GeneralFile[] = [];
 
-            let nGF = new GeneralFile("","","","","");
-            ite.getMetadata().then(r=>{
+    this.firebaseStorage.referenciaCloudStorageList2(this.nameUserAct).then((response) => {
+      response.items.forEach(function (ite) {
 
-              nGF.setNameFile(ite.name);
-              nGF.setRemitente(r["customMetadata"].remitente);
-              nGF.setTimeSend(r["customMetadata"].fecha);
-              nGF.setDescription(r["customMetadata"].description);
+        let nGF = new GeneralFile("", "", "", "", "");
+        ite.getMetadata().then(r => {
 
-              ite.getDownloadURL().then((r)=>{
-                nGF.setUrl(r);
-              });
+          nGF.setNameFile(ite.name);
+          nGF.setRemitente(r["customMetadata"].remitente);
+          nGF.setTimeSend(r["customMetadata"].fecha);
+          nGF.setDescription(r["customMetadata"].description);
 
-            });
-            nGFilesTmp.push(nGF);
+          ite.getDownloadURL().then((r) => {
+            nGF.setUrl(r);
+          });
+
         });
-        
-      }).then(()=>{
-        console.log("SI"+this.nameUserAct);
-        
-        this.generalFiles = nGFilesTmp;
-        this.dataSource = new MatTableDataSource(this.generalFiles);
-        this.dataSource.paginator = this.paginator.first;
-        this.dataSource.sort = this.sort.first;
+        nGFilesTmp.push(nGF);
       });
+
+    }).then(() => {
+
+      this.generalFiles = nGFilesTmp;
+      this.dataSource = new MatTableDataSource(this.generalFiles);
+      this.dataSource.paginator = this.paginator.first;
+      this.dataSource.sort = this.sort.first;
+    });
   }
 
   //inicialmente listamos los archivos que han llegado invocando a la funcion de listar2
-  ngOnInit() { 
+  ngOnInit() {
     this.listar2();
     this.retornaProfes();
-   }
+  }
 
-   //para regresar al menu principal
-  menuP(){
+  //para regresar al menu principal
+  menuP() {
     this.router.navigateByUrl("Menu");
   }
-//para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
-  openCustomerSnackBar(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, {duration: 4000});
+  //para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, { duration: 4000 });
   }
 
 }
@@ -362,4 +376,4 @@ export class GeneralFilesComponent implements OnInit {
   selector: 'custom-snackbar',
   template: `<span style='color: #00ff4ce3;'><strong>Archivo Enviado Correctamente</strong></span>`
 })
-export class CustomSnackBarComponentSendGeneralFile{}
+export class CustomSnackBarComponentSendGeneralFile { }
