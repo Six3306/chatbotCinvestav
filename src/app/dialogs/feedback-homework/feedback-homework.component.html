@@ -1,0 +1,34 @@
+<div class="contenedor">
+
+    <div class="centrado2">
+        <h4><b>Retroalimentación para {{nameStudent}}</b></h4>
+
+        <div *ngIf="statusFeedback=='1'">
+            <hr>
+            <h5><b>Link area:</b> </h5>
+
+            <h5><b>Comentario de retroalimentación:</b> {{feedbackComment}} </h5>
+
+
+            <hr>
+
+        </div>
+
+        <!-- <p>{{grade}} - {{group}}---{{subject}}...{{homeworkName}},,,{{statusFeedback}}</p> -->
+
+        <!--formulario para enviar nuevos archivos-->
+        <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">
+            <br>
+            <p></p>
+            <input class="file-input" type="file" formControlName="archivo" (change)="cambioArchivo($event)">
+            <p></p>
+            <br>
+            <mat-form-field class="contentMsg">
+                <textarea matInput formControlName="FeedbackComment" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
+            </mat-form-field>
+            <br>
+            <button [disabled]="!formFileSend.valid" class="uploadFileBtn">Subir retroalimentación</button>
+        </form>
+    </div>
+
+</div>

@@ -7,7 +7,7 @@ export class StudentHomeworks {
      * @param definicion definicion del archivo
      * @param url la url del archivo
      */
-      constructor(public nameFile: String, public nameStudent: String, public timeSend:String, public description:String, public url: String, public status:String) {}
+      constructor(public nameFile: String, public nameStudent: String, public timeSend:String, public description:String, public url: String, public status:String, public statusFeedback:String, public feedbackComment: String) {}
 
       setNameFile(nF:string){
           this.nameFile = nF;
@@ -30,7 +30,15 @@ export class StudentHomeworks {
       }
 
       setStatus(s:string){
-          this.status  = s;
+          this.status = s;
+      }
+
+      setStatusFeedback(sF:string){
+          this.statusFeedback =  sF;
+      }
+
+      setFeedbackComment(fC:string){
+          this.feedbackComment = fC;
       }
 
     }

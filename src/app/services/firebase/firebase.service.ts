@@ -162,10 +162,21 @@ export class FirebaseService {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          arrayHomeworks.push(value[val].estatus + "@" + val);
+          arrayHomeworks.push(value[val].estatus + "@" + val + "@"+value[val].estatusFeedback+"@"+value[val].feedbackComment);
         }
       }
       return arrayHomeworks;
+    });
+  }
+
+  getFeedbackComment(data){
+    var fComment:String = "";
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.homework}/entregados/${data.nameStudent}/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        fComment = value["feedbackComment"];
+      }
+      return fComment;
     });
   }
 
@@ -658,6 +669,30 @@ export class FirebaseService {
     return this.storage.ref("Files/").child(`${userEmailDestinity}/` + datos.name).put(datos, metadata);
   }
 
+  //guarda el comentario de retroalimentacion del profesor a una tarea, usada regularmente cuando no se sube un archivo corregido o con observaciones y solo se dan las observaciones en texto plano
+  public saveFeedbackCommentHomework(data, fechaStr:string ,feedbackComment: string){
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:fechaStr});
+  }
+
+
+  //para guardar la retroalimentacion de las tareas con o sin el archivo retroalimentado
+  public saveFeedbackHomework(data, dateInfo: string, feedbackComment: string, datos: any){
+    if(feedbackComment!="" || feedbackComment!= null){
+      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:dateInfo});
+    }
+
+    var metadata = {
+      customMetadata: {
+        'alumno': data.nameStudent,
+        'fecha': dateInfo,
+      }
+    };
+    return this.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/`).child(`${data.idHomework}/Retroalimentados/` + data.title).put(datos, metadata);
+
+  }
+
+
+  //para guardar la tarea datos y archivo en la nube
   public saveHomework(data, dateInfo: string, description: string, datos: any) {
 
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/`).once('value').then((snapshot) => {

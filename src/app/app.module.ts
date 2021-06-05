@@ -70,6 +70,7 @@ import { PushNotificationService } from './services/push-notification.service';
 import { AddHomeworkComponent } from './dialogs/add-homework/add-homework.component';
 import { HomeworksComponent } from './components/homeworks/homeworks.component';
 import { ViewDetailsHomeworksComponent } from './dialogs/view-details-homeworks/view-details-homeworks.component';
+import { FeedbackHomeworkComponent } from './dialogs/feedback-homework/feedback-homework.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -140,6 +141,7 @@ const angularMaterial=[
     AddHomeworkComponent,
     HomeworksComponent,
     ViewDetailsHomeworksComponent,
+    FeedbackHomeworkComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -167,7 +169,7 @@ const angularMaterial=[
   
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,AddFilesComponent, AddHomeworkComponent,AddSubjectComponent, 
-    AddStudentComponent, ScoreUserComponent, ViewDetailsHomeworksComponent, GenerateKeyComponent, CustomSnackBarComponent,
+    AddStudentComponent, ScoreUserComponent, ViewDetailsHomeworksComponent, FeedbackHomeworkComponent, GenerateKeyComponent, CustomSnackBarComponent,
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,

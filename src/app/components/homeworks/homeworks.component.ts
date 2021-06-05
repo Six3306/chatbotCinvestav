@@ -8,6 +8,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Homework } from 'src/app/models/Homework.model';
 import { StudentHomeworks } from 'src/app/models/StudentsHomeworks.model';
 import { ViewDetailsHomeworksComponent } from '../../dialogs/view-details-homeworks/view-details-homeworks.component';
+import { FeedbackHomeworkComponent } from 'src/app/dialogs/feedback-homework/feedback-homework.component';
 
 export interface Grade {
   value: any,
@@ -25,7 +26,7 @@ export interface Group {
   styleUrls: ['./homeworks.component.css']
 })
 export class HomeworksComponent implements OnInit {
-  displayedColumnsHomework: string[] = ['nameStudent', 'details', 'link', 'status'];
+  displayedColumnsHomework: string[] = ['nameStudent', 'details', 'link', 'status','feedback'];
 
   grades: Grade[] = [
     { value: '1', viewValue: "1°" },
@@ -143,9 +144,11 @@ export class HomeworksComponent implements OnInit {
     }
     this.firebase.getHomeworkStudentsStatus(data).then(res => {
       for (let s in res) {
-        let nHomeworkStudent = new StudentHomeworks("", "", "", "", "", "");       
+        let nHomeworkStudent = new StudentHomeworks("", "", "", "", "", "","","");       
         nHomeworkStudent.setNameStudent(res[s].split("@")[1]);
         nHomeworkStudent.setStatus(res[s].split("@")[0]);
+        nHomeworkStudent.setStatusFeedback(res[s].split("@")[2]);
+        nHomeworkStudent.setFeedbackComment(res[s].split("@")[3]);
         nHomeworkStudent.setTimeSend("-");
         nHomeworkStudent.setNameFile("-");
         nHomeworkStudent.setDescription("-");
@@ -205,30 +208,34 @@ export class HomeworksComponent implements OnInit {
         "nameStudent": row.nameStudent,
         "timeSend": row.timeSend,
         "description": row.description,
-        "status": row.status
+        "status": row.status,
       }
     });
     dialogRef.afterClosed().subscribe(response=>{
-      // console.log(response);  
-      // if(response){
-      //   this.firebase.getEmailStudent(response.nameStud).then(response2=>{
-      //     let data={
-      //       subject: this.materiaSelected,
-      //       grade: this.gradeSelected,
-      //       group: this.groupSelected,
-      //       b1: response.bim1,
-      //       b2: response.bim2,
-      //       b3: response.bim3,
-      //       b4: response.bim4,
-      //       b5: response.bim5,
-      //       nameStudent: response.nameStud,
-      //       email: response2.split("@")[0]
-      //     };
-      //     this.firebase.refreshStudentScoreClass(data);
-      //     this.showScores();
-      //     this.openCustomerSnackBar();
-      //   });      
-      // } 
+  });
+    
+  }
+
+  
+  viewFeedbackH(row){
+    console.log("ssssi"+JSON.stringify(row));
+
+    const dialogRef = this.dialog.open(FeedbackHomeworkComponent,{
+
+      data: {
+        "nameStudent": row.nameStudent,
+        "timeSend": row.timeSend,
+        "description": row.description,
+        "status": row.status,
+        "statusFeedback": row.statusFeedback,
+        "grade": this.gradeSelected,
+        "group": this.groupSelected,
+        "subject": this.subjectSelected,
+        "homework": this.homeworkSelected,
+      }
+      
+    });
+    dialogRef.afterClosed().subscribe(response=>{
   });
     
   }

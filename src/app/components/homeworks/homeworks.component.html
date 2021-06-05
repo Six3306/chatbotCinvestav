@@ -97,8 +97,14 @@
                     <a id="status0" *ngIf="row.status=='0'" title="No entregada">&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <a id="status1" *ngIf="row.status=='1'" title="Entregada a tiempo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     <a id="status2" *ngIf="row.status=='2'" title="Entregada fuera de tiempo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
-
                 </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <!-- FEEDBACK -->
+            <ng-container matColumnDef="feedback">
+                <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Retroalimentación </mat-header-cell>
+                <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackH(row)" id="btnFeedback"> <a *ngIf="row.statusFeedback == '0'">No retroalimentada</a> <a *ngIf="row.statusFeedback == '1'">Si retroalimentada</a> </button> </mat-cell>
                 <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
 

@@ -236,14 +236,22 @@ mat-header-cell {
 
 .mat-column-nameStudent {
     white-space: unset !important;
-    flex: 0 0 40% !important;
-    width: 40% !important;
+    flex: 0 0 35% !important;
+    width: 35% !important;
     font-size: 15.5px;
 }
 
 .mat-column-link,
-.mat-column.statusHS,
-.mat-column-details {
+.mat-column-details,
+.mat-column-statusHS {
+    white-space: unset !important;
+    flex: 0 0 15% !important;
+    width: 15% !important;
+    font-size: 15.5px;
+    text-align: center;
+}
+
+.mat-column-feedback {
     white-space: unset !important;
     flex: 0 0 20% !important;
     width: 20% !important;
@@ -252,19 +260,29 @@ mat-header-cell {
 }
 
 #status1 {
-    width: 20%;
+    width: 15%;
     background: rgb(5, 168, 13);
     border-radius: 50%;
 }
 
 #status2 {
-    width: 20%;
+    width: 15%;
     background: rgb(231, 199, 55);
     border-radius: 50%;
 }
 
 #status0 {
-    width: 20%;
+    width: 15%;
     background: rgb(196, 14, 50);
     border-radius: 50%;
+}
+
+#btnFeedback {
+    background: #3A445D;
+    color: white;
+}
+
+#btnFeedback:hover {
+    box-shadow: 2px 2px 5px #999;
+    background: #162138;
 }
