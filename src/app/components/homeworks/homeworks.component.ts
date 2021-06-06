@@ -218,10 +218,8 @@ export class HomeworksComponent implements OnInit {
 
   
   viewFeedbackH(row){
-    console.log("ssssi"+JSON.stringify(row));
 
     const dialogRef = this.dialog.open(FeedbackHomeworkComponent,{
-
       data: {
         "nameStudent": row.nameStudent,
         "timeSend": row.timeSend,
@@ -236,8 +234,10 @@ export class HomeworksComponent implements OnInit {
       
     });
     dialogRef.afterClosed().subscribe(response=>{
-  });
-    
+      if(response==1 || response=="1"){
+        row.statusFeedback = 1;
+      }      
+    });
   }
 
   //inicialmente listamos los archivos que han llegado invocando a la funcion de listar2

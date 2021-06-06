@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { GeneralFile } from 'src/app/models/GeneralFile.model';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { User } from 'src/app/models/User.model';
 import { Student } from 'src/app/models/Student.model';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
@@ -97,6 +97,7 @@ export class FeedbackHomeworkComponent implements OnInit {
   subject: string;
   homeworkName: string;
   statusFeedback: string;
+  fileUrl:string="";
 
   constructor(
     private router: Router,
@@ -105,6 +106,7 @@ export class FeedbackHomeworkComponent implements OnInit {
     private firebaseStorage: FirebaseService,
     private snackBar: MatSnackBar,
     private firebase: FirebaseService,
+    public dialogRef: MatDialogRef<FeedbackHomeworkComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -148,20 +150,20 @@ export class FeedbackHomeworkComponent implements OnInit {
   //Sube el archivo a Cloud Storage
   public subirArchivo() {
     let archivo = this.datosFormulario.get('archivo');
+
     let feedbackComment = this.formFileSend.get('FeedbackComment').value;
 
-
-    console.log(","+feedbackComment+",");
-    
+    if(feedbackComment == null || feedbackComment == ""){
+      feedbackComment = this.feedbackComment;
+    }
 
     if (archivo === null && (feedbackComment == null || feedbackComment == "")) {
       alert("Seleccione el archivo a enviar!");
     } else {
       let fecha = new Date();
-        let fechaStr = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + " T " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-
+        let dateA = ((fecha.getDate()<10)? "0"+fecha.getDate() : fecha.getDate()+"") + "-" + (((fecha.getMonth() + 1) < 10)? "0"+(fecha.getMonth() + 1): (fecha.getMonth() + 1)+"") + "-" + (fecha.getFullYear()+"");
+        let timeA = ((fecha.getHours()<10)? "0"+fecha.getHours() : fecha.getHours()+"") + ":" + ((fecha.getMinutes()<10)? "0"+fecha.getMinutes() : fecha.getMinutes()+"") + ":" + ((fecha.getSeconds()<10)? "0"+fecha.getSeconds() : fecha.getSeconds()+"");
         var data = {
-          // 'userEmail': this.student.email,
           'grade': this.grade,
           'group': this.group,
           'idHomework': this.homeworkName,
@@ -170,57 +172,33 @@ export class FeedbackHomeworkComponent implements OnInit {
           'nameStudent': this.nameStudent,
         };
       if (archivo === null) {
-        this.firebaseStorage.saveFeedbackCommentHomework(data, fechaStr, feedbackComment);
+        this.firebaseStorage.saveFeedbackCommentHomework(data, dateA, timeA+"", feedbackComment);
       } else {  
-        this.firebaseStorage.saveFeedbackHomework(data, fechaStr, feedbackComment, archivo);
+        this.firebaseStorage.saveFeedbackHomework(data, dateA, timeA+"", feedbackComment, archivo);
       }
     }
-
+    this.dialogRef.close(1);
   }
 
   getHomeworkInfoAndFile() {
     // var studentsRegister: StudentHomeworks[] = [];
-    // var data = {
-    //   "grade": this.gradeSelected,
-    //   "group": this.groupSelected,
-    //   "subject": this.subjectSelected,
-    //   "idHomework": this.homeworkSelected
-    // }
-    // this.firebase.getHomeworkStudentsStatus(data).then(res => {
-    //   for (let s in res) {
-    //     let nHomeworkStudent = new StudentHomeworks("", "", "", "", "", "","","");       
-    //     nHomeworkStudent.setNameStudent(res[s].split("@")[1]);
-    //     nHomeworkStudent.setStatus(res[s].split("@")[0]);
-    //     nHomeworkStudent.setStatusFeedback(res[s].split("@")[2]);
-    //     nHomeworkStudent.setFeedbackComment(res[s].split("@")[3]);
-    //     nHomeworkStudent.setTimeSend("-");
-    //     nHomeworkStudent.setNameFile("-");
-    //     nHomeworkStudent.setDescription("-");
-    //     nHomeworkStudent.setUrl("-");
-    //     studentsRegister.push(nHomeworkStudent);
-    //   }
-    //   this.firebaseStorage.listHomeworkFileStudents(data).then(response => {
-    //     response.items.forEach(function (ite) {
-    //       ite.getMetadata().then(r => {
-    //         studentsRegister.forEach(rS=>{
-    //           if(rS.nameStudent==ite.name.split("--")[1]){
-    //             rS.setNameFile(ite.name);
-    //             rS.setDescription(r["customMetadata"].description);
-    //             rS.setTimeSend(r["customMetadata"].fecha);
-    //               ite.getDownloadURL().then((rL) => {
-    //                 rS.setUrl(rL);
-    //               });                  
-    //           }
-    //         });
-    //       });
-    //     });
+    var data = {
+      "grade": this.grade,
+      "group": this.group,
+      "subject": this.subject,
+      "idHomework": this.homeworkName,
+      'title': this.homeworkName + "--" + this.nameStudent,
+    }
 
-    //   }).then(()=>{
-    //     this.dataSourceHomeworks = new MatTableDataSource(studentsRegister);
-    //     this.dataSourceHomeworks.paginator = this.paginator.first;
-    //     this.dataSourceHomeworks.sort = this.sort.first;
-    //   });
-    // })
+
+    this.firebaseStorage.listHomeworkFileFeedbackStudents(data).then(response => {
+      if(response!=undefined || response!=""){
+        this.fileUrl = response;
+      }
+    }, onReject =>{
+      this.fileUrl = "";
+    });
+
   }
 
 

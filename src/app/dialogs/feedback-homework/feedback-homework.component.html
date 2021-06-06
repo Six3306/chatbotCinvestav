@@ -5,7 +5,10 @@
 
         <div *ngIf="statusFeedback=='1'">
             <hr>
-            <h5><b>Link area:</b> </h5>
+            <h5><b>Link tarea: &nbsp;&nbsp;</b>
+                <a href="{{fileUrl}}" class="linkFileD" target="_blank" *ngIf="fileUrl != ''">&nbsp;IR &nbsp;</a>
+                <a *ngIf="fileUrl == ''">No se ha subido archivo alguno</a>
+            </h5>
 
             <h5><b>Comentario de retroalimentación:</b> {{feedbackComment}} </h5>
 
@@ -13,8 +16,6 @@
             <hr>
 
         </div>
-
-        <!-- <p>{{grade}} - {{group}}---{{subject}}...{{homeworkName}},,,{{statusFeedback}}</p> -->
 
         <!--formulario para enviar nuevos archivos-->
         <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">

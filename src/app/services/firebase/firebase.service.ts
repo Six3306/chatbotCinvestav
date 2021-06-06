@@ -169,6 +169,20 @@ export class FirebaseService {
     });
   }
 
+  //retorna los archivos de las tareas retroalimentadas
+  getHomeworkStudentFeedback(data) {
+    let arrayHomeworks: Array<String> = [];
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var val in value) {
+          arrayHomeworks.push(value[val].estatus + "@" + val + "@"+value[val].estatusFeedback+"@"+value[val].feedbackComment);
+        }
+      }
+      return arrayHomeworks;
+    });
+  }
+
   getFeedbackComment(data){
     var fComment:String = "";
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.homework}/entregados/${data.nameStudent}/`).once('value').then((snapshot) => {
@@ -670,25 +684,23 @@ export class FirebaseService {
   }
 
   //guarda el comentario de retroalimentacion del profesor a una tarea, usada regularmente cuando no se sube un archivo corregido o con observaciones y solo se dan las observaciones en texto plano
-  public saveFeedbackCommentHomework(data, fechaStr:string ,feedbackComment: string){
-    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:fechaStr});
+  public saveFeedbackCommentHomework(data, dateStr:string, hourStr:string ,feedbackComment: string){
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:dateStr, horaRetroalimentacion: hourStr});
   }
 
 
   //para guardar la retroalimentacion de las tareas con o sin el archivo retroalimentado
-  public saveFeedbackHomework(data, dateInfo: string, feedbackComment: string, datos: any){
+  public saveFeedbackHomework(data, dateStr:string, hourStr:string, feedbackComment: string, datos: any){
     if(feedbackComment!="" || feedbackComment!= null){
-      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:dateInfo});
+      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:dateStr, horaRetroalimentacion: hourStr});
     }
-
     var metadata = {
       customMetadata: {
         'alumno': data.nameStudent,
-        'fecha': dateInfo,
+        'fecha': dateStr+"T"+hourStr,
       }
     };
     return this.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/`).child(`${data.idHomework}/Retroalimentados/` + data.title).put(datos, metadata);
-
   }
 
 
@@ -752,6 +764,11 @@ export class FirebaseService {
   //lista lo contenido en la tarea de cierto alumno
   public listHomeworkFileStudents(data) {
     return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/`).listAll();
+  }
+
+  //lista lo contenido en la tarea de cierto alumno
+  public listHomeworkFileFeedbackStudents(data) {
+      return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/Retroalimentados/${data.title}/`).getDownloadURL()
   }
 
 

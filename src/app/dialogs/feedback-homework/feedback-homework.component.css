@@ -112,3 +112,17 @@
 .mat-label {
     text-align: center;
 }
+
+.linkFileD {
+    background: #3A445D;
+    width: 100%;
+    text-align: center;
+    color: white;
+    border-radius: 15%;
+    text-decoration: none;
+}
+
+.linkFileD:hover {
+    box-shadow: 3px 3px 6px #999;
+    background: #596786;
+}
