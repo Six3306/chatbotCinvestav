@@ -98,6 +98,9 @@ export class FeedbackHomeworkComponent implements OnInit {
   homeworkName: string;
   statusFeedback: string;
   fileUrl:string="";
+  archivo = null;
+  feedbackCommentA = null;
+
 
   constructor(
     private router: Router,
@@ -141,23 +144,26 @@ export class FeedbackHomeworkComponent implements OnInit {
         this.nombreArchivo = event.target.files[i].name;
         this.datosFormulario.delete('archivo');//elimina el archivo 
         this.datosFormulario.append('archivo', event.target.files[i], event.target.files[i].name)//añade los archivos creados
+        this.archivo = "r";
       }
     } else {
+      this.archivo = null
       // this.mensajeArchivo = 'No hay un archivo seleccionado';
     }
   }
 
   //Sube el archivo a Cloud Storage
+
   public subirArchivo() {
-    let archivo = this.datosFormulario.get('archivo');
+    let archivoF = this.datosFormulario.get('archivo');
 
-    let feedbackComment = this.formFileSend.get('FeedbackComment').value;
+    this.feedbackCommentA = this.formFileSend.get('FeedbackComment').value;
 
-    if(feedbackComment == null || feedbackComment == ""){
-      feedbackComment = this.feedbackComment;
+    if(this.feedbackCommentA == null || this.feedbackCommentA == ""){
+      this.feedbackCommentA = this.feedbackComment;
     }
 
-    if (archivo === null && (feedbackComment == null || feedbackComment == "")) {
+    if (this.archivo === null && (this.feedbackCommentA == null || this.feedbackCommentA == "")) {
       alert("Seleccione el archivo a enviar!");
     } else {
       let fecha = new Date();
@@ -171,10 +177,10 @@ export class FeedbackHomeworkComponent implements OnInit {
           'title': this.homeworkName + "--" + this.nameStudent,
           'nameStudent': this.nameStudent,
         };
-      if (archivo === null) {
-        this.firebaseStorage.saveFeedbackCommentHomework(data, dateA, timeA+"", feedbackComment);
+      if (archivoF === null) {
+        this.firebaseStorage.saveFeedbackCommentHomework(data, dateA, timeA+"", this.feedbackCommentA);
       } else {  
-        this.firebaseStorage.saveFeedbackHomework(data, dateA, timeA+"", feedbackComment, archivo);
+        this.firebaseStorage.saveFeedbackHomework(data, dateA, timeA+"", this.feedbackCommentA, archivoF);
       }
     }
     this.dialogRef.close(1);

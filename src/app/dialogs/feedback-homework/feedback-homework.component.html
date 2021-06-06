@@ -25,10 +25,10 @@
             <p></p>
             <br>
             <mat-form-field class="contentMsg">
-                <textarea matInput formControlName="FeedbackComment" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
+                <textarea matInput formControlName="FeedbackComment" [(ngModel)]="feedbackCommentA" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
             </mat-form-field>
             <br>
-            <button [disabled]="!formFileSend.valid" class="uploadFileBtn">Subir retroalimentación</button>
+            <button [disabled]="!formFileSend.valid" *ngIf="(feedbackCommentA!=null && feedbackCommentA!='') || archivo!=null" class="uploadFileBtn">Subir retroalimentación</button>
         </form>
     </div>
 
