@@ -1,12 +1,10 @@
 <div class="contenedor">
 
     <div class="centrado2">
-
+        <h4>Enviar Tarea</h4>
         <!--formulario para seleccionar los destinatarios-->
-        <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form">
+        <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form" *ngIf="homeworkIdRI==null || homeworkIdRI==''">
             <br>
-            <h4>Enviar Tarea</h4>
-
             <!--para asignar materia-->
             <mat-form-field class="selectsSubjectHomework">
                 <mat-label>Materia</mat-label>

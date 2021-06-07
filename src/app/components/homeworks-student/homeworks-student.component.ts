@@ -10,6 +10,7 @@ import { StudentHomeworks } from 'src/app/models/StudentsHomeworks.model';
 import { ViewDetailsHomeworksComponent } from '../../dialogs/view-details-homeworks/view-details-homeworks.component';
 import { FeedbackHomeworkComponent } from 'src/app/dialogs/feedback-homework/feedback-homework.component';
 import { User } from 'src/app/models/User.model';
+import { AddHomeworkComponent } from '../../dialogs/add-homework/add-homework.component';
 
 export interface Grade {
   value: any,
@@ -77,6 +78,7 @@ export class HomeworksStudentComponent implements OnInit {
   urlF:any;
 
   homeworkSelected: String = null;
+  homeworkSelectedTmp: String;
 
   formFileDes: FormGroup;
   formSelSubjectandHomework: FormGroup;
@@ -148,9 +150,9 @@ export class HomeworksStudentComponent implements OnInit {
       "nameStudent": this.user.username,
       "title": this.homeworkSelected+"--"+this.user.username,
     }
-    this.firebase.getInfoHomeworkStudentSend(data).then(response=>{
-      console.log(response);
 
+    
+    this.firebase.getInfoHomeworkStudentSend(data).then(response=>{
       let arrHI = response.split("@");
       this.estatusFeedback = arrHI[0];
       this.feedbackComment = arrHI[1];
@@ -176,49 +178,25 @@ export class HomeworksStudentComponent implements OnInit {
       
     });
 
+  }
 
-    // var studentsRegister: StudentHomeworks[] = [];
-    // // var data = {
-    // //   "grade": this.gradeSelected,
-    // //   "group": this.groupSelected,
-    // //   "subject": this.subjectSelected,
-    // //   "idHomework": this.homeworkSelected
-    // // }
-    // this.firebase.getHomeworkStudentsStatus(data).then(res => {
-    //   for (let s in res) {
-    //     let nHomeworkStudent = new StudentHomeworks("", "", "", "", "", "","","");       
-    //     nHomeworkStudent.setNameStudent(res[s].split("@")[1]);
-    //     nHomeworkStudent.setStatus(res[s].split("@")[0]);
-    //     nHomeworkStudent.setStatusFeedback(res[s].split("@")[2]);
-    //     nHomeworkStudent.setFeedbackComment(res[s].split("@")[3]);
-    //     nHomeworkStudent.setTimeSend("-");
-    //     nHomeworkStudent.setNameFile("-");
-    //     nHomeworkStudent.setDescription("-");
-    //     nHomeworkStudent.setUrl("-");
-    //     studentsRegister.push(nHomeworkStudent);
-    //   }
-    //   this.firebaseStorage.listHomeworkFileStudents(data).then(response => {
-    //     response.items.forEach(function (ite) {
-    //       ite.getMetadata().then(r => {
-    //         studentsRegister.forEach(rS=>{
-    //           if(rS.nameStudent==ite.name.split("--")[1]){
-    //             rS.setNameFile(ite.name);
-    //             rS.setDescription(r["customMetadata"].description);
-    //             rS.setTimeSend(r["customMetadata"].fecha);
-    //               ite.getDownloadURL().then((rL) => {
-    //                 rS.setUrl(rL);
-    //               });                  
-    //           }
-    //         });
-    //       });
-    //     });
+  openDialogAddHomework(){
+    const dialogRef = this.dialog.open(AddHomeworkComponent,{
+      data: {
+        "subjectR": this.subjectSelected,
+        "homeworkIdR": this.homeworkSelected,
+      }
+    });
+    dialogRef.afterClosed().subscribe(response=>{  
+      if(response==1){
 
-    //   }).then(()=>{
-    //     this.dataSourceHomeworks = new MatTableDataSource(studentsRegister);
-    //     this.dataSourceHomeworks.paginator = this.paginator.first;
-    //     this.dataSourceHomeworks.sort = this.sort.first;
-    //   });
-    // })
+        // this.listarHomeworksSelGradGrupMat();
+        
+        this.getHomeworksInfoAndFile();
+        // this.searchHomewoks();
+        
+      }
+    })
   }
 
   listarSubject() {
@@ -237,46 +215,6 @@ export class HomeworksStudentComponent implements OnInit {
     });
 
   }
-
-
-  viewDetails(row){
-    const dialogRef = this.dialog.open(ViewDetailsHomeworksComponent,{
-      data: {
-        "nameStudent": row.nameStudent,
-        "timeSend": row.timeSend,
-        "description": row.description,
-        "status": row.status,
-      }
-    });
-    dialogRef.afterClosed().subscribe(response=>{
-  });
-    
-  }
-
-  
-  viewFeedbackH(row){
-
-    const dialogRef = this.dialog.open(FeedbackHomeworkComponent,{
-      data: {
-        "nameStudent": row.nameStudent,
-        "timeSend": row.timeSend,
-        "description": row.description,
-        "status": row.status,
-        "statusFeedback": row.statusFeedback,
-        "grade": this.gradeSelected,
-        "group": this.groupSelected,
-        "subject": this.subjectSelected,
-        "homework": this.homeworkSelected,
-      }
-      
-    });
-    dialogRef.afterClosed().subscribe(response=>{
-      if(response==1 || response=="1"){
-        row.statusFeedback = 1;
-      }      
-    });
-  }
-
   
 
   //para regresar al menu principal

@@ -1,13 +1,13 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { GeneralFile } from 'src/app/models/GeneralFile.model';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { User } from 'src/app/models/User.model';
 import { Student } from 'src/app/models/Student.model';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 
 
@@ -15,12 +15,12 @@ export interface Email {
   email: string;
 }
 
-export interface Materia{
+export interface Materia {
   value: any,
   viewValue: any
 }
 
-export interface Homework{
+export interface Homework {
   value: any,
   viewValue: any
 }
@@ -37,11 +37,11 @@ export interface Url {
 })
 export class AddHomeworkComponent implements OnInit {
 
-  displayedColumns: string[] = ['name','origen', 'fecha', 'info','link'];
-  
-  rols: string[] = ['Profesor', 'Alumno']; 
+  displayedColumns: string[] = ['name', 'origen', 'fecha', 'info', 'link'];
 
-  professorSelected:string="";
+  rols: string[] = ['Profesor', 'Alumno'];
+
+  professorSelected: string = "";
 
   selectable = true;
   removable = true;
@@ -56,6 +56,7 @@ export class AddHomeworkComponent implements OnInit {
    * 
    */
 
+
   formFileSend: FormGroup;
   formFileDes: FormGroup;
 
@@ -64,54 +65,65 @@ export class AddHomeworkComponent implements OnInit {
 
   dataSourceUsers: MatTableDataSource<User>;
 
-  displayedColumnsUsers: string[] = ['name', 'email','activated'];
+  displayedColumnsUsers: string[] = ['name', 'email', 'activated'];
 
   //email de quien va a enviar los archivos
   public nameUserAct = (JSON.parse(localStorage.getItem("user")).email).split("@")[0];
 
   public datosFormulario = new FormData();//obtener y almacenar todos los valores del input (los archivos q selecciona el user)
 
-  @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
-  @ViewChildren(MatSort)  sort:QueryList< MatSort>;
+  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
-  materiaSelected:String;
-  homeworkSelected:String;
-  subjects:Materia[] = [];
-  homeworks:Homework[] = [];
+  materiaSelected: String;
+  homeworkSelected: String;
+  subjects: Materia[] = [];
+  homeworks: Homework[] = [];
   student: Student;
 
+  subjectRI: any;
+  homeworkIdRI: any;
 
   /**
    * Arreglo que contiene a todos los estudiantes buscados
    */
-   arrStudents: Array<Student>;
-       /**
-   * Tabla donde estan los datos de los estudiantes
-   */
+  arrStudents: Array<Student>;
+  /**
+* Tabla donde estan los datos de los estudiantes
+*/
   dataSourceStudent: MatTableDataSource<Student>;
 
-  user:User; 
+  user: User;
 
-  constructor (
+  constructor(
     private router: Router,
-    public dialog : MatDialog,
-    private formbuilder : FormBuilder,
-    private firebaseStorage : FirebaseService,
+    public dialog: MatDialog,
+    private formbuilder: FormBuilder,
+    private firebaseStorage: FirebaseService,
     private snackBar: MatSnackBar,
     private firebase: FirebaseService,
+    public dialogRef: MatDialogRef<AddHomeworkComponent>,
+    @Inject(MAT_DIALOG_DATA) public dataR: any
   ) {
 
     this.formFileSend = this.formbuilder.group({
-      archivo : ['',[Validators.required]],
-      description : [''],
+      archivo: ['', [Validators.required]],
+      description: [''],
     });
 
     this.formFileDes = this.formbuilder.group({
-      subject: ['',Validators.required],
+      subject: ['', Validators.required],
     });
 
-    this.user= JSON.parse(localStorage.getItem("user"));
- }
+    this.user = JSON.parse(localStorage.getItem("user"));
+
+    if (dataR == null) {
+    } else {
+      this.subjectRI = dataR.subjectR;
+      this.homeworkIdRI = dataR.homeworkIdR;
+
+    }
+  }
 
 
   //Evento que se gatilla cuando el input de tipo archivo cambia
@@ -129,80 +141,94 @@ export class AddHomeworkComponent implements OnInit {
     }
   }
 
-  searchHomeworks(){
+  searchHomeworks() {
     this.homeworks = [];
-    this.firebase.getHomeworksBySubject(this.student, this.materiaSelected).then(response=>{
+    this.firebase.getHomeworksBySubject(this.student, this.materiaSelected).then(response => {
       for (let i = 0; i < response.length; i++) {
-        this.homeworks.push({value: response[i].id ,viewValue: response[i].theme});
+        this.homeworks.push({ value: response[i].id, viewValue: response[i].theme });
       }
     });
   }
 
-  listarDesti(){
-    
+  listarDesti() {
+
   }
 
 
-  getSubjects(){
-    this.firebase.getInfoStudent(this.user.username, this.user.email).then(response=>{
+  getSubjects() {
+    this.firebase.getInfoStudent(this.user.username, this.user.email).then(response => {
       this.student = new Student(response.username, response.grade, response.group, response.email, response.activated);
-      this.firebase.getSubjectsNameByGrade(response.grade).then(response2=>{
+      this.firebase.getSubjectsNameByGrade(response.grade).then(response2 => {
         for (let i = 0; i < response2.length; i++) {
-          this.subjects.push({value: response2[i], viewValue: response2[i]})
+          this.subjects.push({ value: response2[i], viewValue: response2[i] })
         }
       });
-      
+
     });
   }
 
   //Sube el archivo a Cloud Storage
   public subirArchivo() {
-    let archivo = this.datosFormulario.get('archivo');
-    let description =this.formFileSend.get('description').value;
-    // let subject = this.formFileDes.get('subject').value;
 
-    if(archivo ===null){
-          alert("Seleccione el archivo a enviar!");
+    if (this.homeworkIdRI == null || this.homeworkIdRI == '') {
+      let archivo = this.datosFormulario.get('archivo');
+      let description = this.formFileSend.get('description').value;
+      if (archivo === null) {
+        alert("Seleccione el archivo a enviar!");
+      } else {
+        let fecha = new Date();
+        let fechaStr = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + " T " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+
+        var data = {
+          'userEmail': this.student.email,
+          'grade': this.student.grade,
+          'group': this.student.group,
+          'idHomework': this.homeworkSelected,
+          'subject': this.materiaSelected,
+          'title': this.homeworkSelected + "--" + this.student.username,
+          'nameStudent': this.student.username,
+        };
+        this.firebaseStorage.saveHomework(data, fechaStr, description, archivo);
+      }
     }else{
-      let fecha = new Date();
-      let fechaStr = fecha.getDate()+"-"+(fecha.getMonth()+1)+"-"+fecha.getFullYear()+" T "+fecha.getHours()+":"+fecha.getMinutes()+":"+fecha.getSeconds();
+      let archivo = this.datosFormulario.get('archivo');
+      let description = this.formFileSend.get('description').value;
+      if (archivo === null) {
+        alert("Seleccione el archivo a enviar!");
+      } else {
+        let fecha = new Date();
+        let fechaStr = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + " T " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var data2 = {
+          'userEmail': this.student.email,
+          'grade': this.student.grade,
+          'group': this.student.group,
+          'idHomework': this.homeworkIdRI,
+          'subject': this.subjectRI,
+          'title': this.homeworkIdRI + "--" + this.student.username,
+          'nameStudent': this.student.username,
+        };
+        this.firebaseStorage.saveHomework(data2, fechaStr, description, archivo).then(r=>{
+          this.dialogRef.close(1);
+        });
+      }
+    }
 
-      var data = {
-        'userEmail': this.student.email,
-        'grade': this.student.grade,
-        'group': this.student.group, 
-        'idHomework': this.homeworkSelected,
-        'subject': this.materiaSelected,
-        'title': this.homeworkSelected+"--"+this.student.username, 
-        'nameStudent': this.student.username,
-      };
-
-      // for (let i = 0; i < this.emails.length; i++) {    
-      //   this.firebase.userExists(this.emails[i].email).then(response=>{
-      //     // console.log(response+" - "+this.emails[i].email);
-      //     if(response==true){
-            this.firebaseStorage.saveHomework(data, fechaStr, description, archivo);
-            // this.openCustomerSnackBar();
-          }
-    //     });
-    //   }
-    // }       
+    
   }
-
 
   //inicialmente listamos los archivos que han llegado invocando a la funcion de listar2
-  ngOnInit() { 
+  ngOnInit() {
     this.getSubjects();
-   }
+  }
 
-   //para regresar al menu principal
-  menuP(){
+  //para regresar al menu principal
+  menuP() {
     this.router.navigateByUrl("Menu");
   }
-// //para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
-//   openCustomerSnackBar(){
-//     return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, {duration: 4000});
-//   }
+  // //para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
+  //   openCustomerSnackBar(){
+  //     return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, {duration: 4000});
+  //   }
 
 }
 
