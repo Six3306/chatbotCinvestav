@@ -119,6 +119,11 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl("reminders")
   }
 
+  //dirige a las tareas de un alumno
+  goToHomeworkStudent(){
+    this.router.navigateByUrl('Homeworks-student');
+  }
+
   /**
    * Metodo para dirigirse a la vista para validar usuarios 
    */

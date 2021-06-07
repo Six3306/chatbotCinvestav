@@ -27,6 +27,7 @@
 #goToChatbot,
 #goToScoresUsers,
 #goToHomeworks,
+#goToHomeworkStudent,
 #goToProgressStudent,
 #exitAccount {
     transition: color 0.2s linear 0.2s;
@@ -39,6 +40,7 @@
 #goToGeneralFiles:hover,
 #goToHomeworks:hover,
 #goToProgressGroup:hover,
+#goToHomeworkStudent:hover,
 #goToProgressStudent:hover,
 #goToChatbot:hover,
 #goToScoresUsers:hover {

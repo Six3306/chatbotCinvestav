@@ -88,9 +88,17 @@
             <img src="../assets/pictures/progresoGrupos.png" (click)="goToProgressGroup()" id="progressClassI">
         </div>
 
+        <!-- Boton para entrar a las tareas de estudiantes -->
         <div *ngIf="(typeMenu=='Profesor') && status==true" class="horizontal">
             <img src="../assets/pictures/tareas.png" (click)="goToHomeworks()" id="homeworksI">
         </div>
+        <!-- Boton para entrar a las tareas de estudiantes -->
+
+        <!-- Boton para entrar a las tarea de un estudiante -->
+        <div *ngIf="(typeMenu== 'Alumno') && status==true" class="horizontal">
+            <img src="../assets/pictures/tareas.png" (click)="goToHomeworkStudent()" id="homeworksStudentI">
+        </div>
+        <!-- Boton para entrar a las tarea de un estudiante-->
 
     </div>
 

@@ -154,6 +154,17 @@ export class FirebaseService {
     });
   }
 
+  //retorna los datos de una tarea
+  getInfoHomeworkStudentSend(data){
+    let infoHomework: String;
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        infoHomework = (value["estatusFeedback"]+"@"+value["feedbackComment"]+"@"+value["fechaRetroalimentacion"]+"@"+value["horaRetroalimentacion"]+"@"+value["estatus"]);
+      }
+      return infoHomework;
+    });
+  }
 
   //retorna los estatus de tareas
   getHomeworkStudentsStatus(data) {
@@ -183,6 +194,7 @@ export class FirebaseService {
     });
   }
 
+  //obtiene el comentario de retroalimentacion de cierto alumno en cierta tarea
   getFeedbackComment(data){
     var fComment:String = "";
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.homework}/entregados/${data.nameStudent}/`).once('value').then((snapshot) => {
@@ -761,9 +773,19 @@ export class FirebaseService {
   }
 
 
-  //lista lo contenido en la tarea de cierto alumno
+  //lista lo contenido en la tarea de ciertos alumnos
   public listHomeworkFileStudents(data) {
     return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/`).listAll();
+  }
+
+  //obtiene metadatos de una tarea entregada de determinado alumno
+  public listDataHomeworkFileStudent(data){
+    return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/${data.title}/`).getMetadata();
+  }
+
+  //obtiene el link de una tarea entregada de determinado alumno
+  public listLinkHomeworkFileStudent(data){
+    return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/${data.title}/`).getDownloadURL();
   }
 
   //lista lo contenido en la tarea de cierto alumno

@@ -136,4 +136,9 @@ export class HeaderComponent implements OnInit {
     }
 
     
+    //dirige a las tareas de un alumno
+    goToHomeworkStudent(){
+      this.router.navigateByUrl('Homeworks-student');
+    }
+        
 }

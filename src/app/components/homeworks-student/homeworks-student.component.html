@@ -1,0 +1,87 @@
+<div class="image_background">
+
+    <app-header></app-header>
+    <br><br>
+    <div class="centrado2">
+        <p class="title">Tareas</p>
+        <br>
+        <!-- <h3>Seleccionar materia:</h3> -->
+
+        <form [formGroup]="formSelSubjectandHomework" autocomplete="off" (ngSubmit)="listarHomeworksSelGradGrupMat()" class="md-form">
+            <mat-toolbar-row>
+                <mat-form-field id="sMateria">
+                    <mat-label>Materia</mat-label>
+                    <mat-select (selectionChange)="searchHomewoksSubject()" [(ngModel)]="subjectSelected" formControlName="subjectS">
+                        <mat-option *ngFor="let subject of subjects" [value]="subject">
+                            {{subject}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row class="selHomeworkId">
+                <mat-form-field id="sHomework">
+                    <mat-label>Tarea seleccionada</mat-label>
+                    <mat-select (selectionChange)="searchHomewoks()" [(ngModel)]="homeworkSelected" formControlName="homeworkS">
+                        <mat-option *ngFor="let homework of homeworks" [value]="homework.id">
+                            {{homework.theme}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-toolbar-row>
+
+        </form>
+
+    </div>
+
+    <br><br>
+
+    <!------------------------------------------>
+    <div class="detailsHomeworkSel" *ngIf="homeworkSelected!=null || homeworkSelected">
+        <h4><b>Detalles generales de la tarea:</b></h4><br>
+        <p><b>Fecha y hora limite de entrega: </b>{{dateHourLimit}}</p>
+        <p><b>Descripción: </b>{{description}}</p>
+        <p><b>Estatus: </b>{{statusH}}</p>
+    </div>
+
+
+    <div class="homeworkSendandFeedback" *ngIf="homeworkSelected!=null || homeworkSelected">
+        <div class="detailskHomeworkSendSel" *ngIf="homeworkSelected!=null || homeworkSelected">
+            <div *ngIf="estatusEntrega!='0'">
+                <h4><b>Detalles de la tarea que entregaste:</b></h4><br>
+                <p><b>Fecha y hora en que entregaste: </b>{{fechaEntrega}} a las {{horaEntrega}}</p>
+                <p><b>Descripción que agregaste: </b>{{comentarioHE}}</p>
+                <p><b>Link al archivo de tarea enviado: </b><a href="{{urlH}}" class="linkFileD" target="_blank">&nbsp;&nbsp;IR&nbsp;&nbsp;</a></p>
+                <p>
+                    <b *ngIf="estatusEntrega=='1'">Entregada a tiempo :) 
+                        <a id="status1" title="Entregada a tiempo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </b>
+                    <b *ngIf="estatusEntrega=='2'">Entregada fuera de tiempo
+                    <a id="status2" title="Entregada fuera de tiempo">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </b>
+                </p>
+
+            </div>
+            <div *ngIf="estatusEntrega=='0'">
+                <h4><b>Aún no has enviado la tarea</b></h4><br>
+            </div>
+        </div>
+
+        <div class="feedbackHomeworkSel" *ngIf="homeworkSelected!=null || homeworkSelected">
+            <div *ngIf="estatusFeedback=='1'">
+                <h4><b>Retroalimentación de la tarea:</b></h4><br>
+                <p><b>Fecha y hora limite de la retroalimentación: </b>{{fechaRetroalimentacion}} a las {{horaRetroalimentacion}}</p>
+                <p *ngIf="feedbackComment!=''"><b>Comentario de retroalimentación: </b>{{feedbackComment}}</p>
+                <p><b>Link al archivo de tarea retroalimentado: </b><a href="{{urlF}}" class="linkFileD" target="_blank">&nbsp;&nbsp;IR&nbsp;&nbsp;</a></p>
+            </div>
+            <div *ngIf="estatusFeedback=='0'">
+                <h4><b>Retroalimentación de la tarea:</b></h4><br>
+                <p><b>Aún no realizada por el profesor</b></p>
+            </div>
+        </div>
+
+
+    </div>
+
+    <br><br>
+    <!------------------------------------------>

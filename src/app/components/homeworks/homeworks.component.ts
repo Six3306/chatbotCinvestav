@@ -201,7 +201,6 @@ export class HomeworksComponent implements OnInit {
 
   }
 
-
   viewDetails(row){
     const dialogRef = this.dialog.open(ViewDetailsHomeworksComponent,{
       data: {

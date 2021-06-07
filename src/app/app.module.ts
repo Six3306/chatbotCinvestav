@@ -71,6 +71,7 @@ import { AddHomeworkComponent } from './dialogs/add-homework/add-homework.compon
 import { HomeworksComponent } from './components/homeworks/homeworks.component';
 import { ViewDetailsHomeworksComponent } from './dialogs/view-details-homeworks/view-details-homeworks.component';
 import { FeedbackHomeworkComponent } from './dialogs/feedback-homework/feedback-homework.component';
+import { HomeworksStudentComponent } from './components/homeworks-student/homeworks-student.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -142,6 +143,7 @@ const angularMaterial=[
     HomeworksComponent,
     ViewDetailsHomeworksComponent,
     FeedbackHomeworkComponent,
+    HomeworksStudentComponent,
   ],
   imports: [
     BrowserAnimationsModule,

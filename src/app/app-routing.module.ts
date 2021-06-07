@@ -19,6 +19,7 @@ import { ClassGComponent } from './components/class-g/class-g.component';
 import { ProgressGroupComponent } from './components/progress-group/progress-group.component';
 import { ProgressStudentComponent } from './components/progress-student/progress-student.component';
 import { HomeworksComponent } from './components/homeworks/homeworks.component';
+import { HomeworksStudentComponent } from './components/homeworks-student/homeworks-student.component';
 
 const routes: Routes = [
   { path: 'xyz', component: XyzComponent, },
@@ -39,7 +40,9 @@ const routes: Routes = [
   { path: 'Configure-account',component: ConfigureAccountComponent, canActivate:[RouteGuardGuard]  },
   { path: 'Progress-group',component: ProgressGroupComponent, canActivate:[RouteGuardGuard]  },
   { path: 'Progress-student',component: ProgressStudentComponent, canActivate:[RouteGuardGuard]  },
-  { path: 'Homeworks',component: HomeworksComponent, canActivate:[RouteGuardGuard]  }
+  { path: 'Homeworks',component: HomeworksComponent, canActivate:[RouteGuardGuard]  },
+  { path: 'Homeworks-student',component: HomeworksStudentComponent, canActivate:[RouteGuardGuard]  }
+
 
 ];
 

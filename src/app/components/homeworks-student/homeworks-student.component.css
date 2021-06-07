@@ -1,0 +1,310 @@
+.image_background {
+    position: absolute !important;
+    top: 0px !important;
+    bottom: 0px !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0px !important;
+    max-width: 100vw;
+    max-height: 100vh;
+    background-image: url('/assets/pictures/fondo3.png');
+    background-size: cover;
+    background-position: center;
+    overflow: auto;
+}
+
+.title {
+    text-transform: uppercase;
+    font-family: "Segoe UI";
+    color: black;
+    font-size: 40px;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.contenedor-formulario {
+    width: 400px;
+}
+
+.btn-return {
+    top: 45%;
+    background: rgba(51, 51, 51, 0.7);
+    color: rgba(214, 226, 236, 0.932);
+    border-top-right-radius: 45%;
+    border-bottom-right-radius: 45%;
+    width: 90px;
+    height: 80px;
+    transform: translate(-5%, -950%);
+}
+
+.homeworkSendandFeedback {
+    margin-top: 2%;
+    clear: both;
+}
+
+.feedbackHomeworkSel {
+    float: right;
+    width: 43%;
+    margin-right: 5%;
+    background: white;
+    text-align: center;
+    padding: 1%;
+}
+
+.detailskHomeworkSendSel {
+    float: left;
+    width: 43%;
+    margin-left: 5%;
+    background: white;
+    padding: 1%;
+    text-align: center;
+}
+
+.btn-return .material-icons {
+    font-size: 60px;
+}
+
+.detailsHomeworkSel {
+    margin-right: auto;
+    margin-left: auto;
+    background: white;
+    text-align: center;
+    width: 65%;
+    padding: 1%;
+    /* border-radius: 45%; */
+}
+
+.centrado2 {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 71%;
+    /* background-color: white; */
+    text-align: center;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    border-radius: 25px;
+}
+
+.selHomeworkId {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+.file-input {
+    margin-left: auto;
+    margin-right: auto;
+    color: #162138;
+}
+
+.example-container {
+    max-height: 500px !important;
+    position: relative;
+    overflow: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: 12%;
+}
+
+#btn-refresh {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 10px;
+    width: 45px;
+    height: 32px;
+    border-color: black;
+    background: #3A445D;
+}
+
+#btn-refresh:hover {
+    box-shadow: 2px 2px 5px #999;
+    background: #162138;
+}
+
+.linkFileD {
+    background: #3A445D;
+    width: 24%;
+    text-align: center;
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+.linkFileD:hover {
+    box-shadow: 3px 3px 6px #999;
+    background: #596786;
+}
+
+mat-header-cell {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+#iconoR {
+    font-size: 20px;
+}
+
+.btn-return {
+    top: 45%;
+    background: rgba(51, 51, 51, 0.7);
+    color: rgba(214, 226, 236, 0.932);
+    border-top-right-radius: 45%;
+    border-bottom-right-radius: 45%;
+    width: 90px;
+    height: 80px;
+    transform: translate(-5%, -430%);
+}
+
+.btn-return .material-icons {
+    font-size: 60px;
+}
+
+.btn-return:focus {
+    outline: none;
+    box-shadow: 3px 3px 6px #777777;
+}
+
+.btn-return:hover {
+    background: rgba(44, 44, 44, 0.7);
+    color: rgba(250, 250, 250, 0.932);
+}
+
+.addrEmail {
+    width: 78%;
+}
+
+.contentMsg {
+    width: 78%;
+}
+
+.uploadFileBtn {
+    background: #3A445D;
+    width: 18%;
+    height: 39%;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+}
+
+.uploadFileBtn:hover {
+    box-shadow: 2px 2px 5px #999;
+    background: #162138;
+}
+
+.mat-tab-group {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mat-tab-group {
+    text-align: center;
+}
+
+.mat-toolbar-row {
+    justify-content: center
+}
+
+#sGrade {
+    margin-right: 3%;
+    text-align: center;
+}
+
+#sGroup {
+    margin-left: 3%;
+    text-align: center;
+}
+
+#sHomework {
+    text-align: center;
+    width: 50%;
+}
+
+#sMateria {
+    margin-left: 3%;
+    text-align: center;
+}
+
+#sProfessor {
+    text-align: center;
+    width: 75%;
+}
+
+.example-chip-list {
+    width: 75%;
+    text-align: center;
+}
+
+#btnSetScore {
+    border-color: black;
+    background: #3A445D;
+    color: white;
+}
+
+#btnSetScore:hover {
+    box-shadow: 2px 2px 5px #999;
+    background: #162138;
+}
+
+.mat-column-nameStudent {
+    white-space: unset !important;
+    flex: 0 0 35% !important;
+    width: 35% !important;
+    font-size: 15.5px;
+}
+
+.mat-column-link,
+.mat-column-details,
+.mat-column-statusHS {
+    white-space: unset !important;
+    flex: 0 0 15% !important;
+    width: 15% !important;
+    font-size: 15.5px;
+    text-align: center;
+}
+
+.mat-column-feedback {
+    white-space: unset !important;
+    flex: 0 0 20% !important;
+    width: 20% !important;
+    font-size: 15.5px;
+    text-align: center;
+}
+
+#status1 {
+    width: 15%;
+    background: rgb(5, 168, 13);
+    border-radius: 50%;
+}
+
+#status2 {
+    width: 15%;
+    background: rgb(231, 199, 55);
+    border-radius: 50%;
+}
+
+#status0 {
+    width: 15%;
+    background: rgb(196, 14, 50);
+    border-radius: 50%;
+}
+
+#btnFeedback {
+    background: #3A445D;
+    color: white;
+}
+
+#btnFeedback:hover {
+    box-shadow: 2px 2px 5px #999;
+    background: #162138;
+}
