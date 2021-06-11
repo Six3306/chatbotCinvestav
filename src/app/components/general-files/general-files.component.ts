@@ -209,24 +209,23 @@ export class GeneralFilesComponent implements OnInit {
 
   //metodo que permite retornar todos los profesores registrados en el sistema
   retornaProfes() {
-
-
     if (this.user.type == "Alumno") {
+
       this.firebase.getGradeGroupStudent(this.user.username, this.user.email).then((r) => {
        
         this.firebase.getReceptionProfessorsGradeGroup(r.split("#")[0]).then(response => {
-         
           let profes: Grade[] = [];
           this.profes = profes;
           for (let i = 0; i < response.length; i++) {
               profes.push({ value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1] });
-            
           }
-
           this.profes = profes;
         });
 
-      })
+
+
+      });
+
     } else {
       this.firebase.getEmailProfessors().then(response => {
         let profes: Grade[] = [];

@@ -330,7 +330,6 @@ export class FirebaseService {
     var arrayProfes: Array<String> = [];
     var nameProfes: Array<String> = [];
     var cad: string = "", cad2: string = "";
-
     return this.database.database.ref(`Clases/${grado}/Materias/`).once('value').then((res) => {
       const valu = res.val();
       if (valu !== null) {
@@ -349,13 +348,19 @@ export class FirebaseService {
         const value = snapshot.val();
         if (value !== null) {
           for (var profe in value) {
+            var bTmp = false;
             for (let i = 0; i < response.length; i++) {
-              if (value[profe].nombre == response[i] && value[profe].estatusRecepcion==1) {
+              if (value[profe].nombre == response[i]) {
                 if (!cad.includes(value[profe].correo + "#" + value[profe].nombre)) {
                   arrayProfes.push(value[profe].correo + "#" + value[profe].nombre);
                   cad += value[profe].correo + "#" + value[profe].nombre;
-
+                  bTmp = true;
                 }
+              }
+            }
+            if(!bTmp){
+              if(value[profe].estatusRecepcion == 1){
+                arrayProfes.push(value[profe].correo + "#" + value[profe].nombre);
               }
             }
           }
@@ -581,7 +586,7 @@ export class FirebaseService {
   addUser(usuario: User): boolean {
     var nameU = usuario.email.split("@");
     if (usuario.type == 'Profesor') {
-      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
+      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
       this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
