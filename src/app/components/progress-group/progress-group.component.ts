@@ -59,9 +59,9 @@ export class ProgressGroupComponent implements OnInit  {
   subjects:Materia[];
   bimes:Bim[]=[];
   materiaSelected:String;
-  bimSelected:any
-  bimSelected2:any
-  bimTI:any
+  bimSelected:any;
+  bimSelected2:any;
+  bimTI:any;
   arrayScores: Array<Scores>=[];
 
   constructor(

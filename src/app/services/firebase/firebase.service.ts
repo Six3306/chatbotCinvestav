@@ -8,6 +8,8 @@ import { Student } from 'src/app/models/Student.model';
 import { Scores } from 'src/app/models/Scores.model';
 import { Reminder } from 'src/app/models/Reminder.model';
 import { Homework } from 'src/app/models/Homework.model';
+import { FeelingStudent } from 'src/app/models/FeelingStudent.model';
+import { FeelingIStudent } from '../../models/FeelingIStudent.model';
 
 
 @Injectable({
@@ -369,6 +371,33 @@ export class FirebaseService {
       });
     });
 
+  }
+
+  //obtiene los sentimientos generales de los estudiantes
+  getListFeelingStudents(data){
+    var studentFeeling: Array<FeelingStudent> = [];
+
+    return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for(var studentE in value){
+          
+          if(data.grade == value[studentE]["grado"] && value[studentE]["grupo"]== data.group){
+            var studentIFeeling: Array<FeelingIStudent> = [];
+            if(value[studentE]["estadosAnimo"]!=""){
+              for(var eA in value[studentE]["estadosAnimo"]){//2 es desconocido
+                var stdIFeeling = new FeelingIStudent(eA.includes("matar")? value[studentE]["estadosAnimo"][eA]["estatus"] : 2, value[studentE]["estadosAnimo"][eA]["fecha"],eA.split("---")[1].split("--")[0], value[studentE]["estadosAnimo"][eA]["estadoA"]);
+                studentIFeeling.push(stdIFeeling);
+              }
+            }
+            var studentF = new FeelingStudent(value[studentE]["nombre"],value[studentE]["grado"],value[studentE]["grupo"],studentIFeeling);
+            studentFeeling.push(studentF);
+          }     
+        }
+      }
+      return studentFeeling;
+
+    });
   }
 
   //obtiene si en cierto grado da clases cierto profesor

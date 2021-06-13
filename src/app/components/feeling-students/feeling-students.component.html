@@ -25,14 +25,6 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field id="gGR">
-                <mat-label>Materia</mat-label>
-                <mat-select (selectionChange)="searchStudentsTwo()" [(ngModel)]="materiaSelected" formControlName="subjectSel">
-                    <mat-option *ngFor="let subject of subjects" [value]="subject.value">
-                        {{subject.viewValue}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
         </mat-toolbar-row>
     </form>
 
@@ -41,13 +33,15 @@
     <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Percepción General">
             <br>
-            <!-- <app-general-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimRepSelected"></app-general-progress> -->
+
+            <app-feeling-group [grade]="this.gradeSelected" [group]="this.groupSelected"></app-feeling-group>
         </mat-tab>
 
 
 
         <mat-tab label="Percepción Individual">
             <br>
+            <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected"></app-feeling-individual>
             <!-- <app-individual-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimTI"></app-individual-progress> -->
         </mat-tab>
 

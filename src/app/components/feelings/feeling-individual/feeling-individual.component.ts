@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-feeling-individual',
@@ -6,6 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./feeling-individual.component.css']
 })
 export class FeelingIndividualComponent implements OnInit {
+
+  @Input()
+  grade:any
+  @Input()
+  group:any
+
 
   constructor() { }
 

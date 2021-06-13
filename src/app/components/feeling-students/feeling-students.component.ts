@@ -13,11 +13,6 @@ export interface Group{
   viewValue: any
 }
 
-export interface Materia{
-  value: any,
-  viewValue: any
-}
-
 
 @Component({
   selector: 'app-feeling-students',
@@ -28,12 +23,10 @@ export class FeelingStudentsComponent implements OnInit {
 
   formFileDes: FormGroup;
   user:User;
-  materiaSelected:String;
   bimSelected:any;
   bimSelected2:any;
   groupSelected:String="";
   gradeSelected:String="";
-  subjects:Materia[];
 
   grades:Grade[] = [
     {value: '1', viewValue:"1°"},
@@ -61,7 +54,6 @@ export class FeelingStudentsComponent implements OnInit {
     this.formFileDes = this.formbuilder.group({
       gradeSel: ['',Validators.required],
       groupSel: ['',Validators.required],
-      subjectSel: ['',Validators.required],
     });
     this.user= JSON.parse(localStorage.getItem("user"));    
   }
@@ -71,45 +63,26 @@ export class FeelingStudentsComponent implements OnInit {
 
 
   searchStudents(){
-    this.materiaSelected=undefined;
     this.bimSelected=undefined;
     this.bimSelected2=undefined;
-    if (this.gradeSelected){
-      let subjects: Materia[] = [];
-      let data={
-        grade: this.gradeSelected,
-        group: this.groupSelected,
-        professor: this.user.username,
-      };
 
-      this.firebase.getSubjectsByProfessorGrade(data).then(response=>{
-        response.forEach(element => {
-          subjects.push({value: element, viewValue: element});
+    if(this.user.type=="Profesor"){
+      if (this.gradeSelected){
+        let data={
+          grade: this.gradeSelected,
+          group: this.groupSelected,
+        };
+
+        this.firebase.getListFeelingStudents(data).then(response=>{
+          console.log(JSON.stringify(response)+"...");
+          
         });
-        this.subjects = subjects;
-      });
+  
+        
+      }
     }
 
   }
 
-  searchStudentsTwo(){
-    if (this.gradeSelected != null && this.groupSelected != null && this.materiaSelected != null) {
-      // let bimT: Bim[] = [];
-      // let dataN = {
-      //   subject: this.materiaSelected,
-      //   grade: this.gradeSelected,
-      //   group: this.groupSelected,
-      // }
-      // this.firebase.getbimReport(dataN).then(response=>{        
-      //   this.bimRepSelected = response;
-      //   this.bimTI = response;
-      //   for (let i = 0; i < response; i++) {
-      //     bimT.push({value: i+1});
-      //   }
-      //   this.showScores();        
-      // });
-      // this.bimes = bimT;
-    }
-  }
 
 }
