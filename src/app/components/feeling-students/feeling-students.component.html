@@ -1,0 +1,56 @@
+<div class="image_background">
+
+    <app-header></app-header>
+
+    <br><br><br>
+    <p class="title">Percepción de Estudiantes</p>
+
+    <form [formGroup]="formFileDes" autocomplete="off" class="md-form">
+        <mat-toolbar-row>
+            <mat-form-field id="sGrade">
+                <mat-label>Grado</mat-label>
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="gradeSelected" formControlName="gradeSel">
+                    <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                        {{grade.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field id="sGroup">
+                <mat-label>Grupo</mat-label>
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="groupSelected" formControlName="groupSel">
+                    <mat-option *ngFor="let group of groups" [value]="group.value">
+                        {{group.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field id="gGR">
+                <mat-label>Materia</mat-label>
+                <mat-select (selectionChange)="searchStudentsTwo()" [(ngModel)]="materiaSelected" formControlName="subjectSel">
+                    <mat-option *ngFor="let subject of subjects" [value]="subject.value">
+                        {{subject.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar-row>
+    </form>
+
+    <br>
+
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Percepción General">
+            <br>
+            <!-- <app-general-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimRepSelected"></app-general-progress> -->
+        </mat-tab>
+
+
+
+        <mat-tab label="Percepción Individual">
+            <br>
+            <!-- <app-individual-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimTI"></app-individual-progress> -->
+        </mat-tab>
+
+    </mat-tab-group>
+
+</div>

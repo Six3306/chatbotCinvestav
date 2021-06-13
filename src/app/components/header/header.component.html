@@ -27,6 +27,8 @@
             <a *ngIf="typeMenu=='Profesor' && status==true" class="nav-item nav-link" id="goToScoresUsers" (click)="goToScoresUsers()">Calificar</a><span class="space"> &nbsp;&nbsp; </span>
             <a *ngIf="typeMenu=='Profesor' && status==true" class="nav-item nav-link" id="goToProgressGroup" (click)="progressGroup()">Progreso de Grupos</a><span class="space"> &nbsp;&nbsp; </span>
             <a *ngIf="typeMenu=='Profesor' && status==true" class="nav-item nav-link" id="goToHomeworks" (click)="goToHomeworks()">Tareas</a><span class="space"> &nbsp;&nbsp; </span>
+            <!--ADMINISTRADOR Y PROFESOR-->
+            <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Administrador') && status==true" class="nav-item nav-link" id="goToFeelings" (click)="goToFeelings()">Sentimientos Estudiantes</a><span class="space"> &nbsp;&nbsp; </span>
             <!--TODOS-->
             <a *ngIf="existUser" class="nav-item nav-link" id="exitAccount" (click)="exitAcount()">Cerrar Sesión</a>
         </div>

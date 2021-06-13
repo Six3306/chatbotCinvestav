@@ -100,6 +100,12 @@
         </div>
         <!-- Boton para entrar a las tarea de un estudiante-->
 
+        <!-- Boton para entrar a las tareas de estudiantes -->
+        <div *ngIf="(typeMenu=='Profesor' || typeMenu=='Administrador') && status==true" class="horizontal">
+            <img src="../assets/pictures/feeling.png" (click)="goToFeelings()" id="feelingsI">
+        </div>
+        <!-- Boton para entrar a las tareas de estudiantes -->
+
     </div>
 
     <div class="foot">

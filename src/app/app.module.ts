@@ -72,6 +72,9 @@ import { HomeworksComponent } from './components/homeworks/homeworks.component';
 import { ViewDetailsHomeworksComponent } from './dialogs/view-details-homeworks/view-details-homeworks.component';
 import { FeedbackHomeworkComponent } from './dialogs/feedback-homework/feedback-homework.component';
 import { HomeworksStudentComponent } from './components/homeworks-student/homeworks-student.component';
+import { FeelingStudentsComponent } from './components/feeling-students/feeling-students.component';
+import { FeelingGroupComponent } from './components/feelings/feeling-group/feeling-group.component';
+import { FeelingIndividualComponent } from './components/feelings/feeling-individual/feeling-individual.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -144,6 +147,9 @@ const angularMaterial=[
     ViewDetailsHomeworksComponent,
     FeedbackHomeworkComponent,
     HomeworksStudentComponent,
+    FeelingStudentsComponent,
+    FeelingGroupComponent,
+    FeelingIndividualComponent,
   ],
   imports: [
     BrowserAnimationsModule,

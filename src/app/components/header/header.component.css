@@ -27,6 +27,7 @@
 #goToChatbot,
 #goToScoresUsers,
 #goToHomeworks,
+#goToFeelings,
 #goToHomeworkStudent,
 #goToProgressStudent,
 #exitAccount {
@@ -35,6 +36,7 @@
 
 #adminCourStud:hover,
 #adminUsers:hover,
+#goToFeelings:hover,
 #adminRemind:hover,
 #adminGClass:hover,
 #goToGeneralFiles:hover,

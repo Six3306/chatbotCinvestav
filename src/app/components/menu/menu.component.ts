@@ -124,6 +124,11 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl('Homeworks-student');
   }
 
+  //dirige a la vista de sentimientos
+  goToFeelings(){
+    this.router.navigateByUrl('Feelings');
+  }
+
   /**
    * Metodo para dirigirse a la vista para validar usuarios 
    */

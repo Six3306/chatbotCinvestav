@@ -366,7 +366,6 @@ export class FirebaseService {
           }
           return arrayProfes;
         }
-
       });
     });
 
