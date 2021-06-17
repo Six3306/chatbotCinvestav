@@ -1,1 +1,74 @@
-<p>{{grade}}° {{group}}</p>
+<form [formGroup]="formFileDes" autocomplete="off" class="md-form">
+    <mat-toolbar-row>
+        <mat-form-field id="sStudent">
+            <mat-label>Estudiante</mat-label>
+            <mat-select (selectionChange)="selectStudent()" [(ngModel)]="studentSelected" formControlName="studentSel">
+                <mat-option *ngFor="let s of students" [value]="s">
+                    {{s}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </mat-toolbar-row>
+
+</form>
+
+
+<div id="graphS" *ngIf="band">
+    <div class="chart" *ngIf="this.feelRegisterInOrder.length>0">
+        <h4>Porcentajes de estados de ánimo</h4>
+        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors">
+            </canvas>
+    </div>
+    <div class="chart" *ngIf="this.feelRegisterInOrder.length==0 && band==true">
+        <h5>No ha registrado sentimientos el alumno</h5>
+    </div>
+
+    <br><br>
+    <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div id="titExp"><b>Historico</b></div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="example-container centrado">
+
+                <mat-table mat-table [dataSource]="dataSourceScoresH" matSort>
+                    <!-- fecha Column -->
+                    <ng-container matColumnDef="date">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> Fecha </b></mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.date}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+                    <!-- hora Column -->
+                    <ng-container matColumnDef="hour">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> Hora </b></mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.hour}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+                    <!-- sentimiento Column -->
+                    <ng-container matColumnDef="feelR">
+                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> Sentimiento </b></mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.feelR}} </mat-cell>
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsH; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsH;">
+                    </mat-row>
+
+                    <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumnsH; sticky: true" class="example-first-footer-row"></mat-footer-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+            </div>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+
+
+
+</div>

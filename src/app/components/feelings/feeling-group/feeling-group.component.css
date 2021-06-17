@@ -1,0 +1,36 @@
+#chaPas {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tableI {
+    width: 100%;
+}
+
+#listStudents {
+    width: 50%;
+}
+
+#listSF {
+    list-style: none;
+}
+
+#graphS {
+    width: 50%;
+}
+
+#graDon {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mat-accordion {
+    text-align: center;
+}
+
+#titExp,
+#titExp2 {
+    text-align: center;
+    width: 100%;
+}

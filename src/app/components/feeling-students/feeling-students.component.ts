@@ -23,16 +23,12 @@ export class FeelingStudentsComponent implements OnInit {
 
   formFileDes: FormGroup;
   user:User;
-  bimSelected:any;
-  bimSelected2:any;
   groupSelected:String="";
   gradeSelected:String="";
 
-  grades:Grade[] = [
-    {value: '1', viewValue:"1°"},
-    {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"}
-  ];
+  dataGeneral:any;
+
+  grades:Grade[] = [];
 
   groups:Group[] = [
     {value: 'A', viewValue:"A"},
@@ -59,29 +55,38 @@ export class FeelingStudentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getListGradeProfessor();
   }
 
+  getListGradeProfessor(){
+    this.firebase.getListGradesProfesor(this.user.username).then(gradesR =>{
+      for (let i = 0; i < gradesR.length; i++) {
+        this.grades.push({value: gradesR[i], viewValue: gradesR[i]+"°"});
+      }
+    });
+  }
+
+  selectGrade(){
+    this.groupSelected = undefined;
+    this.dataGeneral = undefined;
+  }
 
   searchStudents(){
-    this.bimSelected=undefined;
-    this.bimSelected2=undefined;
-
     if(this.user.type=="Profesor"){
-      if (this.gradeSelected){
+      if (this.gradeSelected && this.groupSelected){
         let data={
           grade: this.gradeSelected,
           group: this.groupSelected,
         };
 
         this.firebase.getListFeelingStudents(data).then(response=>{
-          console.log(JSON.stringify(response)+"...");
+          // console.log(JSON.stringify(response)+"...");
+          this.dataGeneral = response;
           
         });
-  
         
       }
     }
-
   }
 
 

@@ -417,6 +417,25 @@ export class FirebaseService {
     });
   }
 
+  //obtiene la lista de grados en los que da clases un profesor
+  getListGradesProfesor(nameProfesor) {
+    let arrGrades:any = [];
+    return this.database.database.ref(`Clases/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for(var grade in value){
+          for(var subject in value[grade]["Materias"]){
+            if(value[grade]["Materias"][subject]["profesor"] == nameProfesor){
+              arrGrades.push(grade);
+              break;
+            }
+          }
+        }
+      }
+      return arrGrades;
+    });
+  }
+
   //obtenemos las materias que imparte un profesor en cierto grado
   getSubjectsByProfessorGrade(data) {
     let arraySubjects: Array<String> = [];

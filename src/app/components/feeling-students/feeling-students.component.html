@@ -9,7 +9,7 @@
         <mat-toolbar-row>
             <mat-form-field id="sGrade">
                 <mat-label>Grado</mat-label>
-                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="gradeSelected" formControlName="gradeSel">
+                <mat-select (selectionChange)="selectGrade()" [(ngModel)]="gradeSelected" formControlName="gradeSel">
                     <mat-option *ngFor="let grade of grades" [value]="grade.value">
                         {{grade.viewValue}}
                     </mat-option>
@@ -18,8 +18,8 @@
 
             <mat-form-field id="sGroup">
                 <mat-label>Grupo</mat-label>
-                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="groupSelected" formControlName="groupSel">
-                    <mat-option *ngFor="let group of groups" [value]="group.value">
+                <mat-select [(ngModel)]="groupSelected" formControlName="groupSel">
+                    <mat-option *ngFor="let group of groups" [value]="group.value" (click)="searchStudents()">
                         {{group.viewValue}}
                     </mat-option>
                 </mat-select>
@@ -33,16 +33,17 @@
     <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Percepción General">
             <br>
-
-            <app-feeling-group [grade]="this.gradeSelected" [group]="this.groupSelected"></app-feeling-group>
+            <div id="grup">
+                <app-feeling-group [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-group>
+            </div>
         </mat-tab>
-
 
 
         <mat-tab label="Percepción Individual">
             <br>
-            <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected"></app-feeling-individual>
-            <!-- <app-individual-progress [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected" [arrScores]="this.arrayScores" [bimRepSelected]="this.bimTI"></app-individual-progress> -->
+            <div id="indiv">
+                <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-individual>
+            </div>
         </mat-tab>
 
     </mat-tab-group>

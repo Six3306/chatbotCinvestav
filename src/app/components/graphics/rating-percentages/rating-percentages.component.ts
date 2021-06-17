@@ -44,7 +44,7 @@ export class RatingPercentagesComponent implements OnInit {
   public pieChartColors = [
     {
       backgroundColor: ['rgba(29, 43, 70, 0.88)', 'rgba(44, 64, 104, 0.88)', 'rgba(66, 97, 158, 0.88)', 'rgba(100, 130, 190, 0.88)','rgba(136, 159, 205, 0.8)','rgba(169, 185, 219, 0.72)'],
-    },
+    }, 
   ];
 
   countScores(){
