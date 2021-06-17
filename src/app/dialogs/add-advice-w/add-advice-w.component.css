@@ -1,0 +1,52 @@
+.md-dialog-container {
+    background-color: #000;
+    width: 250px;
+    height: 250px
+}
+
+#buttons {
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+}
+
+.form {
+    width: 100%;
+}
+
+.inp {
+    width: 100%;
+}
+
+#btnCancel:hover {
+    background: #4d4d53;
+    color: white;
+}
+
+#textAreaAdvice {
+    text-align: center;
+}
+
+#btnReg:hover {
+    background: #1D2B46;
+    color: white;
+}
+
+#nameStudent {
+    text-align: center;
+}
+
+#formA {
+    width: 100%;
+    text-align: center;
+}
+
+#titExp {
+    text-align: center;
+    width: 100%;
+}
+
+.btn {
+    margin-left: auto;
+    margin-right: auto;
+}

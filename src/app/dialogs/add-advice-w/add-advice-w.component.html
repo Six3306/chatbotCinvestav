@@ -1,0 +1,47 @@
+<div id="content">
+    <h4 id="nameStudent">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{student|uppercase}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4><br>
+    <!--formulario para registrar las calificaciones de un alumno-->
+    <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div id="titExp">Apoyos registrados</div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <ul *ngFor="let advice of studentAdviceW">
+                <li><b>Consejo dado por: {{advice.nameProfesor}} a las {{advice.hour}} del {{advice.date}}</b>
+                    <p>{{advice.advice}}</p>
+
+                </li>
+            </ul>
+
+
+        </mat-expansion-panel>
+
+    </mat-accordion>
+    <br>
+    <form [formGroup]="formFile" id="formA">
+
+        <input matInput type="text" formControlName="nameStud" hidden>
+        <input matInput type="text" formControlName="dateRStud" hidden>
+        <input matInput type="text" formControlName="hourRStud" hidden>
+
+        <div>
+            <mat-form-field class="inp">
+                <textarea matInput id="textAreaAdvice" [(ngModel)]="textAreaReminder" placeholder="Ingresa algún consejo a brindar" formControlName="adviceContent"></textarea>
+            </mat-form-field>
+            <p></p>
+
+        </div>
+        <!--botones para cancelar o bien guardar las calificaciones-->
+        <div id="botons">
+            <div mat-dialog-actions id="buttons">
+                <button mat-button (click)="onClickNo()" class="btn" id="btnCancel">Cancelar</button>
+                <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" class="btn" id="btnReg" *ngIf="textAreaReminder != ''">Registrar</button>
+            </div>
+        </div>
+    </form>
+
+</div>

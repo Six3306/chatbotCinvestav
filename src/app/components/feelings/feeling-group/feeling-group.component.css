@@ -34,3 +34,13 @@
     text-align: center;
     width: 100%;
 }
+
+#btnSetAdvice:hover {
+    background: #1D2B46;
+}
+
+.md-dialog-container {
+    background-color: #000;
+    width: 250px;
+    height: 250px
+}

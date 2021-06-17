@@ -16,7 +16,8 @@
         public status:number,
         public date: String,
         public hour: String,
-        public feeling: String
+        public feeling: String,
+        public advicesw:any
       ){
   
       }

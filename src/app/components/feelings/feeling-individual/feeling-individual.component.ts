@@ -87,7 +87,6 @@ export class FeelingIndividualComponent implements OnInit {
   selectStudent() {
     this.feelRegisterInOrder = [];
     this.band = true;
-    console.log("NNNNNNNNNN"+this.studentSelected);
 
     let _pieChartData: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     for (var student in this.dataGeneral) {
@@ -141,7 +140,6 @@ export class FeelingIndividualComponent implements OnInit {
       }
     }
     this.pieChartData = _pieChartData;
-    console.log(JSON.stringify(this.feelRegisterInOrder));
     
     this.dataSourceScoresH = new MatTableDataSource(this.feelRegisterInOrder);
     this.dataSourceScoresH.paginator = this.paginator.first;

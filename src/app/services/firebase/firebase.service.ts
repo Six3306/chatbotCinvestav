@@ -10,6 +10,7 @@ import { Reminder } from 'src/app/models/Reminder.model';
 import { Homework } from 'src/app/models/Homework.model';
 import { FeelingStudent } from 'src/app/models/FeelingStudent.model';
 import { FeelingIStudent } from '../../models/FeelingIStudent.model';
+import { AdviceW } from '../../models/adviceW.model';
 
 
 @Injectable({
@@ -157,12 +158,12 @@ export class FirebaseService {
   }
 
   //retorna los datos de una tarea
-  getInfoHomeworkStudentSend(data){
+  getInfoHomeworkStudentSend(data) {
     let infoHomework: String;
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
-        infoHomework = (value["estatusFeedback"]+"@"+value["feedbackComment"]+"@"+value["fechaRetroalimentacion"]+"@"+value["horaRetroalimentacion"]+"@"+value["estatus"]);
+        infoHomework = (value["estatusFeedback"] + "@" + value["feedbackComment"] + "@" + value["fechaRetroalimentacion"] + "@" + value["horaRetroalimentacion"] + "@" + value["estatus"]);
       }
       return infoHomework;
     });
@@ -175,7 +176,7 @@ export class FirebaseService {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          arrayHomeworks.push(value[val].estatus + "@" + val + "@"+value[val].estatusFeedback+"@"+value[val].feedbackComment);
+          arrayHomeworks.push(value[val].estatus + "@" + val + "@" + value[val].estatusFeedback + "@" + value[val].feedbackComment);
         }
       }
       return arrayHomeworks;
@@ -189,7 +190,7 @@ export class FirebaseService {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          arrayHomeworks.push(value[val].estatus + "@" + val + "@"+value[val].estatusFeedback+"@"+value[val].feedbackComment);
+          arrayHomeworks.push(value[val].estatus + "@" + val + "@" + value[val].estatusFeedback + "@" + value[val].feedbackComment);
         }
       }
       return arrayHomeworks;
@@ -197,8 +198,8 @@ export class FirebaseService {
   }
 
   //obtiene el comentario de retroalimentacion de cierto alumno en cierta tarea
-  getFeedbackComment(data){
-    var fComment:String = "";
+  getFeedbackComment(data) {
+    var fComment: String = "";
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.homework}/entregados/${data.nameStudent}/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
@@ -360,8 +361,8 @@ export class FirebaseService {
                 }
               }
             }
-            if(!bTmp){
-              if(value[profe].estatusRecepcion == 1){
+            if (!bTmp) {
+              if (value[profe].estatusRecepcion == 1) {
                 arrayProfes.push(value[profe].correo + "#" + value[profe].nombre);
               }
             }
@@ -374,29 +375,95 @@ export class FirebaseService {
   }
 
   //obtiene los sentimientos generales de los estudiantes
-  getListFeelingStudents(data){
+  getListFeelingStudents(data) {
     var studentFeeling: Array<FeelingStudent> = [];
-
+    // var advicesW: Array<AdviceW> = [];
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
-        for(var studentE in value){
-          
-          if(data.grade == value[studentE]["grado"] && value[studentE]["grupo"]== data.group){
+        for (var studentE in value) {
+
+          if (data.grade == value[studentE]["grado"] && value[studentE]["grupo"] == data.group) {
             var studentIFeeling: Array<FeelingIStudent> = [];
-            if(value[studentE]["estadosAnimo"]!=""){
-              for(var eA in value[studentE]["estadosAnimo"]){//2 es desconocido
-                var stdIFeeling = new FeelingIStudent(eA.includes("matar")? value[studentE]["estadosAnimo"][eA]["estatus"] : 2, value[studentE]["estadosAnimo"][eA]["fecha"],eA.split("---")[1].split("--")[0], value[studentE]["estadosAnimo"][eA]["estadoA"]);
+            if (value[studentE]["estadosAnimo"] != "") {
+              for (var eA in value[studentE]["estadosAnimo"]) {//2 es desconocido
+                if (eA.includes("matar")) {
+                  var studentAdviceW: Array<AdviceW> = [];
+                  if (value[studentE]["estadosAnimo"][eA]["consejos"] != "") {
+                    for (var aW in value[studentE]["estadosAnimo"][eA]["consejos"]) {
+                      var adIW = new AdviceW(value[studentE]["estadosAnimo"][eA]["consejos"][aW]["fecha"], value[studentE]["estadosAnimo"][eA]["consejos"][aW]["hora"], value[studentE]["estadosAnimo"][eA]["consejos"][aW]["consejo"], value[studentE]["estadosAnimo"][eA]["consejos"][aW]["nombreProfesor"], value[studentE]["estadosAnimo"][eA]["consejos"][aW]["emailProfesor"]);
+                      studentAdviceW.push(adIW);
+                    }
+                    var stdIFeeling = new FeelingIStudent(value[studentE]["estadosAnimo"][eA]["estatus"], value[studentE]["estadosAnimo"][eA]["fecha"], eA.split("---")[1].split("--")[0], value[studentE]["estadosAnimo"][eA]["estadoA"], studentAdviceW);
+                  } else {
+                    var stdIFeeling = new FeelingIStudent(value[studentE]["estadosAnimo"][eA]["estatus"], value[studentE]["estadosAnimo"][eA]["fecha"], eA.split("---")[1].split("--")[0], value[studentE]["estadosAnimo"][eA]["estadoA"], null);
+                  }
+                } else {
+                  var stdIFeeling = new FeelingIStudent(2, value[studentE]["estadosAnimo"][eA]["fecha"], eA.split("---")[1].split("--")[0], value[studentE]["estadosAnimo"][eA]["estadoA"], null);
+                }
+                // var stdIFeeling = new FeelingIStudent(eA.includes("matar")? value[studentE]["estadosAnimo"][eA]["estatus"] : 2, value[studentE]["estadosAnimo"][eA]["fecha"],eA.split("---")[1].split("--")[0], value[studentE]["estadosAnimo"][eA]["estadoA"]);
                 studentIFeeling.push(stdIFeeling);
+
               }
             }
-            var studentF = new FeelingStudent(value[studentE]["nombre"],value[studentE]["grado"],value[studentE]["grupo"],studentIFeeling);
+            var studentF = new FeelingStudent(value[studentE]["nombre"], value[studentE]["grado"], value[studentE]["grupo"], studentIFeeling);
             studentFeeling.push(studentF);
-          }     
+          }
         }
       }
       return studentFeeling;
 
+    });
+  }
+
+  setAdviceToStudent(data) {
+    // this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
+    return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var emailStud in value) {
+          if (value[emailStud]["nombre"] == data.studentName) {
+            for (var edoA in value[emailStud]["estadosAnimo"]) {
+              if (value[emailStud]["estadosAnimo"][edoA]["fecha"] = data.dateRW && data.hourRW == (edoA.split("---")[1]).split("--")[0]) {
+                this.database.database.ref(`Usuarios/Alumnos/${value[emailStud]["correo"].split("@")[0]}/estadosAnimo/${edoA}/consejos/`).push({ fecha: data.fA, hora: data.hA, consejo: data.adviceC, nombreProfesor: data.professorN, emailProfesor: data.professorE });
+                break;
+              }
+            }
+            // break;
+          }
+        }
+
+      }
+
+    });
+  }
+
+  //obtiene los consejos que se le han dado a un alumno con sentimientos peligrosos
+  getListAdviceStudent(nameStudent) {
+    var studentAdviceW: Array<AdviceW> = [];
+    return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var emailStud in value) {
+          if (value[emailStud]["nombre"] == nameStudent) {
+            for (var edoA in value[emailStud]["estadosAnimo"]) {
+              if (edoA.includes("matar")) {
+                if (value[emailStud]["estadosAnimo"][edoA]["consejos"] != "") {
+                  for (var advi in value[emailStud]["estadosAnimo"][edoA]["consejos"]) {
+                    var adviceS = new AdviceW(value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["fecha"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["hora"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["consejo"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["nombreProfesor"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["emailProfesor"]);
+                    studentAdviceW.push(adviceS);
+                  }
+                }
+              }
+            }
+            break;
+          }
+
+        }
+
+      }
+
+      return studentAdviceW;
     });
   }
 
@@ -419,13 +486,13 @@ export class FirebaseService {
 
   //obtiene la lista de grados en los que da clases un profesor
   getListGradesProfesor(nameProfesor) {
-    let arrGrades:any = [];
+    let arrGrades: any = [];
     return this.database.database.ref(`Clases/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
-        for(var grade in value){
-          for(var subject in value[grade]["Materias"]){
-            if(value[grade]["Materias"][subject]["profesor"] == nameProfesor){
+        for (var grade in value) {
+          for (var subject in value[grade]["Materias"]) {
+            if (value[grade]["Materias"][subject]["profesor"] == nameProfesor) {
               arrGrades.push(grade);
               break;
             }
@@ -748,20 +815,20 @@ export class FirebaseService {
   }
 
   //guarda el comentario de retroalimentacion del profesor a una tarea, usada regularmente cuando no se sube un archivo corregido o con observaciones y solo se dan las observaciones en texto plano
-  public saveFeedbackCommentHomework(data, dateStr:string, hourStr:string ,feedbackComment: string){
-    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:dateStr, horaRetroalimentacion: hourStr});
+  public saveFeedbackCommentHomework(data, dateStr: string, hourStr: string, feedbackComment: string) {
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion: dateStr, horaRetroalimentacion: hourStr });
   }
 
 
   //para guardar la retroalimentacion de las tareas con o sin el archivo retroalimentado
-  public saveFeedbackHomework(data, dateStr:string, hourStr:string, feedbackComment: string, datos: any){
-    if(feedbackComment!="" || feedbackComment!= null){
-      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion:dateStr, horaRetroalimentacion: hourStr});
+  public saveFeedbackHomework(data, dateStr: string, hourStr: string, feedbackComment: string, datos: any) {
+    if (feedbackComment != "" || feedbackComment != null) {
+      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 1, feedbackComment: feedbackComment, fechaRetroalimentacion: dateStr, horaRetroalimentacion: hourStr });
     }
     var metadata = {
       customMetadata: {
         'alumno': data.nameStudent,
-        'fecha': dateStr+"T"+hourStr,
+        'fecha': dateStr + "T" + hourStr,
       }
     };
     return this.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/`).child(`${data.idHomework}/Retroalimentados/` + data.title).put(datos, metadata);
@@ -831,18 +898,18 @@ export class FirebaseService {
   }
 
   //obtiene metadatos de una tarea entregada de determinado alumno
-  public listDataHomeworkFileStudent(data){
+  public listDataHomeworkFileStudent(data) {
     return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/${data.title}/`).getMetadata();
   }
 
   //obtiene el link de una tarea entregada de determinado alumno
-  public listLinkHomeworkFileStudent(data){
+  public listLinkHomeworkFileStudent(data) {
     return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/${data.title}/`).getDownloadURL();
   }
 
   //lista lo contenido en la tarea de cierto alumno
   public listHomeworkFileFeedbackStudents(data) {
-      return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/Retroalimentados/${data.title}/`).getDownloadURL()
+    return this.storage.storage.ref(`Tareas/${data.subject}/${data.grade}/${data.group}/${data.idHomework}/Retroalimentados/${data.title}/`).getDownloadURL()
   }
 
 

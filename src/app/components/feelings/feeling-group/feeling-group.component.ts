@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, SimpleChanges, QueryList, ViewChildren } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
+import { FirebaseService } from '../../../services/firebase/firebase.service';
+import { AddAdviceWComponent } from '../../../dialogs/add-advice-w/add-advice-w.component';
+import { User } from '../../../models/User.model';
 
 
 export interface Feel {
@@ -25,6 +28,10 @@ export class FeelingGroupComponent implements OnInit {
   group: any
   @Input()
   dataGeneral: any
+
+
+  user:User;
+
 
   feelRegisterInOrder: Feel[] = [];
   feelRegisterInOrderW: Feel[] = [];
@@ -64,7 +71,12 @@ export class FeelingGroupComponent implements OnInit {
 
   @ViewChildren(MatSort)  sort:QueryList< MatSort>;
 
-  constructor() { }
+  constructor(
+    public firebase: FirebaseService,
+    public dialog : MatDialog,
+    ) { 
+      this.user= JSON.parse(localStorage.getItem("user"));    
+    }
 
   ngOnInit() {
   }
@@ -93,8 +105,9 @@ export class FeelingGroupComponent implements OnInit {
         for (var feel in this.dataGeneral[student]["feelings"]) {
 
           var feelMin: Feel;
-          var feelRTmp: Feel;
 
+          var feelRTmp: Feel;
+          
           feelMin = { nameStudent: this.dataGeneral[student]["username"], feelR: this.dataGeneral[student]["feelings"][feel]["feeling"], date: this.dataGeneral[student]["feelings"][feel]["date"], hour: this.dataGeneral[student]["feelings"][feel]["hour"], status: this.dataGeneral[student]["feelings"][feel]["status"] };
           var d = feelMin.date.split("-");
           var f = feelMin.hour.split(":");
@@ -112,7 +125,8 @@ export class FeelingGroupComponent implements OnInit {
               }
             }
             this.feelRegisterInOrder.push(feelMin);
-            feelMin.feelR=="matar"? this.feelRegisterInOrderW.push(feelMin): null;
+
+            
 
           if (this.dataGeneral[student]["feelings"][feel]["feeling"] == "triste") {
             _pieChartData[0] += 1;
@@ -144,10 +158,66 @@ export class FeelingGroupComponent implements OnInit {
     this.dataSourceScoresH = new MatTableDataSource(this.feelRegisterInOrder);
     this.dataSourceScoresH.paginator = this.paginator.first;
         
+    for (let i = 0; i < this.feelRegisterInOrder.length; i++) {
+      this.feelRegisterInOrder[i].feelR=="matar"? this.feelRegisterInOrderW.push(this.feelRegisterInOrder[i]): null;
+    }
+    
     this.dataSourceScoresW = new MatTableDataSource(this.feelRegisterInOrderW);
     // this.dataSourceScoresW.paginator = this.paginator2.first;
     this.pieChartData = _pieChartData;
 
+  }
+
+  setAdvice(row){
+    const dialogRef = this.dialog.open(AddAdviceWComponent,{
+      data: {
+        student: row.nameStudent,
+        hourR: row.hour,
+        dateR: row.date,
+      },
+
+        width: '50%',
+      
+    });
+    dialogRef.afterClosed().subscribe(response=>{
+        if(response!=undefined){
+          var dA = new Date();
+          var data = {
+            "fA" : dA.getDate()+"-"+(dA.getMonth()+1)+"-"+dA.getFullYear(),
+            "hA" : dA.getHours()+":"+dA.getMinutes()+":"+dA.getSeconds(),
+            "professorN" : this.user.username,
+            "professorE" : this.user.email,
+            "adviceC" : response.adviceContent,
+            "studentName" : response.nameStud,
+            "dateRW": response.dateRStud,
+            "hourRW": response.hourRStud,
+          }
+
+          this.firebase.setAdviceToStudent(data);
+
+          console.log("siii");
+          
+          // this.firebase.getEmailStudent(response.nameStud).then(response2=>{
+
+          //   let data={
+          //     subject: this.materiaSelected,
+          //     grade: this.gradeSelected,
+          //     group: this.groupSelected,
+          //     b1: response.bim1,
+          //     b2: response.bim2,
+          //     b3: response.bim3,
+          //     b4: response.bim4,
+          //     b5: response.bim5,
+          //     nameStudent: response.nameStud,
+          //     email: response2.split("@")[0]
+          //   };
+
+          //   this.firebase.refreshStudentScoreClass(data);
+          //   this.showScores();
+          //   this.openCustomerSnackBar();
+          // });      
+        } 
+    })
   }
 
 

@@ -75,6 +75,7 @@ import { HomeworksStudentComponent } from './components/homeworks-student/homewo
 import { FeelingStudentsComponent } from './components/feeling-students/feeling-students.component';
 import { FeelingGroupComponent } from './components/feelings/feeling-group/feeling-group.component';
 import { FeelingIndividualComponent } from './components/feelings/feeling-individual/feeling-individual.component';
+import { AddAdviceWComponent } from './dialogs/add-advice-w/add-advice-w.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -150,6 +151,7 @@ const angularMaterial=[
     FeelingStudentsComponent,
     FeelingGroupComponent,
     FeelingIndividualComponent,
+    AddAdviceWComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -181,7 +183,7 @@ const angularMaterial=[
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,
-    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword,
+    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword, AddAdviceWComponent,
   ]
 })
 export class AppModule { }
