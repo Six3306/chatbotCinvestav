@@ -107,14 +107,12 @@
                 </ng-container>
                 <!-- sentimiento Column -->
                 <ng-container matColumnDef="status">
-                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> Status </b></mat-header-cell>
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> tatus </b></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                         <!-- <a *ngIf="row.status==1">No resuelto</a> -->
-
-
                         <button mat-raised-button class="btn btn-info" (click)="setAdvice(row)" id="btnSetAdvice" *ngIf="row.status==1"> No resuelto</button>
+                        <button mat-raised-button class="btn btn-info" (click)="setAdviceR(row)" id="btnSetAdviceR" *ngIf="row.status==0"> Ya resuelto</button>
 
-                        <a *ngIf="row.status==0">Ya resuelto</a>
                     </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                 </ng-container>

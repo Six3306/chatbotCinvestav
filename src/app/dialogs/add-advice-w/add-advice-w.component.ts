@@ -14,6 +14,7 @@ export class AddAdviceWComponent implements OnInit {
   student: string = "";
   dateReg: string = "";
   hourReg: string = "";
+  status: number = 0;
   formFile: FormGroup;
   textAreaReminder: string = "";
   studentAdviceW: Array<AdviceW> = [];
@@ -29,11 +30,13 @@ export class AddAdviceWComponent implements OnInit {
       nameStud: [data.student,],
       dateRStud: [data.dateR,],
       hourRStud: [data.hourR,],
+      statusT: [data.status,],
       adviceContent: []
     });
     this.student = data.student;
     this.hourReg = data.hourR;
     this.dateReg = data.dateR;
+    this.status = data.status;
   }
 
   ngOnInit() {

@@ -35,7 +35,8 @@
     width: 100%;
 }
 
-#btnSetAdvice:hover {
+#btnSetAdvice:hover,
+#btnSetAdviceR:hover {
     background: #1D2B46;
 }
 

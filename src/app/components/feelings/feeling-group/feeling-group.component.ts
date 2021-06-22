@@ -160,12 +160,28 @@ export class FeelingGroupComponent implements OnInit {
         
     for (let i = 0; i < this.feelRegisterInOrder.length; i++) {
       this.feelRegisterInOrder[i].feelR=="matar"? this.feelRegisterInOrderW.push(this.feelRegisterInOrder[i]): null;
-    }
-    
+    }    
     this.dataSourceScoresW = new MatTableDataSource(this.feelRegisterInOrderW);
-    // this.dataSourceScoresW.paginator = this.paginator2.first;
     this.pieChartData = _pieChartData;
+  }
 
+  setAdviceR(row){
+    const dialogRef = this.dialog.open(AddAdviceWComponent,{
+      data: {
+        student: row.nameStudent,
+        hourR: row.hour,
+        dateR: row.date,
+        status: 0,
+      },
+        width: '50%',
+    });
+    dialogRef.afterClosed().subscribe(response=>{
+        if(response!=undefined){
+          var data = {
+            "studentName" : response.stautsT,
+          }
+        } 
+    })
   }
 
   setAdvice(row){
@@ -174,10 +190,9 @@ export class FeelingGroupComponent implements OnInit {
         student: row.nameStudent,
         hourR: row.hour,
         dateR: row.date,
+        status: 1,
       },
-
         width: '50%',
-      
     });
     dialogRef.afterClosed().subscribe(response=>{
         if(response!=undefined){
@@ -193,29 +208,7 @@ export class FeelingGroupComponent implements OnInit {
             "hourRW": response.hourRStud,
           }
 
-          this.firebase.setAdviceToStudent(data);
-
-          console.log("siii");
-          
-          // this.firebase.getEmailStudent(response.nameStud).then(response2=>{
-
-          //   let data={
-          //     subject: this.materiaSelected,
-          //     grade: this.gradeSelected,
-          //     group: this.groupSelected,
-          //     b1: response.bim1,
-          //     b2: response.bim2,
-          //     b3: response.bim3,
-          //     b4: response.bim4,
-          //     b5: response.bim5,
-          //     nameStudent: response.nameStud,
-          //     email: response2.split("@")[0]
-          //   };
-
-          //   this.firebase.refreshStudentScoreClass(data);
-          //   this.showScores();
-          //   this.openCustomerSnackBar();
-          // });      
+          this.firebase.setAdviceToStudent(data);     
         } 
     })
   }

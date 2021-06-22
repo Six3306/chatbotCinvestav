@@ -16,8 +16,6 @@
 
                 </li>
             </ul>
-
-
         </mat-expansion-panel>
 
     </mat-accordion>
@@ -27,8 +25,10 @@
         <input matInput type="text" formControlName="nameStud" hidden>
         <input matInput type="text" formControlName="dateRStud" hidden>
         <input matInput type="text" formControlName="hourRStud" hidden>
+        <input matInput type="text" formControlName="statusT" hidden>
 
-        <div>
+
+        <div *ngIf="status!=0">
             <mat-form-field class="inp">
                 <textarea matInput id="textAreaAdvice" [(ngModel)]="textAreaReminder" placeholder="Ingresa algún consejo a brindar" formControlName="adviceContent"></textarea>
             </mat-form-field>
@@ -38,7 +38,8 @@
         <!--botones para cancelar o bien guardar las calificaciones-->
         <div id="botons">
             <div mat-dialog-actions id="buttons">
-                <button mat-button (click)="onClickNo()" class="btn" id="btnCancel">Cancelar</button>
+                <button mat-button (click)="onClickNo()" class="btn" id="btnCancel" *ngIf="status==1">Cancelar</button>
+                <button mat-button (click)="onClickNo()" class="btn" id="btnCancel2" *ngIf="status==0">OK</button>
                 <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" class="btn" id="btnReg" *ngIf="textAreaReminder != ''">Registrar</button>
             </div>
         </div>
