@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { AdviceW } from '../../models/adviceW.model';
+import { User } from '../../models/User.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-add-advice-w',
@@ -16,9 +18,10 @@ export class AddAdviceWComponent implements OnInit {
   hourReg: string = "";
   status: number = 0;
   formFile: FormGroup;
+  bSP: boolean = false;
   textAreaReminder: string = "";
   studentAdviceW: Array<AdviceW> = [];
-
+user:User;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -37,6 +40,14 @@ export class AddAdviceWComponent implements OnInit {
     this.hourReg = data.hourR;
     this.dateReg = data.dateR;
     this.status = data.status;
+    this.user= JSON.parse(localStorage.getItem("user"));    
+    this.firebase.getInfoStatusAdviceProfessorStudent(data.title, this.user).then(response => {
+      if(response && this.status == 0){
+        this.bSP = true;
+      }
+    });
+    // console.log("aaaaaaaaaaaaa");
+    
   }
 
   ngOnInit() {

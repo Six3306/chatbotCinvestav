@@ -28,6 +28,8 @@
         <input matInput type="text" formControlName="statusT" hidden>
 
 
+        <a *ngIf="bSP" id="bsPS">El estudiante desactivo los consejos entrantes</a>
+
         <div *ngIf="status!=0">
             <mat-form-field class="inp">
                 <textarea matInput id="textAreaAdvice" [(ngModel)]="textAreaReminder" placeholder="Ingresa algún consejo a brindar" formControlName="adviceContent"></textarea>

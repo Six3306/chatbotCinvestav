@@ -416,6 +416,33 @@ export class FirebaseService {
     });
   }
 
+  //obtiene el estatus de cierta advertencia en el perfil del profesor
+  getInfoStatusAdviceProfessorStudent(title, user) {
+    var band= false;
+    
+    return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var profe in value) {
+          if (profe == user.email.split("@")[0]) {
+            if (value[profe]["alertaAnimo"] != "") {
+              for (var alertA in value[profe]["alertaAnimo"]) {
+                if (alertA.includes(title)) {
+                  if(value[profe]["alertaAnimo"][alertA]["estatus"]==1){
+                    band = true;
+                  }else{
+                    band = false;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      return band;
+    });
+  }
+
   setAdviceToStudent(data) {
     // this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {

@@ -82,7 +82,7 @@ export class FeelingStudentsComponent implements OnInit {
         this.firebase.getListFeelingStudents(data).then(response=>{
           // console.log(JSON.stringify(response)+"...");
           this.dataGeneral = response;
-          console.log(this.dataGeneral);
+          // console.log(this.dataGeneral);
           
         });
         
