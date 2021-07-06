@@ -46,7 +46,7 @@ export class FirebaseService {
    * @param file arhivo a guardar de firebase este es un json de tipo file
    */
   addLinkMaterial(data, urls, publicationDate) {
-    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.title}`).set({ links: urls, descripcion: data.description, fechaPublicacion: publicationDate, estatus: 1, nconsultado: 0, puntaje:0 });
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.title}`).set({ links: urls, descripcion: data.description, fechaPublicacion: publicationDate, estatus: 1, nconsultado: 0, recomendados:{tareas:"",examenes:"",general: {desconocidos: 0, logrados: 0, fallados: 0}} });
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
