@@ -1,5 +1,11 @@
 <div class="contenedor">
     <div class="centrado2">
+        <div *ngIf="this.type=='g'">
+            <h5><b>Duda de {{this.student}}:</b></h5>
+            <h6>{{this.doubtContent}}</h6>
+            <br>
+        </div>
+
         <h5><b>Materiales recomendados:</b></h5>
         <ul *ngFor="let r of this.recommendedM" id="recM">
             <li>{{r}}</li>

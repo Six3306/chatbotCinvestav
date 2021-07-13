@@ -1,22 +1,22 @@
 <div class="centrado2" *ngIf="this.grade!=null && this.group!=null && this.subject!=null">
     <mat-toolbar-row>
         <mat-form-field class="gGR">
-            <mat-label>Tarea</mat-label>
-            <mat-select (selectionChange)="selectHomework()" [(ngModel)]="homeworkSelected">
-                <mat-option *ngFor="let homework of homeworks" [value]="homework.id">
-                    {{homework.theme}}
+            <mat-label>Examen</mat-label>
+            <mat-select (selectionChange)="selectExam()" [(ngModel)]="examSelected">
+                <mat-option *ngFor="let exam of exams" [value]="exam.id">
+                    {{exam.theme}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
     </mat-toolbar-row>
 
-    <h6><b>Descripción de la Tarea:</b></h6>
-    <p>{{this.descriptionH}}</p>
+    <h6><b>Descripción del Examen</b></h6>
+    <p>{{this.descriptionE}}</p>
 </div>
 
 <br><br>
 <div class="example-container centrado">
-    <mat-table mat-table [dataSource]="dataSourceHomeworkDoubt" matSort style="max-height: 300px;">
+    <mat-table mat-table [dataSource]="dataSourceExamDoubt" matSort style="max-height: 300px;">
 
         <!-- Name NOMBRE -->
         <ng-container matColumnDef="student">
@@ -50,13 +50,13 @@
         <!-- FEEDBACK -->
         <ng-container matColumnDef="details">
             <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Detalles </mat-header-cell>
-            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackH(row)" id="btnFeedback"> ... </button> </mat-cell>
+            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackE(row)" id="btnFeedback"> ... </button> </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
 
         <ng-container matColumnDef="recommendedMaterial">
-            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Fecha(dd/mm/yy)</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Fecha(dd-mm-yy)</mat-header-cell>
             <mat-cell mat-cell *matCellDef="let row"> {{row.recommendedMaterial}} </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
@@ -73,19 +73,19 @@
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumnsHomework; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumnsHomework;">
+        <mat-header-row *matHeaderRowDef="displayedColumnsExam; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsExam;">
         </mat-row>
+        <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumnsExam; sticky: true" class="example-first-footer-row"></mat-footer-row>
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 10, 25, 100]"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
 
-
-<div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.homeworkSelected != null">
+<div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.examSelected != null">
     <br>
-    <h4 class="subT">Percepciones de los alumnos de las recomendaciones en dudas de tareas:</h4>
-    <h6><b>Desconocido:</b> Los alumnos no han dado retroalimentación del material recomendado para la tarea, <b>Fallado: </b>Los alumnos mencionan que el material no les ha resuelto sus dudas de la tarea, <b>Logrado: </b>Los alumnos mencionan que el material
-        les ha ayudado a resolver sus dudas de la tarea.</h6>
+    <h4 class="subT">Percepciones de los alumnos de las recomendaciones en dudas de examenes:</h4>
+    <h6><b>Desconocido:</b> Los alumnos no han dado retroalimentación del material recomendado para el examen, <b>Fallado: </b>Los alumnos mencionan que el material no les ha resuelto sus dudas del examen, <b>Logrado: </b>Los alumnos mencionan que el material
+        les ha ayudado a resolver sus dudas del examen.</h6>
 
     <div id="chaPas">
         <div class="chart">

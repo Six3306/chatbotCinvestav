@@ -46,7 +46,8 @@
 
 .mat-column-recommendedMaterial,
 .mat-column-email,
-.mat-column-id {
+.mat-column-id,
+.mat-column-doubt {
     width: 0% !important;
     font-size: 0px;
     flex: 0 0 0% !important;

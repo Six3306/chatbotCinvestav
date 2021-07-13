@@ -1,25 +1,25 @@
-import { Component, Input, OnInit, SimpleChanges, QueryList, ViewChildren } from '@angular/core';
-import { FirebaseService } from '../../../services/firebase/firebase.service';
+import { Component, Input, OnInit, ViewChildren, QueryList, SimpleChanges } from '@angular/core';
 import { User } from '../../../models/User.model';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { Doubt } from '../../../models/Doubt.model';
+import { FirebaseService } from '../../../services/firebase/firebase.service';
 import { DetailsDoubtComponent } from '../../../dialogs/details-doubt/details-doubt.component';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 
-export interface HomeworkTmp {
+
+export interface ExamTmp {
   id: any,
   theme: any,
 }
 
+
 @Component({
-  selector: 'app-homework-doubts',
-  templateUrl: './homework-doubts.component.html',
-  styleUrls: ['./homework-doubts.component.css']
+  selector: 'app-exam-doubts',
+  templateUrl: './exam-doubts.component.html',
+  styleUrls: ['./exam-doubts.component.css']
 })
-
-
-export class HomeworkDoubtsComponent implements OnInit {
+export class ExamDoubtsComponent implements OnInit {
 
   @Input()
   grade: any
@@ -28,13 +28,13 @@ export class HomeworkDoubtsComponent implements OnInit {
   @Input()
   subject: any
 
-  homeworkSelected: String;
-  homeworks: HomeworkTmp[] = [];
+  examSelected: String;
+  exams: ExamTmp[] = [];
   user: User;
-  descriptionH: String;
+  descriptionE: String;
 
-  dataSourceHomeworkDoubt: MatTableDataSource<Doubt>;
-  displayedColumnsHomework: string[] = ['student', 'date', 'hour', 'status', 'details', 'recommendedMaterial', 'email', 'id'];
+  dataSourceExamDoubt: MatTableDataSource<Doubt>;
+  displayedColumnsExam: string[] = ['student', 'date', 'hour', 'status', 'details', 'recommendedMaterial', 'email', 'id'];
 
   @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
   @ViewChildren(MatSort) sort: QueryList<MatSort>;
@@ -50,9 +50,9 @@ export class HomeworkDoubtsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.grade != undefined || changes.group != undefined || changes.subject != undefined) {
-      this.homeworkSelected = null;
-      this.homeworks = [];
-      this.descriptionH = "";
+      this.examSelected = null;
+      this.exams = [];
+      this.descriptionE = "";
       this.pieChartData = [0,0,0];
       if ((this.grade == "1" || this.grade == "2" || this.grade == "3") && (this.group == "A" || this.group == "B" || this.group == "C" || this.group == "D" || this.group == "E" || this.group == "F" || this.group == "G" || this.group == "H" || this.group == "I" || this.group == "J") && (this.subject != undefined)) {
         let data = {
@@ -60,33 +60,40 @@ export class HomeworkDoubtsComponent implements OnInit {
           "group": this.group,
           "subject": this.subject
         }
-        this.firebase.getHomeworksNameBySubject(data).then(response => {
+
+
+        this.firebase.getExamsNameBySubject(data).then(response => {
           for (let i = 0; i < response.length; i++) {
-            this.homeworks.push({ "id": response[i]["id"], "theme": response[i]["theme"] });
+            this.exams.push({ "id": response[i]["id"], "theme": response[i]["theme"] });
+
           }
+
         });
       }
 
     }
   }
 
-  selectHomework() {
+  selectExam() {
     let data = {
       "grade": this.grade,
       "group": this.group,
       "subject": this.subject,
-      "idHomework": this.homeworkSelected,
+      "idExam": this.examSelected,
     }
-    this.firebase.getDoubtsByHomework(data).then(response => {
-      this.descriptionH = response["description"];
-      this.dataSourceHomeworkDoubt = new MatTableDataSource(response["homeworkDoubts"]);
-      this.dataSourceHomeworkDoubt.paginator = this.paginator.first;
-      this.dataSourceHomeworkDoubt.sort = this.sort.first;
-      this.pieChartData = [response["sumD"],response["sumF"],response["sumL"]];
+
+    this.firebase.getDoubtsByExam(data).then(response => {
+      this.descriptionE = response["descriptionE"];
+      this.dataSourceExamDoubt = new MatTableDataSource(response["examDoubts"]);
+      this.dataSourceExamDoubt.paginator = this.paginator.first;
+      this.dataSourceExamDoubt.sort = this.sort.first;
+
+      this.pieChartData = [response["sumD"], response["sumF"], response["sumL"]];
+
     });
   }
 
-  viewFeedbackH(row) {
+  viewFeedbackE(row) {
     const dialogRef = this.dialog.open(DetailsDoubtComponent, {
       data: {
         "student": row.student,
@@ -96,8 +103,8 @@ export class HomeworkDoubtsComponent implements OnInit {
         "grade": this.grade,
         "group": this.group,
         "subject": this.subject,
-        "idG": this.homeworkSelected,
-        "type": "h",
+        "idG": this.examSelected,
+        "type": "e",
         "recomended": row.recommendedMaterial,
         "email": row.email,
         "id": row.id,

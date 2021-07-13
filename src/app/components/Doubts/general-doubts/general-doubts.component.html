@@ -1,22 +1,6 @@
-<div class="centrado2" *ngIf="this.grade!=null && this.group!=null && this.subject!=null">
-    <mat-toolbar-row>
-        <mat-form-field class="gGR">
-            <mat-label>Tarea</mat-label>
-            <mat-select (selectionChange)="selectHomework()" [(ngModel)]="homeworkSelected">
-                <mat-option *ngFor="let homework of homeworks" [value]="homework.id">
-                    {{homework.theme}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </mat-toolbar-row>
-
-    <h6><b>Descripción de la Tarea:</b></h6>
-    <p>{{this.descriptionH}}</p>
-</div>
-
 <br><br>
 <div class="example-container centrado">
-    <mat-table mat-table [dataSource]="dataSourceHomeworkDoubt" matSort style="max-height: 300px;">
+    <mat-table mat-table [dataSource]="dataSourceGeneralDoubt" matSort style="max-height: 300px;">
 
         <!-- Name NOMBRE -->
         <ng-container matColumnDef="student">
@@ -50,13 +34,13 @@
         <!-- FEEDBACK -->
         <ng-container matColumnDef="details">
             <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Detalles </mat-header-cell>
-            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackH(row)" id="btnFeedback"> ... </button> </mat-cell>
+            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackE(row)" id="btnFeedback"> ... </button> </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
 
         <ng-container matColumnDef="recommendedMaterial">
-            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Fecha(dd/mm/yy)</mat-header-cell>
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Fecha(dd-mm-yy)</mat-header-cell>
             <mat-cell mat-cell *matCellDef="let row"> {{row.recommendedMaterial}} </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
@@ -73,19 +57,24 @@
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumnsHomework; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumnsHomework;">
+        <ng-container matColumnDef="doubt">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>F</mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.doubt}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumnsGeneral; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsGeneral;">
         </mat-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[10, 10, 25, 100]"></mat-paginator>
 </div>
 
-
-<div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.homeworkSelected != null">
+<div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null">
     <br>
-    <h4 class="subT">Percepciones de los alumnos de las recomendaciones en dudas de tareas:</h4>
-    <h6><b>Desconocido:</b> Los alumnos no han dado retroalimentación del material recomendado para la tarea, <b>Fallado: </b>Los alumnos mencionan que el material no les ha resuelto sus dudas de la tarea, <b>Logrado: </b>Los alumnos mencionan que el material
-        les ha ayudado a resolver sus dudas de la tarea.</h6>
+    <h4 class="subT">Percepciones de los alumnos de la resolución de sus dudas generales:</h4>
+    <h6><b>Desconocido:</b> Los alumnos no han dado retroalimentación sobre si se les resolvió o no su duda general, <b>Fallado: </b>Los alumnos mencionan que no se les resolvió su duda general, <b>Logrado: </b>Los alumnos mencionan que si se les resolvió
+        correctamente su duda general</h6>
 
     <div id="chaPas">
         <div class="chart">

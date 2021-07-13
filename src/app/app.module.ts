@@ -80,6 +80,8 @@ import { DoubtsComponent } from './components/Doubts/doubts/doubts.component';
 import { MaterialDoubtsComponent } from './components/Doubts/material-doubts/material-doubts.component';
 import { HomeworkDoubtsComponent } from './components/Doubts/homework-doubts/homework-doubts.component';
 import { DetailsDoubtComponent } from './dialogs/details-doubt/details-doubt.component';
+import { ExamDoubtsComponent } from './components/Doubts/exam-doubts/exam-doubts.component';
+import { GeneralDoubtsComponent } from './components/Doubts/general-doubts/general-doubts.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -161,6 +163,8 @@ const angularMaterial=[
     MaterialDoubtsComponent,
     HomeworkDoubtsComponent,
     DetailsDoubtComponent,
+    ExamDoubtsComponent,
+    GeneralDoubtsComponent,
   ],
   imports: [
     BrowserAnimationsModule,

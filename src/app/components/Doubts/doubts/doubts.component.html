@@ -61,6 +61,7 @@
         <mat-tab label="Dudas Examenes">
             <br>
             <div id="indiv">
+                <app-exam-doubts [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected"></app-exam-doubts>
                 <!-- <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-individual> -->
             </div>
         </mat-tab>
@@ -68,6 +69,7 @@
         <mat-tab label="Dudas Generales">
             <br>
             <div id="indiv">
+                <app-general-doubts [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected"></app-general-doubts>
                 <!-- <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-individual> -->
             </div>
         </mat-tab>

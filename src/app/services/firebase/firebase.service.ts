@@ -47,7 +47,7 @@ export class FirebaseService {
    * @param file arhivo a guardar de firebase este es un json de tipo file
    */
   addLinkMaterial(data, urls, publicationDate) {
-    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.title}`).set({ links: urls, descripcion: data.description, fechaPublicacion: publicationDate, estatus: 1, nconsultado: 0, recomendados:{tareas:"",examenes:"",general: {desconocidos: 0, logrados: 0, fallados: 0}} });
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.title}`).set({ links: urls, descripcion: data.description, fechaPublicacion: publicationDate, estatus: 1, nconsultado: 0, recomendados: { tareas: "", examenes: "", general: { desconocidos: 0, logrados: 0, fallados: 0 } } });
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
@@ -128,9 +128,9 @@ export class FirebaseService {
     });
   }
 
-  
+
   //funcion para obtener la lista de materiales de apoyo
-  getListMaterials(data){
+  getListMaterials(data) {
     var arrayMaterial = [];
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/`).once('value').then((snapshot) => {
       const value = snapshot.val();
@@ -143,7 +143,7 @@ export class FirebaseService {
     });
   }
 
-  getInfoMaterialSelected(data){
+  getInfoMaterialSelected(data) {
     var dataR = {
       "descripcion": "",
       "estatus": "",
@@ -162,19 +162,19 @@ export class FirebaseService {
       const value = snapshot.val();
       if (value !== null) {
 
-        if(value["Materiales"][data.materialSelected]["recomendados"]["tareas"]!=""){
-          for(var tarea in value["Materiales"][data.materialSelected]["recomendados"]["tareas"]){
-            dataR["homeworks"].push({"nameHomework": value["Tareas"][value["Materiales"][data.materialSelected]["recomendados"]["tareas"][tarea]["tarea"]]["tema"], "score": value["Materiales"][data.materialSelected]["recomendados"]["tareas"][tarea]["puntaje"]});
-          }
-        }
-        
-        if(value["Materiales"][data.materialSelected]["recomendados"]["examenes"]!=""){
-          for(var exam in value["Materiales"][data.materialSelected]["recomendados"]["examenes"]){
-            dataR["exams"].push({"nameExam": value["Examenes"][value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["examen"]]["dia"]+" a las "+value["Examenes"][value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["examen"]]["hora"], "score": value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["puntaje"]});
+        if (value["Materiales"][data.materialSelected]["recomendados"]["tareas"] != "") {
+          for (var tarea in value["Materiales"][data.materialSelected]["recomendados"]["tareas"]) {
+            dataR["homeworks"].push({ "nameHomework": value["Tareas"][value["Materiales"][data.materialSelected]["recomendados"]["tareas"][tarea]["tarea"]]["tema"], "score": value["Materiales"][data.materialSelected]["recomendados"]["tareas"][tarea]["puntaje"] });
           }
         }
 
-        dataR["descripcion"] =  value["Materiales"][data.materialSelected]["descripcion"];
+        if (value["Materiales"][data.materialSelected]["recomendados"]["examenes"] != "") {
+          for (var exam in value["Materiales"][data.materialSelected]["recomendados"]["examenes"]) {
+            dataR["exams"].push({ "nameExam": value["Examenes"][value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["examen"]]["dia"] + " a las " + value["Examenes"][value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["examen"]]["hora"], "score": value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["puntaje"] });
+          }
+        }
+
+        dataR["descripcion"] = value["Materiales"][data.materialSelected]["descripcion"];
         dataR["estatus"] = value["Materiales"][data.materialSelected]["estatus"];
         dataR["fecha"] = value["Materiales"][data.materialSelected]["fechaPublicacion"];
         dataR["nconsultado"] = value["Materiales"][data.materialSelected]["nconsultado"];
@@ -182,14 +182,14 @@ export class FirebaseService {
         dataR["generalD"] = value["Materiales"][data.materialSelected]["recomendados"]["general"]["desconocidos"];
         dataR["generalF"] = value["Materiales"][data.materialSelected]["recomendados"]["general"]["fallados"];
         dataR["generalL"] = value["Materiales"][data.materialSelected]["recomendados"]["general"]["logrados"];
-        
+
         return dataR;
       }
     });
   }
 
   //obtenemos los examenes de determinado material 
-  getExamsOfMaterial(data, exams){
+  getExamsOfMaterial(data, exams) {
     // return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.materialSelected}/`).once('value').then((snapshot) => {
     //   const value = snapshot.val();
     //   if (value !== null) {
@@ -226,38 +226,144 @@ export class FirebaseService {
   }
 
   //regresa los nombres de las tareas
-  getHomeworksNameBySubject(data){
+  getHomeworksNameBySubject(data) {
     let arrayNameHomeworks = [];
     return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          arrayNameHomeworks.push({"id": val, "theme":value[val].tema});
+          arrayNameHomeworks.push({ "id": val, "theme": value[val].tema });
         }
       }
       return arrayNameHomeworks;
     });
   }
 
-  //regresa las dudas de determinada tarea
-  getDoubtsByHomework(data){
-    let arrayHomeworkDoubts: Array<Doubt> = [];
-    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/dudas/`).once('value').then((snapshot) => {
+  //regresa los nombre de los examenes
+  getExamsNameBySubject(data) {
+    let arrayNameExams = [];
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Examenes/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
-          let recommendedM:string[] = [];
-          for (let i = 0; i < value[val].materialesRecomendados.length; i++) {
-            recommendedM.push(value[val].materialesRecomendados[i]["material"]);
-          }
-          let nHomeworkDoubt = new Doubt(val, value[val].alumno, value[val].correo, "", value[val].estatus, value[val].fecha, value[val].hora, recommendedM);
-          arrayHomeworkDoubts.push(nHomeworkDoubt);
+          arrayNameExams.push({ "id": val, "theme": value[val].dia + " a las " + value[val].hora });
         }
       }
-      return arrayHomeworkDoubts;
+      return arrayNameExams;
     });
   }
 
+  //regresa las dudas de determinada tarea
+  getDoubtsByHomework(data) {
+    var arrayHomeworkDoubts: Array<Doubt> = [];
+    var description;
+    var sumF = 0;
+    var sumL = 0;
+    var sumD = 0;
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        description = value["descripcion"];
+        for (var val in value["dudas"]) {
+          let recommendedM: string[] = [];
+          for (let i = 0; i < value["dudas"][val].materialesRecomendados.length; i++) {
+            recommendedM.push(value["dudas"][val].materialesRecomendados[i]["material"]);
+          }
+          if(value["dudas"][val].estatus==0){
+            sumF++;
+          }else if(value["dudas"][val].estatus==1){
+            sumL++;
+          }else if(value["dudas"][val].estatus==2){
+            sumD++;
+          }
+          let nHomeworkDoubt = new Doubt(val, value["dudas"][val].alumno, value["dudas"][val].correo, "", value["dudas"][val].estatus, value["dudas"][val].fecha, value["dudas"][val].hora, recommendedM);
+          arrayHomeworkDoubts.push(nHomeworkDoubt);
+        }
+      }
+      let dataR = {
+        "homeworkDoubts": arrayHomeworkDoubts,
+        "description": description,
+        "sumF": sumF,
+        "sumL": sumL,
+        "sumD": sumD,
+      }
+      return dataR;
+    });
+  }
+
+  //regresa las dudas generales
+  getDoubtsGeneral(data) {
+    var arrayGeneralDoubts: Array<Doubt> = [];
+    var sumF = 0;
+    var sumL = 0;
+    var sumD = 0;
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/DudasAlumnos/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var doubt in value) {
+          let recommendedM: string[] = [];
+          for (let i = 0; i < value[doubt]["materialesRecomendados"].length; i++) {
+            recommendedM.push(value[doubt]["materialesRecomendados"][i]["material"]);
+          }
+          if(value[doubt]["estatus"]==0){
+            sumF++;
+          }else if(value[doubt]["estatus"]==1){
+            sumL++;
+          }else if(value[doubt]["estatus"]==2){
+            sumD++;
+          }
+          let nGeneralDoubt = new Doubt(doubt, value[doubt]["alumno"], value[doubt]["correo"], value[doubt]["duda"], value[doubt]["estatus"], value[doubt]["fecha"], value[doubt]["hora"], recommendedM);
+          arrayGeneralDoubts.push(nGeneralDoubt);
+        }
+      }
+      let dataR = {
+        "generalDoubts": arrayGeneralDoubts,
+        "sumF": sumF,
+        "sumL": sumL,
+        "sumD": sumD,
+      }
+      return dataR;
+    });
+  }
+
+
+  //regresa las dudas de determinado examen
+  getDoubtsByExam(data) {
+    var arrayExamDoubts: Array<Doubt> = [];
+    var descriptionE;
+    var sumF = 0;
+    var sumL = 0;
+    var sumD = 0;
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Examenes/${data.idExam}/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var val in value["dudas"]) {
+          descriptionE = value["descripcion"]
+          let recommendedM: string[] = [];
+          for (let i = 0; i < value["dudas"][val].materialesRecomendados.length; i++) {
+            recommendedM.push(value["dudas"][val].materialesRecomendados[i]["material"]);
+          }
+          if(value["dudas"][val].estatus==0){
+            sumF++;
+          }else if(value["dudas"][val].estatus==1){
+            sumL++;
+          }else if(value["dudas"][val].estatus==2){
+            sumD++;
+          }
+          let nExamDoubt = new Doubt(val, value["dudas"][val].alumno, value["dudas"][val].correo, "", value["dudas"][val].estatus, value["dudas"][val].fecha, value["dudas"][val].hora, recommendedM);
+          arrayExamDoubts.push(nExamDoubt);
+        }
+      }
+      let dataR = {
+        "examDoubts": arrayExamDoubts,
+        "descriptionE": descriptionE,
+        "sumF": sumF,
+        "sumL": sumL,
+        "sumD": sumD,
+      }
+      return dataR;
+    });
+  }
 
   //regresa las tareas por materia
   getHomeworksBySubject(data, subjectName) {
@@ -536,8 +642,8 @@ export class FirebaseService {
 
   //obtiene el estatus de cierta advertencia en el perfil del profesor
   getInfoStatusAdviceProfessorStudent(title, user) {
-    var band= false;
-    
+    var band = false;
+
     return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
@@ -546,9 +652,9 @@ export class FirebaseService {
             if (value[profe]["alertaAnimo"] != "") {
               for (var alertA in value[profe]["alertaAnimo"]) {
                 if (alertA.includes(title)) {
-                  if(value[profe]["alertaAnimo"][alertA]["estatus"]==1){
+                  if (value[profe]["alertaAnimo"][alertA]["estatus"] == 1) {
                     band = true;
-                  }else{
+                  } else {
                     band = false;
                   }
                 }
@@ -848,15 +954,15 @@ export class FirebaseService {
       this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
-      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', retroalimentacionDudas:'', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
+      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', retroalimentacionDudas: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
       return true;
     }
   }
 
 
   //da retroalimentacion de cierta duda del estudiante
-  setFeedBackDoubtStudent(data){
-    return this.database.database.ref(`Usuarios/Alumnos/${data.email.split("@")[0]}/retroalimentacionDudas/`).push({id:data.id,  tipo: data.type, grado: data.grade, grupo: data.group, materia: data.subject, idD: data.idG, estatus: 1, retroalimentacion: data.feedB });
+  setFeedBackDoubtStudent(data) {
+    return this.database.database.ref(`Usuarios/Alumnos/${data.email.split("@")[0]}/retroalimentacionDudas/`).push({ idDuda: data.id, tipo: data.type, grado: data.grade, grupo: data.group, materia: data.subject, idMaterialGeneral: data.idG, estatus: 1, retroalimentacion: data.feedB });
   }
 
   //obtiene el estatus de recepcion
@@ -872,21 +978,21 @@ export class FirebaseService {
   }
 
   //obtiene si esta ya o no  registrada una retroalimentacion a una duda de un alumno
-  getStatusFeedbackDoubt(id, email){
+  getStatusFeedbackDoubt(id, email) {
     return this.database.database.ref(`Usuarios/Alumnos/${email.split("@")[0]}/retroalimentacionDudas/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
-        if(value!=""){
-          for(var feedb in value){
-            if(value[feedb]["id"] == id){
+        if (value != "") {
+          for (var feedb in value) {
+            if (value[feedb]["idDuda"] == id) {
               return true;
               break;
             }
           }
-        }else{
+        } else {
           false;
         }
-      }else{
+      } else {
         false;
       }
     });
