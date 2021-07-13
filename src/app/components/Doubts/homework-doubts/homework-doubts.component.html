@@ -1,0 +1,78 @@
+<div class="centrado2" *ngIf="this.grade!=null && this.group!=null && this.subject!=null">
+    <mat-toolbar-row>
+        <mat-form-field class="gGR">
+            <mat-label>Tarea</mat-label>
+            <mat-select (selectionChange)="selectHomework()" [(ngModel)]="homeworkSelected">
+                <mat-option *ngFor="let homework of homeworks" [value]="homework.id">
+                    {{homework.theme}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-toolbar-row>
+</div>
+
+<br><br>
+<div class="example-container centrado">
+    <mat-table mat-table [dataSource]="dataSourceHomeworkDoubt" matSort style="max-height: 300px;">
+
+        <!-- Name NOMBRE -->
+        <ng-container matColumnDef="student">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Alumno </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.student}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <!-- Grade REMITENTE -->
+        <ng-container matColumnDef="date">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Fecha(dd/mm/yy)</mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.date}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <!-- ID LINK -->
+        <ng-container matColumnDef="hour">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Hora </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.hour}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <!-- STATUS -->
+        <ng-container matColumnDef="status">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <a id="status0" *ngIf="row.status==0" title="No resuelta">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <a id="status1" *ngIf="row.status==1" title="Si resuelta">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <a id="status2" *ngIf="row.status==2" title="Desconocida">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <!-- FEEDBACK -->
+        <ng-container matColumnDef="details">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Detalles </mat-header-cell>
+            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackH(row)" id="btnFeedback"> ... </button> </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="recommendedMaterial">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>Fecha(dd/mm/yy)</mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.recommendedMaterial}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>F</mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+            <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>F</mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumnsHomework; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsHomework;">
+        </mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 10, 25, 100]"></mat-paginator>
+</div>

@@ -114,7 +114,6 @@ export class MaterialDoubtsComponent implements OnInit {
     });
   }
 
-
   selectHomework(){
     if(parseInt(this.homeworkSelected+"")==0){
       this.levelHomework = 2;

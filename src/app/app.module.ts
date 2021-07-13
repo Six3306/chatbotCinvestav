@@ -78,6 +78,8 @@ import { FeelingIndividualComponent } from './components/feelings/feeling-indivi
 import { AddAdviceWComponent } from './dialogs/add-advice-w/add-advice-w.component';
 import { DoubtsComponent } from './components/Doubts/doubts/doubts.component';
 import { MaterialDoubtsComponent } from './components/Doubts/material-doubts/material-doubts.component';
+import { HomeworkDoubtsComponent } from './components/Doubts/homework-doubts/homework-doubts.component';
+import { DetailsDoubtComponent } from './dialogs/details-doubt/details-doubt.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -149,6 +151,7 @@ const angularMaterial=[
     HomeworksComponent,
     ViewDetailsHomeworksComponent,
     FeedbackHomeworkComponent,
+    DetailsDoubtComponent,
     HomeworksStudentComponent,
     FeelingStudentsComponent,
     FeelingGroupComponent,
@@ -156,6 +159,8 @@ const angularMaterial=[
     AddAdviceWComponent,
     DoubtsComponent,
     MaterialDoubtsComponent,
+    HomeworkDoubtsComponent,
+    DetailsDoubtComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -187,7 +192,7 @@ const angularMaterial=[
     CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,
-    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword, AddAdviceWComponent,
+    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword, AddAdviceWComponent,DetailsDoubtComponent
   ]
 })
 export class AppModule { }

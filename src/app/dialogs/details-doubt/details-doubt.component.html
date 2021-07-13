@@ -1,0 +1,24 @@
+<div class="contenedor">
+    <div class="centrado2">
+        <h5><b>Materiales recomendados:</b></h5>
+        <ul *ngFor="let r of this.recommendedM" id="recM">
+            <li>{{r}}</li>
+        </ul>
+        <br>
+
+        <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="setAnswerDoubt()" class="md-form">
+            <div id="textAreaR" *ngIf="statusD!=1 && this.verify!=true">
+                <textarea matInput formControlName="FeedbackComment" [(ngModel)]="feedbackCommentA" placeholder="Ingresa la retroalimentación a la duda del estudiante"></textarea>
+            </div>
+
+            <br>
+            <button [disabled]="!formFileSend.valid" *ngIf="(feedbackCommentA!=null && feedbackCommentA!='') && statusD!=1 && this.verify!=true" class="okR">Subir respuesta a duda</button>
+
+            <button mat-button (click)="okClick()" class="btn btn-info" id="btnOk" *ngIf="statusD==1">OK</button>
+            <h6 *ngIf="this.verify==true">Ya diste una retroalimentación a la duda</h6>
+
+        </form>
+
+    </div>
+
+</div>

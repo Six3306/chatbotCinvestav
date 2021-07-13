@@ -11,6 +11,7 @@ import { Homework } from 'src/app/models/Homework.model';
 import { FeelingStudent } from 'src/app/models/FeelingStudent.model';
 import { FeelingIStudent } from '../../models/FeelingIStudent.model';
 import { AdviceW } from '../../models/adviceW.model';
+import { Doubt } from 'src/app/models/Doubt.model';
 
 
 @Injectable({
@@ -223,6 +224,40 @@ export class FirebaseService {
       return arraySubjectName;
     });
   }
+
+  //regresa los nombres de las tareas
+  getHomeworksNameBySubject(data){
+    let arrayNameHomeworks = [];
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var val in value) {
+          arrayNameHomeworks.push({"id": val, "theme":value[val].tema});
+        }
+      }
+      return arrayNameHomeworks;
+    });
+  }
+
+  //regresa las dudas de determinada tarea
+  getDoubtsByHomework(data){
+    let arrayHomeworkDoubts: Array<Doubt> = [];
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/dudas/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var val in value) {
+          let recommendedM:string[] = [];
+          for (let i = 0; i < value[val].materialesRecomendados.length; i++) {
+            recommendedM.push(value[val].materialesRecomendados[i]["material"]);
+          }
+          let nHomeworkDoubt = new Doubt(val, value[val].alumno, value[val].correo, "", value[val].estatus, value[val].fecha, value[val].hora, recommendedM);
+          arrayHomeworkDoubts.push(nHomeworkDoubt);
+        }
+      }
+      return arrayHomeworkDoubts;
+    });
+  }
+
 
   //regresa las tareas por materia
   getHomeworksBySubject(data, subjectName) {
@@ -813,9 +848,15 @@ export class FirebaseService {
       this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
-      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
+      this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', retroalimentacionDudas:'', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
       return true;
     }
+  }
+
+
+  //da retroalimentacion de cierta duda del estudiante
+  setFeedBackDoubtStudent(data){
+    return this.database.database.ref(`Usuarios/Alumnos/${data.email.split("@")[0]}/retroalimentacionDudas/`).push({id:data.id,  tipo: data.type, grado: data.grade, grupo: data.group, materia: data.subject, idD: data.idG, estatus: 1, retroalimentacion: data.feedB });
   }
 
   //obtiene el estatus de recepcion
@@ -827,6 +868,27 @@ export class FirebaseService {
         estatusRecepcion = value["estatusRecepcion"];
       }
       return estatusRecepcion;
+    });
+  }
+
+  //obtiene si esta ya o no  registrada una retroalimentacion a una duda de un alumno
+  getStatusFeedbackDoubt(id, email){
+    return this.database.database.ref(`Usuarios/Alumnos/${email.split("@")[0]}/retroalimentacionDudas/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        if(value!=""){
+          for(var feedb in value){
+            if(value[feedb]["id"] == id){
+              return true;
+              break;
+            }
+          }
+        }else{
+          false;
+        }
+      }else{
+        false;
+      }
     });
   }
 
