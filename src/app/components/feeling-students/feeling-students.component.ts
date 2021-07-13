@@ -51,7 +51,14 @@ export class FeelingStudentsComponent implements OnInit {
       gradeSel: ['',Validators.required],
       groupSel: ['',Validators.required],
     });
-    this.user= JSON.parse(localStorage.getItem("user"));    
+    this.user= JSON.parse(localStorage.getItem("user"));
+    if(this.user.type == "Administrador"){
+      this.grades.push({value: "1", viewValue:"1"});
+      this.grades.push({value: "2", viewValue:"2"});
+      this.grades.push({value: "3", viewValue:"3"});
+
+      
+    }
   }
 
   ngOnInit() {
@@ -78,6 +85,29 @@ export class FeelingStudentsComponent implements OnInit {
           grade: this.gradeSelected,
           group: this.groupSelected,
         };
+
+        console.log(JSON.stringify(data)+"...");
+        
+
+        this.firebase.getListFeelingStudents(data).then(response=>{
+          // console.log(JSON.stringify(response)+"...");
+          this.dataGeneral = response;
+          // console.log(this.dataGeneral);
+          
+        });
+        
+      }
+    }
+
+    if(this.user.type=="Administrador"){
+      if (this.gradeSelected && this.groupSelected){
+        let data={
+          grade: this.gradeSelected,
+          group: this.groupSelected,
+        };
+
+        console.log(JSON.stringify(data)+"...");
+        
 
         this.firebase.getListFeelingStudents(data).then(response=>{
           // console.log(JSON.stringify(response)+"...");

@@ -1,0 +1,77 @@
+.detailsHomeworkSel {
+    margin-right: auto;
+    margin-left: auto;
+    background: white;
+    text-align: center;
+    width: 45%;
+    padding: 1%;
+    /* border-radius: 45%; */
+}
+
+.detailsGeneralSel {
+    margin-right: auto;
+    margin-left: auto;
+    background: white;
+    text-align: center;
+    width: 85%;
+    padding: 1%;
+}
+
+.centrado2 {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 95%;
+    text-align: center;
+    align-content: center;
+    /* background-color: white; */
+}
+
+.mat-toolbar-row {
+    margin: 0px!important;
+}
+
+.mat-form-field {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#statusA {
+    border-radius: 50%;
+    background: #13a03d;
+}
+
+#statusI {
+    border-radius: 50%;
+    background: #818582;
+}
+
+#listLinks {
+    list-style: none;
+    list-style-position: inside;
+    padding: 0;
+}
+
+.subT {
+    color: #191e5a;
+}
+
+.matIn {
+    color: #818582;
+    ;
+}
+
+.matGo {
+    color: #13a03d;
+}
+
+.matBa {
+    color: #992525;
+}
+
+#chaPas {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}

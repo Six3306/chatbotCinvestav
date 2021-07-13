@@ -59,6 +59,7 @@ export class FirebaseService {
     });
   }
 
+
   addKeyInBD(data): Boolean {
     this.database.database.ref(`KeyProfesor/${data.nameProfesor}`).set({ keyG: data.keyG });
     return true;
@@ -125,6 +126,88 @@ export class FirebaseService {
       return arraySubject;
     });
   }
+
+  
+  //funcion para obtener la lista de materiales de apoyo
+  getListMaterials(data){
+    var arrayMaterial = [];
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var material in value) {
+          arrayMaterial.push(material);
+        }
+      }
+      return arrayMaterial;
+    });
+  }
+
+  getInfoMaterialSelected(data){
+    var dataR = {
+      "descripcion": "",
+      "estatus": "",
+      "fecha": "",
+      "nconsultado": "",
+      "links": [],
+      "homeworks": [],
+      "exams": [],
+      "generalD": 0,
+      "generalL": 0,
+      "generalF": 0
+    }
+
+    // Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.materialSelected}/
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+
+        if(value["Materiales"][data.materialSelected]["recomendados"]["tareas"]!=""){
+          for(var tarea in value["Materiales"][data.materialSelected]["recomendados"]["tareas"]){
+            dataR["homeworks"].push({"nameHomework": value["Tareas"][value["Materiales"][data.materialSelected]["recomendados"]["tareas"][tarea]["tarea"]]["tema"], "score": value["Materiales"][data.materialSelected]["recomendados"]["tareas"][tarea]["puntaje"]});
+          }
+        }
+        
+        if(value["Materiales"][data.materialSelected]["recomendados"]["examenes"]!=""){
+          for(var exam in value["Materiales"][data.materialSelected]["recomendados"]["examenes"]){
+            dataR["exams"].push({"nameExam": value["Examenes"][value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["examen"]]["dia"]+" a las "+value["Examenes"][value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["examen"]]["hora"], "score": value["Materiales"][data.materialSelected]["recomendados"]["examenes"][exam]["puntaje"]});
+          }
+        }
+
+        dataR["descripcion"] =  value["Materiales"][data.materialSelected]["descripcion"];
+        dataR["estatus"] = value["Materiales"][data.materialSelected]["estatus"];
+        dataR["fecha"] = value["Materiales"][data.materialSelected]["fechaPublicacion"];
+        dataR["nconsultado"] = value["Materiales"][data.materialSelected]["nconsultado"];
+        dataR["links"] = value["Materiales"][data.materialSelected]["links"];
+        dataR["generalD"] = value["Materiales"][data.materialSelected]["recomendados"]["general"]["desconocidos"];
+        dataR["generalF"] = value["Materiales"][data.materialSelected]["recomendados"]["general"]["fallados"];
+        dataR["generalL"] = value["Materiales"][data.materialSelected]["recomendados"]["general"]["logrados"];
+        
+        return dataR;
+      }
+    });
+  }
+
+  //obtenemos los examenes de determinado material 
+  getExamsOfMaterial(data, exams){
+    // return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Materiales/${data.materialSelected}/`).once('value').then((snapshot) => {
+    //   const value = snapshot.val();
+    //   if (value !== null) {
+
+
+    //     var dataR = {
+    //       "descripcion": value["descripcion"],
+    //       "estatus": value["estatus"],
+    //       "fecha": value["fechaPublicacion"],
+    //       "nconsultado": value["nconsultado"],
+    //       "links": value["links"],
+    //       "homeworks": value["recomendados"]["tareas"],
+    //       "exams": value["recomendados"]["examenes"],
+    //     }
+    //   return dataR;
+    //   }
+    // });
+  }
+
 
   //obtiene el nombre de las materias de cierto grado
   getSubjectsNameByGrade(grado) {

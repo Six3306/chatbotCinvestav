@@ -112,7 +112,7 @@ dataSourceScores: MatTableDataSource<Scores>;
   groupSelected:String
 
   /**
-   * Contiene el valor del grupo seleccionado
+   * Contiene el valor de la materia seleccionada
    */
   materiaSelected:String;
   bimRepSelected:number;

@@ -125,6 +125,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl("Homeworks")
   }
 
+  //metodo para ir a dudas de alumnos
+  goToDoubts(){
+    this.router.navigateByUrl("Doubts")
+  }
+
   //metodo para dirigirse a la vista de sentimientos
   goToFeelings(){
     this.router.navigateByUrl("Feelings")

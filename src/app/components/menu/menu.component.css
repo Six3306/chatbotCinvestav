@@ -15,41 +15,47 @@
 
 .background_menu {
     width: 100%;
-    height: 88%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 3%;
+    /* justify-content: space-around; */
+    display: inline-block;
+}
+
+#archivos_mensajesI,
+#progressStudentI,
+#calificacionesI,
+#usuariosI,
+#gruposAlumnosClasesI,
+#clasesG,
+#avisosI,
+#progressClassI,
+#homeworksI,
+#homeworksStudentI,
+#chatbotI,
+#DoubtsI,
+#feelingsI {
+    width: 15%;
+    height: 25%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10%;
+    display: inline-block;
 }
 
 img {
     display: block;
-    margin-top: 40%;
-    /* border-radius: 40px; */
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-    width: 400px;
-    height: 350px;
+    width: 100%;
+    height: 100%;
     transition: opacity 0.3s linear 0.4s;
-}
-
-img #clasesG {
-    display: block;
-    margin-top: 40%;
-    /* border-radius: 40px; */
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-    width: 360px;
-    height: 350px;
-    transition: opacity 0.3s linear 0.4s;
+    margin-left: 3%;
+    margin-right: 3%;
 }
 
 img:hover {
     opacity: 0.4;
     cursor: pointer;
-}
-
-.horizontal {
-    display: inline-block;
 }
 
 .centrado {
@@ -62,19 +68,6 @@ img:hover {
     color: rgb(33, 16, 95);
     font-size: 60px;
     margin: 5%;
-}
-
-.button_menu_profesor {
-    background-color: #47649D;
-    font-size: 20px;
-    color: white;
-    border-color: #707070;
-    max-height: 100px;
-    z-index: 1;
-    height: 60px;
-    width: 260px;
-    border-radius: 30px;
-    border-style: solid;
 }
 
 #exitAccount {
@@ -123,63 +116,8 @@ img:hover {
     margin-bottom: 0%;
 }
 
-#archivos_mensajesI {
-    margin-right: 15%;
-}
-
-#chatbotI {
-    margin-left: 15%;
-}
-
-#calificacionesI {
-    margin-left: 15%;
-}
-
-#usuariosI {
-    margin-left: 10%;
-    /* margin-right: 10%; */
-}
-
-#gruposAlumnosClasesI {
-    margin-left: 10%;
-    margin-right: 10%;
-}
-
-#clasesG {
-    margin-left: 15%;
-    margin-right: 10%;
-}
-
-#avisosI {
-    margin-top: 4%;
-    margin-left: 10%;
-}
-
-#progressClassI {
-    margin-top: 8%;
-}
-
-#homeworksI {
-    margin-top: 8%;
-    margin-left: 10%;
-}
-
-#feelingsI {
-    margin-top: 8%;
-    margin-left: 10%;
-}
-
-#homeworksStudentI {
-    margin-top: 8%;
-    margin-left: 10%;
-}
-
 .foot {
     position: fixed;
     bottom: 0;
     z-index: 999999;
-}
-
-#progressStudentI {
-    margin-left: 20%;
 }

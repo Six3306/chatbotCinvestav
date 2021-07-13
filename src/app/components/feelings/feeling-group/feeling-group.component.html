@@ -28,7 +28,7 @@
 
 <br><br>
 
-<mat-accordion>
+<mat-accordion *ngIf="typeU !='Administrador'">
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
 
         <mat-expansion-panel-header>
@@ -107,7 +107,7 @@
                 </ng-container>
                 <!-- sentimiento Column -->
                 <ng-container matColumnDef="status">
-                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> tatus </b></mat-header-cell>
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header><b> Estatus </b></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                         <!-- <a *ngIf="row.status==1">No resuelto</a> -->
                         <button mat-raised-button class="btn btn-info" (click)="setAdvice(row)" id="btnSetAdvice" *ngIf="row.status==1"> No resuelto</button>

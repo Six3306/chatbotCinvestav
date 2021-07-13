@@ -1,0 +1,41 @@
+.image_background {
+    position: absolute !important;
+    top: 0px !important;
+    bottom: 0px !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0px !important;
+    max-width: 100vw;
+    max-height: 100vh;
+    background-image: url('/assets/pictures/fondo3.png');
+    background-size: cover;
+    background-position: center;
+    overflow: auto;
+}
+
+.title {
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "Segoe UI";
+    color: black;
+    font-size: 40px;
+}
+
+.centrado2 {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 71%;
+    text-align: center;
+    align-content: center;
+    /* background-color: white; */
+}
+
+.mat-toolbar-row {
+    margin: 0px!important;
+}
+
+.mat-form-field {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}

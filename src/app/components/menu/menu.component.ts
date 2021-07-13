@@ -129,6 +129,12 @@ export class MenuComponent implements OnInit {
     this.router.navigateByUrl('Feelings');
   }
 
+  //dirige a las dudas de estudiantes
+  goToDoubts(){
+    this.router.navigateByUrl('Doubts');
+
+  }
+
   /**
    * Metodo para dirigirse a la vista para validar usuarios 
    */

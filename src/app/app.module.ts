@@ -76,6 +76,8 @@ import { FeelingStudentsComponent } from './components/feeling-students/feeling-
 import { FeelingGroupComponent } from './components/feelings/feeling-group/feeling-group.component';
 import { FeelingIndividualComponent } from './components/feelings/feeling-individual/feeling-individual.component';
 import { AddAdviceWComponent } from './dialogs/add-advice-w/add-advice-w.component';
+import { DoubtsComponent } from './components/Doubts/doubts/doubts.component';
+import { MaterialDoubtsComponent } from './components/Doubts/material-doubts/material-doubts.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -152,6 +154,8 @@ const angularMaterial=[
     FeelingGroupComponent,
     FeelingIndividualComponent,
     AddAdviceWComponent,
+    DoubtsComponent,
+    MaterialDoubtsComponent,
   ],
   imports: [
     BrowserAnimationsModule,

@@ -35,76 +35,84 @@
     <div class="background_menu">
 
         <!-- Boton para ver archivos -->
-        <div *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class=" horizontal" style="margin-left: 4%;">
-            <img src="../assets/pictures/archivos_mensajes.png" (click)="goToGeneralFiles()" id="archivos_mensajesI">
+        <div *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" id="archivos_mensajesI">
+            <img src="../assets/pictures/archivos_mensajes.png" (click)="goToGeneralFiles()">
         </div>
         <!-- /Boton para ver archivos -->
 
         <!-- Boton para entrar al chatbot -->
-        <div *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" class="horizontal">
-            <img src="../assets/pictures/chatbot.png" (click)="goToChatbot()" id="chatbotI">
+        <div *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true" id="chatbotI">
+            <img src="../assets/pictures/chatbot.png" (click)="goToChatbot()">
         </div>
         <!-- /Boton para entrar al chatbot -->
 
         <!-- Boton para entrar al progreso de estudiantes -->
-        <div *ngIf="(typeMenu== 'Alumno') && status==true" class="horizontal">
-            <img src="../assets/pictures/progresoEstudiante.png" (click)="goToProgressStudent()" id="progressStudentI">
+        <div *ngIf="(typeMenu== 'Alumno') && status==true" id="progressStudentI">
+            <img src="../assets/pictures/progresoEstudiante.png" (click)="goToProgressStudent()">
         </div>
         <!-- /Boton para entrar al chatbot -->
 
         <!-- Boton para ver alumnos desde el profesor-->
-        <div *ngIf="typeMenu=='Profesor' && status==true" class="horizontal">
-            <img src="../assets/pictures/calificaciones.png" (click)="goToScoresUsers()" id="calificacionesI">
+        <div *ngIf="typeMenu=='Profesor' && status==true" id="calificacionesI">
+            <img src="../assets/pictures/calificaciones.png" (click)="goToScoresUsers()">
         </div>
         <!-- /Boton para ver alumnos desde el profesor-->
 
         <!-- Boton para ver alumnos como administrador-->
-        <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">
-            <img src="../assets/pictures/usuarios.png" (click)="goToValidateUsers()" id="usuariosI">
+        <div *ngIf="typeMenu=='Administrador' && status==true" id="usuariosI">
+            <img src="../assets/pictures/usuarios.png" (click)="goToValidateUsers()">
         </div>
         <!-- Boton para ver alumnos como administrador-->
 
         <!-- Boton para ver materias-->
-        <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">
-            <img src="../assets/pictures/alumnosClases.png" (click)="goToMaterias()" id="gruposAlumnosClasesI">
+        <div *ngIf="typeMenu=='Administrador' && status==true" id="gruposAlumnosClasesI">
+            <img src="../assets/pictures/alumnosClases.png" (click)="goToMaterias()">
         </div>
         <!-- /Boton para ver materias-->
 
         <!-- Boton para ver grupos-->
-        <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">
-            <img src="../assets/pictures/clasesG.png" (click)="goToClases()" id="clasesG">
+        <div *ngIf="typeMenu=='Administrador' && status==true" id="clasesG">
+            <img src="../assets/pictures/clasesG.png" (click)="goToClases()">
         </div>
         <!-- /Boton para ver grupos-->
 
         <!-- Boton para ver alumnos como administrador-->
-        <div *ngIf="typeMenu=='Administrador' && status==true" class="horizontal">
-            <img src="../assets/pictures/avisos.png" (click)="goToRecordatorios()" id="avisosI">
+        <div *ngIf="typeMenu=='Administrador' && status==true" id="avisosI">
+            <img src="../assets/pictures/avisos.png" (click)="goToRecordatorios()">
         </div>
         <!-- Boton para ver alumnos como administrador-->
 
         <!-- Boton para entrar al progreso de estudiantes -->
 
-        <div *ngIf="(typeMenu=='Profesor') && status==true" class="horizontal">
-            <img src="../assets/pictures/progresoGrupos.png" (click)="goToProgressGroup()" id="progressClassI">
+        <div *ngIf="(typeMenu=='Profesor') && status==true" id="progressClassI">
+            <img src="../assets/pictures/progresoGrupos.png" (click)="goToProgressGroup()">
         </div>
 
         <!-- Boton para entrar a las tareas de estudiantes -->
-        <div *ngIf="(typeMenu=='Profesor') && status==true" class="horizontal">
-            <img src="../assets/pictures/tareas.png" (click)="goToHomeworks()" id="homeworksI">
+        <div *ngIf="(typeMenu=='Profesor') && status==true" id="homeworksI">
+            <img src="../assets/pictures/tareas.png" (click)="goToHomeworks()">
         </div>
         <!-- Boton para entrar a las tareas de estudiantes -->
 
         <!-- Boton para entrar a las tarea de un estudiante -->
-        <div *ngIf="(typeMenu== 'Alumno') && status==true" class="horizontal">
-            <img src="../assets/pictures/tareas.png" (click)="goToHomeworkStudent()" id="homeworksStudentI">
+        <div *ngIf="(typeMenu== 'Alumno') && status==true" id="homeworksStudentI">
+            <img src="../assets/pictures/tareas.png" (click)="goToHomeworkStudent()">
         </div>
         <!-- Boton para entrar a las tarea de un estudiante-->
 
         <!-- Boton para entrar a las tareas de estudiantes -->
-        <div *ngIf="(typeMenu=='Profesor' || typeMenu=='Administrador') && status==true" class="horizontal">
-            <img src="../assets/pictures/feeling.png" (click)="goToFeelings()" id="feelingsI">
+        <div *ngIf="(typeMenu=='Profesor' || typeMenu=='Administrador') && status==true" id="feelingsI">
+            <img src="../assets/pictures/feeling.png" (click)="goToFeelings()">
         </div>
         <!-- Boton para entrar a las tareas de estudiantes -->
+
+
+        <!-- Boton para entrar a las dudas de estudiantes -->
+        <div *ngIf="(typeMenu=='Profesor') && status==true" id="DoubtsI">
+            <img src="../assets/pictures/dudas.png" (click)="goToDoubts()">
+        </div>
+        <!-- Boton para entrar a las dudas de estudiantes -->
+
 
     </div>
 

@@ -1,0 +1,89 @@
+<div class="centrado2" *ngIf="this.grade!=null && this.group!=null && this.subject!=null">
+    <mat-toolbar-row>
+        <mat-form-field class="gGR">
+            <mat-label>Material</mat-label>
+            <mat-select (selectionChange)="selectMaterial()" [(ngModel)]="materialSelected">
+                <mat-option *ngFor="let material of materials" [value]="material.value">
+                    {{material.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-toolbar-row>
+</div>
+
+<div class="detailsHomeworkSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.materialSelected != null">
+    <!-- *ngIf="homeworkSelected!=null || homeworkSelected "> -->
+    <h4 class="subT">Información del material:</h4>
+
+    <p><b>Descripción:</b> {{this.descripcion}}</p>
+    <p><b>Fecha de subida: </b> {{this.fecha}}</p>
+    <p><b>Número de consultas: </b> {{this.nconsultado}}</p>
+    <p><b>Estatus: </b>
+        <a *ngIf="this.estatus==1" id="statusA"><span title="Activo">&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+        <a *ngIf="this.estatus==0" id="statusI"><span title="Inactivo">&nbsp;&nbsp;&nbsp;&nbsp;</span></a>
+    </p>
+    <p><b>Links:</b> </p>
+    <ul *ngFor="let link of this.links" id="listLinks">
+        <li><a href="link">{{link}}</a></li>
+    </ul>
+</div>
+
+<br>
+<div class="detailsHomeworkSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.materialSelected != null">
+    <h4 class="subT">Percepciones del material en tareas:</h4>
+    <div class="centrado2" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.materialSelected != null">
+        <mat-toolbar-row>
+            <mat-form-field class="gGR">
+                <mat-label>Tarea</mat-label>
+                <mat-select (selectionChange)="selectHomework()" [(ngModel)]="homeworkSelected">
+                    <mat-option *ngFor="let homework of homeworks" [value]="homework.score">
+                        {{homework.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar-row>
+    </div>
+    <div *ngIf="this.homeworkSelected != null">
+        <h5 *ngIf="this.levelHomework==2" class="matIn"><b>El material para la tarea seleccionada ha sido indirente para los estudiantes</b></h5>
+        <h5 *ngIf="this.levelHomework==1" class="matGo"><b>El material para la tarea seleccionada tiene buena recepción por los estudiantes</b></h5>
+        <h5 *ngIf="this.levelHomework==0" class="matBa"><b>El material para la tarea seleccionada tiene una mala recepción por los estudiantes</b></h5>
+    </div>
+</div>
+
+<br>
+<div class="detailsHomeworkSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.materialSelected != null">
+    <br>
+    <h4 class="subT">Percepciones del material en examenes:</h4>
+    <div class="centrado2" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.materialSelected != null">
+        <mat-toolbar-row>
+            <mat-form-field class="gGR">
+                <mat-label>Examen</mat-label>
+                <mat-select (selectionChange)="selectExam()" [(ngModel)]="examSelected">
+                    <mat-option *ngFor="let exam of exams" [value]="exam.score">
+                        {{exam.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-toolbar-row>
+        <div *ngIf="this.examSelected != null">
+            <h5 *ngIf="this.levelExam==2" class="matIn"><b>El material para el examen seleccionado ha sido indirente para los estudiantes</b></h5>
+            <h5 *ngIf="this.levelExam==1" class="matGo"><b>El material para el examen seleccionado tiene buena recepción por los estudiantes</b></h5>
+            <h5 *ngIf="this.levelExam==0" class="matBa"><b>El material para el examen seleccionado tiene una mala recepción por los estudiantes</b></h5>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.materialSelected != null">
+    <br>
+    <h4 class="subT">Percepciones del material en dudas generales:</h4>
+    <h6><b>Desconocido:</b> Los alumnos no han dado retroalimentación del material, <b>Fallado: </b>Los alumnos mencionan que el material no les ha resuelto sus dudas, <b>Logrado: </b>Los alumnos mencionan que el material les ha ayudado a resolver sus dudas.</h6>
+
+    <div id="chaPas">
+        <div class="chart">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors">
+        </canvas>
+        </div>
+    </div>
+
+</div>

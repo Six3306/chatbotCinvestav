@@ -31,7 +31,7 @@ export class FeelingGroupComponent implements OnInit {
 
 
   user:User;
-
+  typeU:string;
 
   feelRegisterInOrder: Feel[] = [];
   feelRegisterInOrderW: Feel[] = [];
@@ -75,7 +75,8 @@ export class FeelingGroupComponent implements OnInit {
     public firebase: FirebaseService,
     public dialog : MatDialog,
     ) { 
-      this.user= JSON.parse(localStorage.getItem("user"));    
+      this.user= JSON.parse(localStorage.getItem("user"));   
+      this.typeU = this.user.type.toString(); 
     }
 
   ngOnInit() {

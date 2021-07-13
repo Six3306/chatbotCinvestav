@@ -21,6 +21,7 @@ import { ProgressStudentComponent } from './components/progress-student/progress
 import { HomeworksComponent } from './components/homeworks/homeworks.component';
 import { HomeworksStudentComponent } from './components/homeworks-student/homeworks-student.component';
 import { FeelingStudentsComponent } from './components/feeling-students/feeling-students.component';
+import { DoubtsComponent } from './components/Doubts/doubts/doubts.component';
 
 const routes: Routes = [
   { path: 'xyz', component: XyzComponent, },
@@ -43,7 +44,8 @@ const routes: Routes = [
   { path: 'Progress-student',component: ProgressStudentComponent, canActivate:[RouteGuardGuard]  },
   { path: 'Homeworks',component: HomeworksComponent, canActivate:[RouteGuardGuard]  },
   { path: 'Homeworks-student',component: HomeworksStudentComponent, canActivate:[RouteGuardGuard]  },
-  { path: 'Feelings',component: FeelingStudentsComponent, canActivate:[RouteGuardGuard]  }
+  { path: 'Feelings',component: FeelingStudentsComponent, canActivate:[RouteGuardGuard]  },
+  { path: 'Doubts',component: DoubtsComponent, canActivate:[RouteGuardGuard]  }
 
 
 ];

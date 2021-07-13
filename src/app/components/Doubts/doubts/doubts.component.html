@@ -1,0 +1,77 @@
+<div class="image_background">
+
+    <app-header></app-header>
+
+    <br><br><br>
+    <p class="title">Dudas de los Estudiantes</p>
+
+    <br>
+    <div class="centrado2">
+        <mat-toolbar-row>
+            <mat-form-field class="gGR">
+                <mat-label>Grado</mat-label>
+                <mat-select (selectionChange)="selectGrade()" [(ngModel)]="gradeSelected">
+                    <mat-option *ngFor="let grade of grades" [value]="grade.value">
+                        {{grade.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="gGR">
+                <mat-label>Grupo</mat-label>
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="groupSelected">
+                    <mat-option *ngFor="let group of groups" [value]="group.value">
+                        {{group.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="gGR">
+                <mat-label>Materia</mat-label>
+                <mat-select (selectionChange)="searchStudents()" [(ngModel)]="materiaSelected">
+                    <mat-option *ngFor="let subject of subjects" [value]="subject.value">
+                        {{subject.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </mat-toolbar-row>
+    </div>
+
+    <br>
+
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Materiales">
+            <br>
+            <div id="grup">
+                <app-material-doubts [grade]="this.gradeSelected" [group]="this.groupSelected" [subject]="this.materiaSelected"></app-material-doubts>
+                <!-- <app-feeling-group [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-group> -->
+            </div>
+        </mat-tab>
+
+
+        <mat-tab label="Dudas Tareas">
+            <br>
+            <div id="indiv">
+                <!-- <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-individual> -->
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Dudas Examenes">
+            <br>
+            <div id="indiv">
+                <!-- <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-individual> -->
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Dudas Generales">
+            <br>
+            <div id="indiv">
+                <!-- <app-feeling-individual [grade]="this.gradeSelected" [group]="this.groupSelected" [dataGeneral]="this.dataGeneral"></app-feeling-individual> -->
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+
+
+</div>
