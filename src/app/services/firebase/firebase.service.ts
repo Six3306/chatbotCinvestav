@@ -951,7 +951,7 @@ export class FirebaseService {
   addUser(usuario: User): boolean {
     var nameU = usuario.email.split("@");
     if (usuario.type == 'Profesor') {
-      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnos: 0, archivos: 0 } });
+      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnosExamenes: 0, dudasAlumnosTareas: 0, dudasAlumnosGenerales: 0,archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
       this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', retroalimentacionDudas: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
