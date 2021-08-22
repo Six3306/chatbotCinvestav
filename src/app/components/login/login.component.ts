@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { APIService } from 'src/app/services/api/api.service';
 import { User } from 'src/app/models/User.model';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,12 @@ export class LoginComponent implements OnInit {
   /**
    * @param formLogin form del llgin que tiene los atributos email y password
    */
-  formLogin : FormGroup;
+  formLogin: FormGroup;
 
   /**
    * @param submit valida el form que este correcto
    */
-  submit=false;
+  submit = false;
 
 
   /**
@@ -32,14 +33,15 @@ export class LoginComponent implements OnInit {
    */
 
   constructor(
-    private formbuilder : FormBuilder,
+    private formbuilder: FormBuilder,
     private router: Router,
     private api: APIService,
     private snackBar: MatSnackBar,
-  ) { 
+    private firebase: FirebaseService,
+  ) {
     this.formLogin = this.formbuilder.group({
-      email : [''],
-      password : ['']
+      email: [''],
+      password: ['']
     })
   }
 
@@ -48,25 +50,42 @@ export class LoginComponent implements OnInit {
    */
   ngOnInit() {
     localStorage.clear()
-    this.api.getHello().subscribe(response=>{
+    this.api.getHello().subscribe(response => {
       // console.log(response)
     })
   }
   /**
    * Metodo que comprueba al usuario que va a iniciar sesion 
    */
-  comprobarLogin(){
-    let login=this.formLogin.value;
-    this.api.login(login).subscribe(response=>{
-      // console.log(response.token)
-      let user:User =  response.user;
-      if(user.activated==true){
-        localStorage.setItem("user", JSON.stringify(user))
-        localStorage.setItem("token", response.token)
-        this.router.navigateByUrl("Menu")
+  comprobarLogin() {
+    let login = this.formLogin.value;
+    this.api.login(login).subscribe(response => {
+      let user: User = response.user;
+      console.log(user.type);
+      var gradeGroup;
+
+      if (user.type == "Alumno") {
+        this.firebase.getGradeGroupStudent(user.username, user.email).then(ggInfo => {
+          gradeGroup = ggInfo
+          if (gradeGroup.split("#")[0] == "" || gradeGroup.split("#")[1] == "") {
+            this.openCustomerSnackBar();
+            return;
+          }else{
+            if (user.activated == true) {
+              localStorage.setItem("user", JSON.stringify(user))
+              localStorage.setItem("token", response.token)
+              this.router.navigateByUrl("Menu")
+            }
+          }
+        });
+      }else{
+        if (user.activated == true) {
+          localStorage.setItem("user", JSON.stringify(user))
+          localStorage.setItem("token", response.token)
+          this.router.navigateByUrl("Menu")
+        }
       }
-      
-    },error =>{
+    }, error => {
       // alert(""+error.error.message);
       this.openCustomerSnackBar();
     })
@@ -75,28 +94,28 @@ export class LoginComponent implements OnInit {
   /**
    * Metodo que comprueba la validez del form del login y ejecuta comprobar login 
    */
-  sendLogin(){
-    this.submit=true;
-    if(this.formLogin.invalid){
+  sendLogin() {
+    this.submit = true;
+    if (this.formLogin.invalid) {
       this.openCustomerSnackBar();
-     // this.changeSuccessMessage1()
+      // this.changeSuccessMessage1()
       return;
     }
 
     this.comprobarLogin();
-    this.submit=false;
-    
+    this.submit = false;
+
   }
   /**
    * Metodo para redirigir a la vista del register
    */
-  register(){
+  register() {
     this.router.navigateByUrl("Register")
   }
-  
+
   //para mostrar una notificacion emergente indicando que algo salio mal y se han ingresado datos incorrectos en el login
-  openCustomerSnackBar(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentLogin, {duration: 4000});
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentLogin, { duration: 4000 });
   }
 
 }
@@ -105,4 +124,4 @@ export class LoginComponent implements OnInit {
   selector: 'custom-snackbar',
   template: `<span style='color: #ee0303dc;'><strong>Email o Password Incorrectos</strong></span>`
 })
-export class CustomSnackBarComponentLogin{}
+export class CustomSnackBarComponentLogin { }

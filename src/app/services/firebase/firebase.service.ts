@@ -96,7 +96,7 @@ export class FirebaseService {
 
   //obtiene el grado y grupo de un alumno dado su nombre
   getGradeGroupStudent(name, email) {
-    let student: string;
+    let student: string = "";
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
