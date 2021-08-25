@@ -118,7 +118,7 @@ export class RegisterComponent implements OnInit {
           }
 
         }, error => {
-          console.log(error);
+          this.openCustomerSnackBarLesson();
         });
       } else {//si existe
         this.router.navigateByUrl("Register");

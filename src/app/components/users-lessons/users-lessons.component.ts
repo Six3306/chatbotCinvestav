@@ -6,11 +6,11 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Student } from '../../models/Student.model';
- 
+
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Grade{
+export interface Grade {
   /**
    * value es el valor real que tendra 
    */
@@ -23,7 +23,7 @@ export interface Grade{
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Group{
+export interface Group {
   /**
    * value es el valor real que tendra 
    */
@@ -46,16 +46,16 @@ export class UsersLessonsComponent implements OnInit {
    */
   arrayStudents: Array<User>;
 
-   /**
-   * Arreglo que contiene a todos los estudiantes buscados
-   */
-    arrStudents: Array<Student>;
+  /**
+  * Arreglo que contiene a todos los estudiantes buscados
+  */
+  arrStudents: Array<Student>;
 
   /**
    * Indica si ya se buscaron estudiantes anteriormente
    */
-  estudiantes: Boolean =false;
-  
+  estudiantes: Boolean = false;
+
   /**
    * Arreglo que tiene todos los alumnos seleccionados
    */
@@ -65,42 +65,42 @@ export class UsersLessonsComponent implements OnInit {
   /**
    * Columnas a mostrar para los alumnos
    */
-  displayedColumns: string[] = ['select', 'name','email', 'delet'];
-  
+  displayedColumns: string[] = ['select', 'name', 'email', 'delet'];
+
   /**
    * Tabla donde estan los datos de los usuarios
    */
   dataSource: MatTableDataSource<User>;
 
-    /**
-   * Tabla donde estan los datos de los estudiantes
-   */
+  /**
+ * Tabla donde estan los datos de los estudiantes
+ */
   dataSourceStudent: MatTableDataSource<Student>;
 
   /**
    * Contiene el valor del grado seleccionado
    */
-  gradeSelected:String
+  gradeSelected: String
 
   /**
    * Contiene el valor del grupo seleccionado
    */
-  groupSelected:String
+  groupSelected: String
 
   /**
    * Contiene el valor del grupo seleccionado
    */
-  profeSelected:String
+  profeSelected: String
   /**
    *  Propiedad que sirve para tener los grados de los alumnos
    * @param value es el valor que tendra como tal la seleccion 
    * @param viewValue es el valor que que se muestra para la seleccion 
    * 
    */
-  grades:Grade[] = [
-    {value: '1', viewValue:"1°"},
-    {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"}
+  grades: Grade[] = [
+    { value: '1', viewValue: "1°" },
+    { value: '2', viewValue: "2°" },
+    { value: '3', viewValue: "3°" }
   ];
 
   /**
@@ -109,23 +109,23 @@ export class UsersLessonsComponent implements OnInit {
    * @param viewValue es el valor que que se muestra para la seleccion 
    * 
    */
-  groups:Group[] = [
-    {value: 'A', viewValue:"A"},
-    {value: 'B', viewValue:"B"},
-    {value: 'C', viewValue:"C"},
-    {value: 'D', viewValue:"D"},
-    {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"},
-    {value: 'E', viewValue:"G"},
-    {value: 'F', viewValue:"H"},
-    {value: 'E', viewValue:"I"},
-    {value: 'F', viewValue:"J"}
+  groups: Group[] = [
+    { value: 'A', viewValue: "A" },
+    { value: 'B', viewValue: "B" },
+    { value: 'C', viewValue: "C" },
+    { value: 'D', viewValue: "D" },
+    { value: 'E', viewValue: "E" },
+    { value: 'F', viewValue: "F" },
+    { value: 'E', viewValue: "G" },
+    { value: 'F', viewValue: "H" },
+    { value: 'E', viewValue: "I" },
+    { value: 'F', viewValue: "J" }
   ];
 
-  
 
-  @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
-  @ViewChildren(MatSort)  sort:QueryList< MatSort>;
+
+  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
   /**
    * Constructor de la clase 
@@ -133,26 +133,26 @@ export class UsersLessonsComponent implements OnInit {
    * @param dialog variable para hacer llamada a un dialog externo
    */
   constructor(
-    public dialog : MatDialog,
+    public dialog: MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,
     private firebase: FirebaseService,
   ) {
 
   }
-  ngOnInit() {    
+  ngOnInit() {
   }
 
-  showStudentsByGradeGroup(){
-      let params={
-        "grade":this.gradeSelected,
-        "group":this.groupSelected
-      }
-      //buscar en firebase los alumnos segun grado y grupo seleccionado
-      this.firebase.getStudentssByGradeGroup(params).then(response=>{
-    
-      this.arrStudents=response;
-    
+  showStudentsByGradeGroup() {
+    let params = {
+      "grade": this.gradeSelected,
+      "group": this.groupSelected
+    }
+    //buscar en firebase los alumnos segun grado y grupo seleccionado
+    this.firebase.getStudentssByGradeGroup(params).then(response => {
+
+      this.arrStudents = response;
+
       this.dataSourceStudent = new MatTableDataSource(response);
       this.dataSourceStudent.paginator = this.paginator.last;
       this.dataSourceStudent.sort = this.sort.last;
@@ -163,19 +163,19 @@ export class UsersLessonsComponent implements OnInit {
    * Metodo que sirve para buscar un estudiante haciendo una llamada a la base de datos por la 
    * API este metodo no recive parametros porque saca los valores de los campos seleccionador de el grado y el grupo
    */
-  searchStudents(){ 
+  searchStudents() {
     if (this.gradeSelected != null && this.groupSelected != null) {
       this.showStudentsByGradeGroup();
     }
   }
- 
+
 
   /**
    * Filtro para busqueda en la tabla de alumnos
    * @param filterValue Valor a filtrar en la tabla de alumnos
    */
   applyFilter(filterValue: string) {
-    if(this.gradeSelected && this.groupSelected){
+    if (this.gradeSelected && this.groupSelected) {
       this.dataSourceStudent.filter = filterValue.trim().toLowerCase();
       if (this.dataSourceStudent.paginator) {
         this.dataSourceStudent.paginator.firstPage();
@@ -186,45 +186,64 @@ export class UsersLessonsComponent implements OnInit {
   /**
    * Metodo para añadir un estudiante 
    */
-  addStudent(){
+  addStudent() {
     //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
-    const dialogRef = this.dialog.open(AddStudentComponent,{
+    const dialogRef = this.dialog.open(AddStudentComponent, {
       data: {
         grade: this.gradeSelected,
         group: this.groupSelected
       }
     });
     //despues de cerrar el cuadro de dialogo
-    dialogRef.afterClosed().subscribe(responseDialog=>{
-        if(responseDialog){
+    dialogRef.afterClosed().subscribe(responseDialog => {
+      if (responseDialog) {
 
-          for (let index = 0; index < responseDialog.length; index++) {
-            //añadiendo a Firebase el grado y grupo de un usuario
-            let dataU = {
-              email: responseDialog[index].email,
-              username: responseDialog[index].username,
-              grade: responseDialog[index].grade,
-              group: responseDialog[index].group
-            }
-            this.firebase.setGradeGroup(dataU);    
-            //obtenemos las materias de dicho grado
-            
-            this.firebase.getSubjectsNameByGrade(responseDialog[index].grade).then(response=>{
-              this.firebase.setStudentScoreClass(dataU, response);
-            });        
+        for (let index = 0; index < responseDialog.length; index++) {
+          //añadiendo a Firebase el grado y grupo de un usuario
+          let dataU = {
+            email: responseDialog[index].email,
+            username: responseDialog[index].username,
+            grade: responseDialog[index].grade,
+            group: responseDialog[index].group
           }
-          this.showStudentsByGradeGroup();
-        }    
+          this.firebase.setGradeGroup(dataU);
+          //obtenemos las materias de dicho grado
+
+          this.firebase.getSubjectsNameByGrade(responseDialog[index].grade).then(response => {
+            this.firebase.setStudentScoreClass(dataU, response);
+            this.firebase.setFeedbackClass(dataU, response);
+          });
+        }
+        this.showStudentsByGradeGroup();
+      }
     })
   }
   /**
    * Metodo para eliminar un estudiante
    * @param row Estudiante a eliminar
    */
-  deleteStudent(row){
-    // this.api.deleteLessonIdUser(row.id_user).subscribe(response=>{
-    //   // this.dataSource.data.find(row).
-    // })
+  deleteStudent(row) {
+    this.firebase.deleteGradeGroupStudent(row.email.split("@")[0]);
+
+    this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response => {
+      let data = {
+        userName: row.username,
+        grade: this.gradeSelected,
+        group: this.groupSelected,
+        email: row.email.split("@")[0]
+      };
+
+      this.firebase.removeStudentScoreClass(data, response);
+      this.firebase.removeStudentQuestionsClass(data, response);
+      this.firebase.removeStudentQuestionsExamClass(data, response);
+
+      this.firebase.removeStudentQuestionsHomeworkClass(data, response);
+      this.firebase.removeStudentFeelDetect(data);
+    });
+
+
+    this.showStudentsByGradeGroup();
+    this.selection = new SelectionModel<Student>(true, []);
   }
   /**
    * Metodo para comprobar si todos en una pagina han sido seleccionados
@@ -241,7 +260,7 @@ export class UsersLessonsComponent implements OnInit {
    */
   masterToggle() {
     if (this.gradeSelected != null && this.groupSelected != null) {
-        this.isAllSelected() ?
+      this.isAllSelected() ?
         this.selection.clear() :
         this.dataSourceStudent.data.forEach(row => this.selection.select(row));
     }
@@ -252,17 +271,23 @@ export class UsersLessonsComponent implements OnInit {
   async removeSelectedRows() {
     if (this.gradeSelected != null && this.groupSelected != null) {
       this.selection.selected.forEach(item => {
-        let dir = item.email.split("@");  
+        var dir = item.email.split("@");
         this.firebase.deleteGradeGroupStudent(dir[0]);
-        //remover las calificaciones del grado y grupo de un alumno
-        this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response=>{
-          let data={
+        //remover las calificaciones del grado y grupo de un alumno(actualmente funcional pero en desuso debido a que solo se elimina el grado y grupo de un alumno)
+        this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response => {
+          let data = {
             userName: item.username,
             grade: this.gradeSelected,
-            group: this.groupSelected
+            group: this.groupSelected,
+            email: dir[0]
           };
           this.firebase.removeStudentScoreClass(data, response);
+          this.firebase.removeStudentQuestionsClass(data, response);
+          this.firebase.removeStudentQuestionsExamClass(data, response);
+          this.firebase.removeStudentQuestionsHomeworkClass(data, response);
+          this.firebase.removeStudentFeelDetect(data);
         });
+
       });
       this.showStudentsByGradeGroup();
       this.selection = new SelectionModel<Student>(true, []);
@@ -270,13 +295,13 @@ export class UsersLessonsComponent implements OnInit {
   }
 
   //metodo para regresar al menu principal
-  menuP(){
+  menuP() {
     this.router.navigateByUrl("Menu");
-  } 
+  }
 
   //para mostrar un cuadro emergente con el mensaje de que un alumno ha sido agregado correctamente
-  openCustomerSnackBarStudent(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddStudent, {duration: 4000});
+  openCustomerSnackBarStudent() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddStudent, { duration: 4000 });
   }
 
 }
@@ -285,4 +310,4 @@ export class UsersLessonsComponent implements OnInit {
   selector: 'custom-snackbar',
   template: `<span style='color: #00ff4ce3;'><strong>Estudiante Agregado Correctamente</strong></span>`
 })
-export class CustomSnackBarComponentUserLessonsAddStudent{}
+export class CustomSnackBarComponentUserLessonsAddStudent { }

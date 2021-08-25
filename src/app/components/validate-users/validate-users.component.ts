@@ -16,14 +16,14 @@ export class ValidateUsersComponent implements OnInit {
   /**
    * Columnas a mostrar de los usuarios
    */
-  displayedColumns: string[] = ['name', 'email','activated', 'type'];
+  displayedColumns: string[] = ['name', 'email', 'activated', 'type'];
   /**
    * tabla con los valores de los usuarios
    */
   dataSource: MatTableDataSource<User>;
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   /**
    * 
@@ -42,34 +42,31 @@ export class ValidateUsersComponent implements OnInit {
 
   ngOnInit() {
     let array: Array<User>;
-    this.api.getUsersNotActivated().subscribe(response=>{
-      array=response as Array<User>
-      // console.log(array)
+    this.api.getUsersNotActivated().subscribe(response => {
+      array = response as Array<User>
       this.dataSource = new MatTableDataSource(array);
       this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+      this.dataSource.sort = this.sort;
 
     });
 
-    
+
   }
   /**
    * Funcion que cambia el valor de activado de un usuario
    * @param activated varible del nuevo estado de activado del usuario
    * @param user usuario al cual se le asiganta el nuevo valor
    */
-  changeActivated(activated:Boolean, user : User){
-    user.activated=activated;
-  //cambiando status en firebase
-    let data={
+  changeActivated(activated: Boolean, user: User) {
+    user.activated = activated;
+    //cambiando status en firebase
+    let data = {
       email: user.email,
       status: user.activated,
       type: user.type
     }
     this.firebase.updateStatusUser(data);
-
-    this.api.updateUser(user).subscribe(response=>{
-      // console.log(response)
+    this.api.updateUser(user).subscribe(response => {
     })
   }
   /**
@@ -77,10 +74,10 @@ export class ValidateUsersComponent implements OnInit {
    * @param type tipo de usuario a asignar
    * @param user usuario al que se le asignara el tipo de usuario
    */
-  changeType(type:String, user : User){
-    
-    user.type=type;
-    this.api.updateUser(user).subscribe(response=>{
+  changeType(type: String, user: User) {
+
+    user.type = type;
+    this.api.updateUser(user).subscribe(response => {
       // console.log(response)
     })
   }
@@ -96,9 +93,9 @@ export class ValidateUsersComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-//metodo para regresar al menu principal
-  menuP(){
+  //metodo para regresar al menu principal
+  menuP() {
     this.router.navigateByUrl("Menu");
-  } 
+  }
 
 }

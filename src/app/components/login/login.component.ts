@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
     let login = this.formLogin.value;
     this.api.login(login).subscribe(response => {
       let user: User = response.user;
-      console.log(user.type);
       var gradeGroup;
 
       if (user.type == "Alumno") {
@@ -85,6 +84,8 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl("Menu")
         }
       }
+
+
     }, error => {
       // alert(""+error.error.message);
       this.openCustomerSnackBar();

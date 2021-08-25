@@ -216,9 +216,7 @@ dataSourceScores: MatTableDataSource<Scores>;
         grade: this.gradeSelected,
         group: this.groupSelected,
       }
-      this.firebase.getbimReport(dataN).then(response=>{
-        console.log(response);
-        
+      this.firebase.getbimReport(dataN).then(response=>{       
         this.bimRepSelected = response;
       });
     }

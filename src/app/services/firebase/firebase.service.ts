@@ -269,11 +269,11 @@ export class FirebaseService {
           for (let i = 0; i < value["dudas"][val].materialesRecomendados.length; i++) {
             recommendedM.push(value["dudas"][val].materialesRecomendados[i]["material"]);
           }
-          if(value["dudas"][val].estatus==0){
+          if (value["dudas"][val].estatus == 0) {
             sumF++;
-          }else if(value["dudas"][val].estatus==1){
+          } else if (value["dudas"][val].estatus == 1) {
             sumL++;
-          }else if(value["dudas"][val].estatus==2){
+          } else if (value["dudas"][val].estatus == 2) {
             sumD++;
           }
           let nHomeworkDoubt = new Doubt(val, value["dudas"][val].alumno, value["dudas"][val].correo, "", value["dudas"][val].estatus, value["dudas"][val].fecha, value["dudas"][val].hora, recommendedM);
@@ -305,11 +305,11 @@ export class FirebaseService {
           for (let i = 0; i < value[doubt]["materialesRecomendados"].length; i++) {
             recommendedM.push(value[doubt]["materialesRecomendados"][i]["material"]);
           }
-          if(value[doubt]["estatus"]==0){
+          if (value[doubt]["estatus"] == 0) {
             sumF++;
-          }else if(value[doubt]["estatus"]==1){
+          } else if (value[doubt]["estatus"] == 1) {
             sumL++;
-          }else if(value[doubt]["estatus"]==2){
+          } else if (value[doubt]["estatus"] == 2) {
             sumD++;
           }
           let nGeneralDoubt = new Doubt(doubt, value[doubt]["alumno"], value[doubt]["correo"], value[doubt]["duda"], value[doubt]["estatus"], value[doubt]["fecha"], value[doubt]["hora"], recommendedM);
@@ -343,11 +343,11 @@ export class FirebaseService {
           for (let i = 0; i < value["dudas"][val].materialesRecomendados.length; i++) {
             recommendedM.push(value["dudas"][val].materialesRecomendados[i]["material"]);
           }
-          if(value["dudas"][val].estatus==0){
+          if (value["dudas"][val].estatus == 0) {
             sumF++;
-          }else if(value["dudas"][val].estatus==1){
+          } else if (value["dudas"][val].estatus == 1) {
             sumL++;
-          }else if(value["dudas"][val].estatus==2){
+          } else if (value["dudas"][val].estatus == 2) {
             sumD++;
           }
           let nExamDoubt = new Doubt(val, value["dudas"][val].alumno, value["dudas"][val].correo, "", value["dudas"][val].estatus, value["dudas"][val].fecha, value["dudas"][val].hora, recommendedM);
@@ -496,10 +496,191 @@ export class FirebaseService {
 
   //remueve las calificaciones de un alumno en cierta clase
   removeStudentScoreClass(data, subjects) {
-    for (var i in subjects) {
-      this.database.database.ref(`Clases/${data.grade}/Materias/Estudiantes/${subjects[i]}/${data.group}/Calificaciones/Estudiantes/${data.userName}`).remove();
-    }
+    var arrSRemove = [];
+    this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null || value != "") {
+        for (var i in subjects) {
+          if (value[subjects[i]][data.group]["Calificaciones"] != "") {
+            if (value[subjects[i]][data.group]["Calificaciones"]["Estudiantes"] != "") {
+              arrSRemove.push(subjects[i] + "#" + Object.keys(value[subjects[i]][data.group]["Calificaciones"]["Estudiantes"]).length);
+            }
+          }
+        }
+      }
+    }).then(() => {
+      for (let i = 0; i < arrSRemove.length; i++) {
+        let sub = arrSRemove[i].split("#")[0];
+        let s = arrSRemove[i].split("#")[1];
+        this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/Calificaciones/Estudiantes/${data.userName}/`).remove().then(() => {
+          if (s == 1 || arrSRemove.length == s) {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/`).update({ Calificaciones: "" });
+          }
+        });
+      }
+    });
+
   }
+
+
+  //remueve las dudas de un alumno en cierta clase
+  removeStudentQuestionsClass(data, subjects) {
+    var arrQRemove = [];
+    this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null || value != "") {
+        for (var i in subjects) {
+          if (value[subjects[i]][data.group]["DudasAlumnos"] != "") {
+            for (var question in value[subjects[i]][data.group]["DudasAlumnos"]) {
+              if (value[subjects[i]][data.group]["DudasAlumnos"][question]["alumno"] == data.userName && value[subjects[i]][data.group]["DudasAlumnos"][question]["correo"].split("@")[0] == data.email) {
+                arrQRemove.push(subjects[i] + "#" + question + "#" + Object.keys(value[subjects[i]][data.group]["DudasAlumnos"]).length);
+                // this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/DudasAlumnos/${question}`).remove();
+              }
+            }
+          }
+        }
+      }
+    }).then(() => {
+      for (let i = 0; i < arrQRemove.length; i++) {
+        let sub = arrQRemove[i].split("#")[0];
+        let id = arrQRemove[i].split("#")[1];
+        let s = arrQRemove[i].split("#")[2];
+        this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/DudasAlumnos/${id}`).remove().then(() => {
+          if (s == 1 || arrQRemove.length == s) {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/`).update({ DudasAlumnos: "" });
+          }
+        });
+      }
+    });
+  }
+
+
+  //remueve las dudas de examenes de un alumno en cierta clase
+  removeStudentQuestionsExamClass(data, subjects) {
+    var arrERemove = [];
+    this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var i in subjects) {
+          if (value[subjects[i]][data.group]["Examenes"] != "") {
+            for (var exam in value[subjects[i]][data.group]["Examenes"]) {
+              if (value[subjects[i]][data.group]["Examenes"][exam]["dudas"] != "") {
+                for (var q in value[subjects[i]][data.group]["Examenes"][exam]["dudas"]) {
+                  if (value[subjects[i]][data.group]["Examenes"][exam]["dudas"][q]["alumno"] == data.userName && value[subjects[i]][data.group]["Examenes"][exam]["dudas"][q]["correo"].split("@")[0] == data.email) {
+                    arrERemove.push(subjects[i] + "#" + exam + "#" + q + "#" + Object.keys(value[subjects[i]][data.group]["Examenes"][exam]["dudas"]).length);
+                    // this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Examenes/${exam}/dudas/${q}/`).remove();
+                  }
+                }
+
+              }
+            }
+          }
+        }
+      }
+    }).then(() => {
+      for (let i = 0; i < arrERemove.length; i++) {
+        let sub = arrERemove[i].split("#")[0];
+        let exa = arrERemove[i].split("#")[1];
+        let id = arrERemove[i].split("#")[2];
+        let s = arrERemove[i].split("#")[3];
+        // console.log("dudas E " + arrERemove[i] + "..." + arrERemove[i].split("#")[3]);
+        this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/Examenes/${exa}/dudas/${id}/`).remove().then(() => {
+          if (s == 1 || arrERemove.length == s) {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/Examenes/${exa}/`).update({ dudas: "" });
+          }
+        });
+      }
+    });
+
+  }
+
+
+  //remueve las dudas de tareas de un alumno en cierta clase
+  removeStudentQuestionsHomeworkClass(data, subjects) {
+    var arrHRemove = [];
+    var arrHNameRemove = [];
+    this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var i in subjects) {
+          if (value[subjects[i]][data.group]["Tareas"] != "") {
+            for (var homework in value[subjects[i]][data.group]["Tareas"]) {
+              if (value[subjects[i]][data.group]["Tareas"][homework]["dudas"] != "") {
+                for (var q in value[subjects[i]][data.group]["Tareas"][homework]["dudas"]) {
+                  if (value[subjects[i]][data.group]["Tareas"][homework]["dudas"][q]["alumno"] == data.userName && value[subjects[i]][data.group]["Tareas"][homework]["dudas"][q]["correo"].split("@")[0] == data.email) {
+                    arrHRemove.push(subjects[i] + "#" + homework + "#" + q + "#" + Object.keys(value[subjects[i]][data.group]["Tareas"][homework]["dudas"]).length);
+                    // this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Tareas/${homework}/dudas/${q}`).remove();
+                  }
+                }
+              }
+              arrHNameRemove.push(homework + "#" + subjects[i] + "#" + Object.keys(value[subjects[i]][data.group]["Tareas"][homework]["entregados"]).length);
+              // this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Tareas/${homework}/entregados/${data.userName}`).remove();
+              /////// this.storage.ref(`Tareas/${i}/${data.grade}/${data.group}/`).child(`${data.idHomework}/` + data.title)
+            }
+          }
+        }
+      }
+    }).then(() => {
+      for (let j = 0; j < arrHNameRemove.length; j++) {
+        let subI = arrHNameRemove[j].split("#")[1];
+        let homI = arrHNameRemove[j].split("#")[0];
+        let sI = arrHNameRemove[j].split("#")[2];
+        // console.log("dudas H Entreg " + arrHNameRemove[j]);
+        this.database.database.ref(`Clases/${data.grade}/Materias/${subI}/${data.group}/Tareas/${homI}/entregados/${data.userName}`).remove().then(() => {
+          if (sI == 1 || sI == arrHNameRemove.length) {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${subI}/${data.group}/Tareas/${homI}/`).update({ entregados: "" });
+          }
+        });
+      }
+
+      for (let i = 0; i < arrHRemove.length; i++) {
+        let sub = arrHRemove[i].split("#")[0];
+        let hom = arrHRemove[i].split("#")[1];
+        let id = arrHRemove[i].split("#")[2];
+        let s = arrHRemove[i].split("#")[3];
+        this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/Tareas/${hom}/dudas/${id}`).remove().then(() => {
+          if (s == 1 || s == arrHRemove.length) {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${sub}/${data.group}/Tareas/${hom}/`).update({ dudas: "" });
+          }
+        });
+      }
+    });
+  }
+
+
+  //remueve sentimientos registrados de un alumno en cierta clase
+  removeStudentFeelDetect(data) {
+    var arrFRemove = [];
+    return this.database.database.ref(`Usuarios/Profesores/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var prof in value) {
+          if (value[prof]["alertaAnimo"] != "") {
+            for (var alertA in value[prof]["alertaAnimo"]) {
+              if (value[prof]["alertaAnimo"][alertA]["alumno"] == data.userName && value[prof]["alertaAnimo"][alertA]["correoAlumno"].split("@")[0] == data.email) {
+                // console.log(prof+"dudas F "+alertA);
+                arrFRemove.push(prof + "#" + alertA + "#" + Object.keys(value[prof]["alertaAnimo"]).length);
+                // this.database.database.ref(`Usuarios/Profesores/${prof}/alertaAnimo/${alertA}/`).remove();
+              }
+            }
+          }
+        }
+      }
+    }).then(() => {
+      for (let i = 0; i < arrFRemove.length; i++) {
+        let alertId = arrFRemove[i].split("#")[1];
+        let prof = arrFRemove[i].split("#")[0];
+        let s = arrFRemove[i].split("#")[2];
+        // console.log("dudas F " + arrFRemove[i]);
+        this.database.database.ref(`Usuarios/Profesores/${prof}/alertaAnimo/${alertId}/`).remove().then(() => {
+          if (s == 1 || s == arrFRemove.length) {
+            this.database.database.ref(`Usuarios/Profesores/${prof}/`).update({ alertaAnimo: "" });
+          }
+        });
+      }
+    });
+  }
+
 
   //modifica el estatus de una materia
   updateStatusSubject(row) {
@@ -773,16 +954,31 @@ export class FirebaseService {
   //obtiene las calificaciones de los alumnos inscritos en cierta clase:
   getScoresStudentsInLesson(data) {
     let arrayScores: Array<Scores> = [];
-    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/Estudiantes/`).once('value').then((snapshot) => {
-      const value = snapshot.val();
-      if (value !== null) {
-        for (var val in value) {
-          let score = new Scores(value[val].nombreAlumno, value[val].b1, value[val].b2, value[val].b3, value[val].b4, value[val].b5);
-          arrayScores.push(score);
+    var cadStd = "";
+    return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapsho) => {
+      const valu = snapsho.val();
+      if (valu !== null) {
+        for (var std in valu) {
+          if (valu[std]["grado"] == data.grade && valu[std]["grupo"] == data.group) {
+            cadStd += valu[std]["nombre"] + " ";
+          }
         }
       }
-      return arrayScores;
+    }).then(() => {
+      return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Calificaciones/Estudiantes/`).once('value').then((snapshot) => {
+        const value = snapshot.val();
+        if (value !== null) {
+          for (var val in value) {
+            if (cadStd.includes(value[val].nombreAlumno)) {
+              let score = new Scores(value[val].nombreAlumno, value[val].b1, value[val].b2, value[val].b3, value[val].b4, value[val].b5);
+              arrayScores.push(score);
+            }
+          }
+        }
+        return arrayScores;
+      });
     });
+
   }
 
   //obtiene las calificaciones un alumno en cierta clase:
@@ -837,6 +1033,23 @@ export class FirebaseService {
     for (var i in subjects) {
       this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Calificaciones/Estudiantes/${data.username}`).set({ b1: 0, b2: 0, b3: 0, b4: 0, b5: 0, nombreAlumno: data.username });
     }
+  }
+
+  //asigna inicialmente las retroalimentaciones de tareas de un alumno a las clases donde esta inscrito
+  setFeedbackClass(data, subjects) {
+    console.log("agregando retros" + subjects);
+
+    this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var i in subjects) {
+          for (var homework in value[subjects[i]][data.group]["Tareas"]) {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${subjects[i]}/${data.group}/Tareas/${homework}/entregados/${data.username}/`).set({ estatus: 0, estatusFeedback: 0, fechaRetroalimentacion: "", feedbackComment: "", horaRetroalimentacion: "" });
+          }
+        }
+      }
+    });
+
   }
 
   //actualiza la calificacion de un estudiante
@@ -951,7 +1164,7 @@ export class FirebaseService {
   addUser(usuario: User): boolean {
     var nameU = usuario.email.split("@");
     if (usuario.type == 'Profesor') {
-      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnosExamenes: 0, dudasAlumnosTareas: 0, dudasAlumnosGenerales: 0,archivos: 0 } });
+      this.database.database.ref(`Usuarios/Profesores/${nameU[0]}`).set({ keyG: usuario.username, nombre: usuario.username, alertaAnimo: "", correo: usuario.email, estatus: 0, clave: usuario.password, estatusRecepcion: 0, notificaciones: { avisos: 0, dudasAlumnosExamenes: 0, dudasAlumnosTareas: 0, dudasAlumnosGenerales: 0, archivos: 0 } });
       return true;
     } else if (usuario.type == 'Alumno') {
       this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', retroalimentacionDudas: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
