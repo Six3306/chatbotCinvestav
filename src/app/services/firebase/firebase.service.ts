@@ -67,15 +67,35 @@ export class FirebaseService {
   }
 
   //agrega una materia
-  addSubject(data): boolean {
-    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}`).set({ profesor: data.professor, nombreMateria: data.subject, estatus: 1 });
-    var arrG: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-    for (let i = 0; i < arrG.length; i++) {
-      this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}`).set({ Tareas: "", Materiales: "", RecordatorioClase: "", Examenes: "", DudasAlumnos: "", Calificaciones: "" }).then(response => {
-        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}/Calificaciones/`).update({ bimestreReportado: 0 });
-      });
-    }
-    return true;
+  addSubject(data) {
+    var band = true;
+
+    var subjectD = data.subject.toString().toLowerCase().trim();
+
+    return this.database.database.ref(`Clases/${data.grade}/Materias/`).once('value').then((snapsho) => {
+      const valu = snapsho.val();
+      if (valu !== null) {
+        for (var sub in valu) {
+          if (subjectD == sub.toString().toLowerCase().trim()) {
+            band = false;
+            console.log(subjectD+" VS "+sub.toString().toLowerCase().trim());
+            
+          }
+        }
+      }
+    }).then(() => {
+      if (band) {
+        this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}`).set({ profesor: data.professor, nombreMateria: data.subject, estatus: 1 });
+        var arrG: string[] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+        for (let i = 0; i < arrG.length; i++) {
+          this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}`).set({ Tareas: "", Materiales: "", RecordatorioClase: "", Examenes: "", DudasAlumnos: "", Calificaciones: "" }).then(response => {
+            this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${arrG[i]}/Calificaciones/`).update({ bimestreReportado: 0 });
+          });
+        }
+      }
+    }).then(() => {
+      return band;
+    });
   }
 
   //obtiene la informacion de un alumno dado su nombre
@@ -1126,6 +1146,19 @@ export class FirebaseService {
       if (value !== null) {
         for (var val in value) {
           if (value[val].status == 1) {
+
+            let fE = value[val].fechaExp.split("-");
+            let dateR: Date = new Date(fE[2], (fE[1]-1), fE[0], 17, 0, 0, 0);
+            let dateA: Date = new Date();
+            
+
+            // console.log();
+            
+            if(dateR.getTime() <= dateA.getTime()){
+                console.log("si"+dateR.getDate()+"/"+dateR.getMonth()+"/"+dateR.getFullYear());
+                
+            }
+
             let rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, value[val].status);
             let arrayDest: Array<String> = [];
             for (var d in value[val].destinatarios) {

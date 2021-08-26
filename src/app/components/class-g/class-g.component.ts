@@ -10,7 +10,7 @@ import { SubjectG } from 'src/app/models/SubjectG.model';
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Grade{
+export interface Grade {
   /**
    * value es el valor real que tendra 
    */
@@ -23,7 +23,7 @@ export interface Grade{
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Group{
+export interface Group {
   /**
    * value es el valor real que tendra 
    */
@@ -46,26 +46,26 @@ export class ClassGComponent implements OnInit {
    * Arreglo que contiene todas las materias de los alumnos
    */
   arrayLessons: Array<Subject>;
-  
+
   arraySubjects: Array<SubjectG>;
 
 
   /**
    * Indica si ya se buscaron materias  
    */
-  materias: Boolean =false;
+  materias: Boolean = false;
 
   /**
    * Columnas a mostrar para las materias
    */
-  displayedColumnsLessons: String[] = ['name', 'grade', 'professor','status'];
-  
-  
+  displayedColumnsLessons: String[] = ['name', 'grade', 'professor', 'status'];
+
+
   /**
    * Tabla donde estan los datos de los usuarios
    */
   dataSourceLessons: MatTableDataSource<Subject>;
-  
+
   dataSourceSubjects: MatTableDataSource<SubjectG>;
 
 
@@ -74,27 +74,27 @@ export class ClassGComponent implements OnInit {
   /**
    * Contiene el valor del grado seleccionado
    */
-  gradeSelected:String
+  gradeSelected: String
 
   /**
    * Contiene el valor del grupo seleccionado
    */
-  profeSelected:String
+  profeSelected: String
   /**
    *  Propiedad que sirve para tener los grados de los alumnos
    * @param value es el valor que tendra como tal la seleccion 
    * @param viewValue es el valor que que se muestra para la seleccion 
    * 
    */
-  grades:Grade[] = [
-    {value: '1', viewValue:"1°"},
-    {value: '2', viewValue:"2°"},
-    {value: '3', viewValue:"3°"}
+  grades: Grade[] = [
+    { value: '1', viewValue: "1°" },
+    { value: '2', viewValue: "2°" },
+    { value: '3', viewValue: "3°" }
   ];
- 
 
-  @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
-  @ViewChildren(MatSort)  sort:QueryList< MatSort>;
+
+  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
   /**
    * Constructor de la clase 
@@ -103,7 +103,7 @@ export class ClassGComponent implements OnInit {
    */
   constructor(
     private api: APIService,
-    public dialog : MatDialog,
+    public dialog: MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,
     private firebase: FirebaseService,
@@ -111,7 +111,7 @@ export class ClassGComponent implements OnInit {
 
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
 
@@ -119,14 +119,14 @@ export class ClassGComponent implements OnInit {
    * Metodo que elimina una materia 
    * @param row Matetria qu recibe como parametro para eliminar
    */
-  deleted(row:Subject){
+  deleted(row: Subject) {
     // row.status=true;
     // this.api.updateSubject(row).subscribe(response=>{
     //   // console.log(response);
     //   let params={
     //     grade:this.gradeSelected
     //   }
-  
+
     //   this.api.getSubjectsGrade(params).subscribe(response=>{
     //     this.materias=true
     //     this.arrayLessons=response as Array<Subject>
@@ -135,35 +135,35 @@ export class ClassGComponent implements OnInit {
     //     this.dataSourceLessons.sort = this.sort.first;
     //   });
     // })
-    
+
   }
 
-  changeActivated(activated:Boolean, row : any){
-    row.status=activated;
+  changeActivated(activated: Boolean, row: any) {
+    row.status = activated;
     this.firebase.updateStatusSubject(row);
     // console.log(row.name+" ... "+row.status);
-    
+
     // this.api.updateUser(user).subscribe(response=>{
     //   // console.log(response)
     // })
   }
 
-  viewSubjects(){
-    let params={
-      grade:this.gradeSelected
+  viewSubjects() {
+    let params = {
+      grade: this.gradeSelected
     }
 
-    this.firebase.getSubjectsByGrade(params).then(response=>{
+    this.firebase.getSubjectsByGrade(params).then(response => {
       this.dataSourceSubjects = new MatTableDataSource(response);
       this.dataSourceSubjects.paginator = this.paginator.first;
       this.dataSourceSubjects.sort = this.sort.first;
     });
   }
- 
+
 
   //Metodo para mostrar las materias de cierto grado seleccionado
-  searchSubjects(){ 
-    if (this.gradeSelected){
+  searchSubjects() {
+    if (this.gradeSelected) {
       this.viewSubjects();
     }
   }
@@ -171,41 +171,46 @@ export class ClassGComponent implements OnInit {
   /**
    * Metodo para añadir una nueva materia abre un dialog
    */
-  addSubject(){
-    const dialogRef = this.dialog.open(AddSubjectComponent,{
+  addSubject() {
+    const dialogRef = this.dialog.open(AddSubjectComponent, {
       data: {
         grade: this.gradeSelected
       }
     });
-    dialogRef.afterClosed().subscribe(response=>{
-        if(response){
-          //añadiendo a Firebase la nueva materia
-          let classGData = {
-            subject: response.materia,
-            grade: response.grado,
-            professor: response.profesor,
-          }
-          if(this.firebase.addSubject(classGData)==true){
+    dialogRef.afterClosed().subscribe(response => {
+      if (response) {
+        //añadiendo a Firebase la nueva materia
+        let classGData = {
+          subject: response.materia,
+          grade: response.grado,
+          professor: response.profesor,
+        }
+
+        this.firebase.addSubject(classGData).then(r => {
+          console.log("..."+r);
+          
+          if (r) {
             this.firebase.setStudentsOnNewSubject(response.materia, response.grado);
+            this.viewSubjects();
+            this.openCustomerSnackBarLesson();
           }
-        
-          this.viewSubjects();
-          this.openCustomerSnackBarLesson();         
-        } 
-           
+        })
+
+      }
+
     })
   }
 
 
 
   //metodo para regresar al menu principal
-  menuP(){
+  menuP() {
     this.router.navigateByUrl("Menu");
-  } 
+  }
 
   //para mostrar un cuadro emergente con el mensaje de que una materia ha sido agregada correctamente
-  openCustomerSnackBarLesson(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddLesson, {duration: 4000});
+  openCustomerSnackBarLesson() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddLesson, { duration: 4000 });
   }
 
 }
@@ -215,4 +220,4 @@ export class ClassGComponent implements OnInit {
   selector: 'custom-snackbar',
   template: `<span style='color: #00ff4ce3;'><strong>Materia Añadida Correctamente</strong></span>`
 })
-export class CustomSnackBarComponentUserLessonsAddLesson{}
+export class CustomSnackBarComponentUserLessonsAddLesson { }
