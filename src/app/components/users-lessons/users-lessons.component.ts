@@ -218,6 +218,7 @@ export class UsersLessonsComponent implements OnInit {
       }
     })
   }
+  
   /**
    * Metodo para eliminar un estudiante
    * @param row Estudiante a eliminar

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular/material';
 import { Reminder } from 'src/app/models/Reminder.model';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
@@ -94,13 +94,15 @@ export class RemindersComponent implements OnInit {
   allComplete3: boolean = false;
 
   dataSource: MatTableDataSource<Reminder>;
-  displayedColumns: string[] = ['title','datePublication', 'dateExpiration', 'status'];
+  dataSourceI: MatTableDataSource<Reminder>;
+
+  displayedColumns: string[] = ['title', 'dateExpiration', 'details', 'status'];
   textAreaReminder: string="";
   titleReminder:string="";
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
+  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
   constructor(
     public firebase: FirebaseService,
@@ -117,10 +119,14 @@ export class RemindersComponent implements OnInit {
 
   //para obtener los avisos que anteriormente han sido registrados en el sistema
   getRemind(){
-    this.firebase.getRemindersG().then(response=>{
-      this.dataSource = new MatTableDataSource(response);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    this.firebase.getRemindersG().then(response=>{//posicion 0 activos y 1 inactivos
+      this.dataSource = new MatTableDataSource(response[0]);
+      this.dataSource.paginator = this.paginator.last;
+      this.dataSource.sort = this.sort.last;
+
+      this.dataSourceI = new MatTableDataSource(response[1]);
+      this.dataSourceI.paginator = this.paginator.last;
+      this.dataSourceI.sort = this.sort.last;
     });
     
   //   let arrayReminders: Array<Reminder>=[];        
@@ -207,12 +213,50 @@ export class RemindersComponent implements OnInit {
   //para cambiar el estado de un aviso, de activado a desactivado y viceversa
   changeActivated(activated:Boolean, remin : Reminder){
     if(activated){
-      remin.status=1;
       this.firebase.updateReminderActivated(remin.title, 1);      
     }else{
-      remin.status=0;
       this.firebase.updateReminderActivated(remin.title, 0);   
     }
+    this.getRemind();
+  }
+
+  //para ver los detalles de un aviso
+  getDetails(row){
+    console.log(row);
+    //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
+    const dialogRef = this.dialog.open(ViewReminderComponent, {
+      data: {
+        title: row.title,
+        content: row.contentReminder,
+        professors: row.professors,
+        datePublication: row.datePublication,
+        dateExpiration: row.dateExpiration,
+        destinatarys: row.destinatary
+      }
+    });
+    //despues de cerrar el cuadro de dialogo
+    dialogRef.afterClosed().subscribe(responseDialog => {
+      if (responseDialog) {
+
+        // for (let index = 0; index < responseDialog.length; index++) {
+        //   //añadiendo a Firebase el grado y grupo de un usuario
+        //   let dataU = {
+        //     email: responseDialog[index].email,
+        //     username: responseDialog[index].username,
+        //     grade: responseDialog[index].grade,
+        //     group: responseDialog[index].group
+        //   }
+        //   this.firebase.setGradeGroup(dataU);
+        //   //obtenemos las materias de dicho grado
+
+        //   this.firebase.getSubjectsNameByGrade(responseDialog[index].grade).then(response => {
+        //     this.firebase.setStudentScoreClass(dataU, response);
+        //     this.firebase.setFeedbackClass(dataU, response);
+        //   });
+        // }
+        // this.showStudentsByGradeGroup();
+      }
+    })
   }
 
 

@@ -12,6 +12,8 @@ export class ViewReminderComponent implements OnInit {
   content:string;
   professors: number;
   destinatarys: string="";
+  datePublication: string = "";
+  dateExpiration: string = "";
 
   constructor(    @Inject(MAT_DIALOG_DATA) public  data:any, 
   ) { }
@@ -20,9 +22,13 @@ export class ViewReminderComponent implements OnInit {
     this.title = this.data.title;
     this.content = this.data.content;
     this.professors = this.data.professors;
-    for (let i = 0; i < this.data.destinatarys.length; i++) {
-      this.destinatarys = this.destinatarys+"   "+this.data.destinatarys[i];
-      
+    this.datePublication = this.data.datePublication;
+    this.dateExpiration = this.data.dateExpiration;
+    for (let i = 0; i < this.data.destinatarys.length-1; i++) {
+      this.destinatarys = this.destinatarys+"   "+this.data.destinatarys[i]+", ";
+    }
+    if(this.data.destinatarys.length>0){
+      this.destinatarys = this.destinatarys+this.data.destinatarys[this.data.destinatarys.length-1];
     }
   }
 

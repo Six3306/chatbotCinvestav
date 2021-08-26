@@ -78,8 +78,8 @@ export class FirebaseService {
         for (var sub in valu) {
           if (subjectD == sub.toString().toLowerCase().trim()) {
             band = false;
-            console.log(subjectD+" VS "+sub.toString().toLowerCase().trim());
-            
+            console.log(subjectD + " VS " + sub.toString().toLowerCase().trim());
+
           }
         }
       }
@@ -1139,37 +1139,60 @@ export class FirebaseService {
   }
 
   getRemindersG() {
-    let arrayReminders: Array<Reminder> = [];
-
+    let arrayRemindersG: Array<any> = [];
+    let arrayRemindersA: Array<Reminder> = [];
+    let arrayRemindersI: Array<Reminder> = [];
     return this.database.database.ref(`AvisosGenerales/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {
         for (var val in value) {
           if (value[val].status == 1) {
-
             let fE = value[val].fechaExp.split("-");
-            let dateR: Date = new Date(fE[2], (fE[1]-1), fE[0], 17, 0, 0, 0);
+            let dateR: Date = new Date(fE[2], (fE[1] - 1), fE[0], 0, 0, 0);
             let dateA: Date = new Date();
-            
 
-            // console.log();
-            
-            if(dateR.getTime() <= dateA.getTime()){
-                console.log("si"+dateR.getDate()+"/"+dateR.getMonth()+"/"+dateR.getFullYear());
-                
+            if (dateR.getTime() <= dateA.getTime()) {//inactivo
+              this.database.database.ref(`AvisosGenerales/${val}/`).update({ status: 0 });
+              let rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, 0);
+              let arrayDest: Array<String> = [];
+              for (var d in value[val].destinatarios) {
+                arrayDest.push(value[val].destinatarios[d].grade + "° " + value[val].destinatarios[d].group);
+              }
+              rem.setDestinatarys(arrayDest);
+              arrayRemindersI.push(rem);
+            } else {//activo
+              let rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, 1);
+              let arrayDest: Array<String> = [];
+              for (var d in value[val].destinatarios) {
+                arrayDest.push(value[val].destinatarios[d].grade + "° " + value[val].destinatarios[d].group);
+              }
+              rem.setDestinatarys(arrayDest);
+              arrayRemindersA.push(rem);
             }
+          } else {
+            let fE = value[val].fechaExp.split("-");
+            let dateR: Date = new Date(fE[2], (fE[1] - 1), fE[0], 0, 0, 0);
+            let dateA: Date = new Date();
+            var rem;
 
-            let rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, value[val].status);
+            if (dateR.getTime() > dateA.getTime()) {
+              rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, 1);
+            }else{
+              rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, 0);
+            }
             let arrayDest: Array<String> = [];
             for (var d in value[val].destinatarios) {
               arrayDest.push(value[val].destinatarios[d].grade + "° " + value[val].destinatarios[d].group);
             }
             rem.setDestinatarys(arrayDest);
-            arrayReminders.push(rem);
+            arrayRemindersI.push(rem);
           }
         }
       }
-      return arrayReminders;
+      arrayRemindersG.push(arrayRemindersA);
+      arrayRemindersG.push(arrayRemindersI);
+
+      return arrayRemindersG;
     });
   }
 
