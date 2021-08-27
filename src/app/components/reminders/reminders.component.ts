@@ -3,18 +3,18 @@ import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular
 import { Reminder } from 'src/app/models/Reminder.model';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Router } from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ViewReminderComponent } from '../../dialogs/view-reminder/view-reminder.component';
 
 
-export interface Group{
+export interface Group {
   /*** value es el valor real que tendra */
   value: any,
   /**   * es el valor a mostrar de a interface*/
   viewValue: any
 }
 
- export interface Grade{
+export interface Grade {
   /**   * value es el valor real que tendra    */
   value: any,
   /**   * es el valor a mostrar de a interface   */
@@ -24,8 +24,8 @@ export interface Group{
 //para los checkbox
 export interface Task {
   completed: boolean;
-  grade:number;
-  group:string;
+  grade: number;
+  group: string;
   subtasks1?: Task[];
   subtasks2?: Task[];
   subtasks3?: Task[];
@@ -39,51 +39,51 @@ export interface Task {
 })
 export class RemindersComponent implements OnInit {
   //para la fecha
-  createAt:any;
+  createAt: any;
   //para la seccion desplegable
   panelOpenState = false;
   //select de profesores
-  profesSelect:any=false;
+  profesSelect: any = false;
   //contenido de los checkboxs
   task: Task = {
     group: 'Todo',
     completed: false,
     grade: 1,
     subtasks1: [
-      {group: 'A', grade: 1, completed: false},
-      {group: 'B', grade: 1, completed: false},
-      {group: 'C', grade: 1, completed: false},
-      {group: 'D', grade: 1, completed: false},
-      {group: 'E', grade: 1, completed: false},
-      {group: 'F', grade: 1, completed: false},
-      {group: 'G', grade: 1, completed: false},
-      {group: 'H', grade: 1, completed: false},
-      {group: 'I', grade: 1, completed: false},
-      {group: 'J', grade: 1, completed: false},
+      { group: 'A', grade: 1, completed: false },
+      { group: 'B', grade: 1, completed: false },
+      { group: 'C', grade: 1, completed: false },
+      { group: 'D', grade: 1, completed: false },
+      { group: 'E', grade: 1, completed: false },
+      { group: 'F', grade: 1, completed: false },
+      { group: 'G', grade: 1, completed: false },
+      { group: 'H', grade: 1, completed: false },
+      { group: 'I', grade: 1, completed: false },
+      { group: 'J', grade: 1, completed: false },
     ],
     subtasks2: [
-      {group: 'A', grade: 2, completed: false},
-      {group: 'B', grade: 2, completed: false},
-      {group: 'C', grade: 2, completed: false},
-      {group: 'D', grade: 2, completed: false},
-      {group: 'E', grade: 2, completed: false},
-      {group: 'F', grade: 2, completed: false},
-      {group: 'G', grade: 2, completed: false},
-      {group: 'H', grade: 2, completed: false},
-      {group: 'I', grade: 2, completed: false},
-      {group: 'J', grade: 2, completed: false},
+      { group: 'A', grade: 2, completed: false },
+      { group: 'B', grade: 2, completed: false },
+      { group: 'C', grade: 2, completed: false },
+      { group: 'D', grade: 2, completed: false },
+      { group: 'E', grade: 2, completed: false },
+      { group: 'F', grade: 2, completed: false },
+      { group: 'G', grade: 2, completed: false },
+      { group: 'H', grade: 2, completed: false },
+      { group: 'I', grade: 2, completed: false },
+      { group: 'J', grade: 2, completed: false },
     ],
     subtasks3: [
-      {group: 'A', grade: 3, completed: false},
-      {group: 'B', grade: 3, completed: false},
-      {group: 'C', grade: 3, completed: false},
-      {group: 'D', grade: 3, completed: false},
-      {group: 'E', grade: 3, completed: false},
-      {group: 'F', grade: 3, completed: false},
-      {group: 'G', grade: 3, completed: false},
-      {group: 'H', grade: 3, completed: false},
-      {group: 'I', grade: 3, completed: false},
-      {group: 'J', grade: 3, completed: false},
+      { group: 'A', grade: 3, completed: false },
+      { group: 'B', grade: 3, completed: false },
+      { group: 'C', grade: 3, completed: false },
+      { group: 'D', grade: 3, completed: false },
+      { group: 'E', grade: 3, completed: false },
+      { group: 'F', grade: 3, completed: false },
+      { group: 'G', grade: 3, completed: false },
+      { group: 'H', grade: 3, completed: false },
+      { group: 'I', grade: 3, completed: false },
+      { group: 'J', grade: 3, completed: false },
     ]
   };
 
@@ -97,8 +97,8 @@ export class RemindersComponent implements OnInit {
   dataSourceI: MatTableDataSource<Reminder>;
 
   displayedColumns: string[] = ['title', 'dateExpiration', 'details', 'status'];
-  textAreaReminder: string="";
-  titleReminder:string="";
+  textAreaReminder: string = "";
+  titleReminder: string = "";
 
 
   @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
@@ -109,17 +109,17 @@ export class RemindersComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-    ) {
-      
-     }
+  ) {
+
+  }
 
   ngOnInit() {
     this.getRemind();
   }
 
   //para obtener los avisos que anteriormente han sido registrados en el sistema
-  getRemind(){
-    this.firebase.getRemindersG().then(response=>{//posicion 0 activos y 1 inactivos
+  getRemind() {
+    this.firebase.getRemindersG().then(response => {//posicion 0 activos y 1 inactivos
       this.dataSource = new MatTableDataSource(response[0]);
       this.dataSource.paginator = this.paginator.last;
       this.dataSource.sort = this.sort.last;
@@ -127,35 +127,19 @@ export class RemindersComponent implements OnInit {
       this.dataSourceI = new MatTableDataSource(response[1]);
       this.dataSourceI.paginator = this.paginator.last;
       this.dataSourceI.sort = this.sort.last;
+
     });
-    
-  //   let arrayReminders: Array<Reminder>=[];        
-  //   this.database.database.ref('Recordatorios/').once('value').then((snapshot) => {
-  //     const value = snapshot.val();     
-  //     if (value !== null || value!==undefined) {
-  //         for (var val in value) {
-  //             let remindr = new Reminder(val,value[val].reminder, value[val].publication, value[val].delet);
-  //             if(remindr){
-  //               arrayReminders.push(remindr);
-              
-  //             }
-  //         }
-  //     }
-  //     this.dataSource = new MatTableDataSource(arrayReminders);
-  //     this.dataSource.paginator = this.paginator;
-  //     this.dataSource.sort = this.sort;
-  // });
 
-} 
+  }
 
-//para dar de alta un aviso en el sistema
-  registerReminder(){
+  //para dar de alta un aviso en el sistema
+  registerReminder() {
 
     let dateAct: Date = new Date();
 
-    let arraySelects: Array<any>= [];   
-    this.task.subtasks1.forEach(v =>{
-      if(v.completed){
+    let arraySelects: Array<any> = [];
+    this.task.subtasks1.forEach(v => {
+      if (v.completed) {
         let data = {
           grade: "1",
           group: v.group
@@ -163,8 +147,8 @@ export class RemindersComponent implements OnInit {
         arraySelects.push(data);
       }
     });
-    this.task.subtasks2.forEach(v =>{
-      if(v.completed){
+    this.task.subtasks2.forEach(v => {
+      if (v.completed) {
         let data = {
           grade: "2",
           group: v.group
@@ -172,8 +156,8 @@ export class RemindersComponent implements OnInit {
         arraySelects.push(data);
       }
     });
-    this.task.subtasks3.forEach(v =>{
-      if(v.completed){
+    this.task.subtasks3.forEach(v => {
+      if (v.completed) {
         let data = {
           grade: "3",
           group: v.group
@@ -182,25 +166,31 @@ export class RemindersComponent implements OnInit {
       }
     })
 
-    if((arraySelects.length>0 || this.profesSelect!=false) && this.titleReminder.length>0 && this.createAt!=undefined && this.textAreaReminder.length>0){
-      let data={
-        title: this.titleReminder,
-        datePub: dateAct.getDate()+"-"+(dateAct.getMonth()+1)+"-"+dateAct.getFullYear(),
-        dateExp: this.createAt.getDate()+"-"+(this.createAt.getMonth()+1)+"-"+this.createAt.getFullYear(),
-        content: this.textAreaReminder,
-        professor: this.profesSelect
+    if ((arraySelects.length > 0 || this.profesSelect != false) && this.titleReminder.length > 0 && this.createAt != undefined && this.textAreaReminder.length > 0) {
+      if (dateAct.getTime() >= this.createAt.getTime()) {
+        console.log("La fecha que ingresaste ya ocurrio");
+      } else {
+        let data = {
+          title: this.titleReminder,
+          datePub: dateAct.getDate() + "-" + (dateAct.getMonth() + 1) + "-" + dateAct.getFullYear(),
+          dateExp: this.createAt.getDate() + "-" + (this.createAt.getMonth() + 1) + "-" + this.createAt.getFullYear(),
+          content: this.textAreaReminder,
+          professor: this.profesSelect
+        }
+        this.firebase.addEventG(data, arraySelects);
+        this.openCustomerSnackBar();
+        this.clearForm();
+        this.getRemind();
       }
-      this.firebase.addEventG(data, arraySelects);
-      this.openCustomerSnackBar();
-      this.clearForm();
-    }else{
+ 
+    } else {
       console.log("ERROR");
     }
   }
 
   //para limpiar el formulario
-  clearForm(){
-    this.titleReminder= "";
+  clearForm() {
+    this.titleReminder = "";
     this.setAll(false);
     this.setAll1(false);
     this.setAll2(false);
@@ -211,17 +201,17 @@ export class RemindersComponent implements OnInit {
   }
 
   //para cambiar el estado de un aviso, de activado a desactivado y viceversa
-  changeActivated(activated:Boolean, remin : Reminder){
-    if(activated){
-      this.firebase.updateReminderActivated(remin.title, 1);      
-    }else{
-      this.firebase.updateReminderActivated(remin.title, 0);   
+  changeActivated(activated: Boolean, remin: Reminder) {
+    if (activated) {
+      this.firebase.updateReminderActivated(remin.title, 1);
+    } else {
+      this.firebase.updateReminderActivated(remin.title, 0);
     }
     this.getRemind();
   }
 
   //para ver los detalles de un aviso
-  getDetails(row){
+  getDetails(row) {
     console.log(row);
     //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
     const dialogRef = this.dialog.open(ViewReminderComponent, {
@@ -262,9 +252,9 @@ export class RemindersComponent implements OnInit {
 
   //para las acciones de los checkbox
   updateAllComplete() {
-    this.allComplete = this.task.subtasks1 != null && this.task.subtasks1.every(t => t.completed) &&  
-    this.task.subtasks2 != null && this.task.subtasks2.every(t => t.completed) &&
-    this.task.subtasks3 != null && this.task.subtasks3.every(t => t.completed);
+    this.allComplete = this.task.subtasks1 != null && this.task.subtasks1.every(t => t.completed) &&
+      this.task.subtasks2 != null && this.task.subtasks2.every(t => t.completed) &&
+      this.task.subtasks3 != null && this.task.subtasks3.every(t => t.completed);
   }
 
   updateAllComplete1() {
@@ -283,30 +273,30 @@ export class RemindersComponent implements OnInit {
     if (this.task.subtasks1 == null || this.task.subtasks2 == null || this.task.subtasks3 == null) {
       return false;
     }
-    return (this.task.subtasks1.filter(t => t.completed).length > 0 || this.task.subtasks2.filter(t => t.completed).length > 0 || this.task.subtasks3.filter(t => t.completed).length > 0) 
-    && !this.allComplete;
+    return (this.task.subtasks1.filter(t => t.completed).length > 0 || this.task.subtasks2.filter(t => t.completed).length > 0 || this.task.subtasks3.filter(t => t.completed).length > 0)
+      && !this.allComplete;
   }
 
   someComplete1(): boolean {
     if (this.task.subtasks1 == null) {
       return false;
     }
-    return (this.task.subtasks1.filter(t => t.completed).length > 0) 
-    && !this.allComplete1;
+    return (this.task.subtasks1.filter(t => t.completed).length > 0)
+      && !this.allComplete1;
   }
   someComplete2(): boolean {
     if (this.task.subtasks1 == null) {
       return false;
     }
-    return (this.task.subtasks2.filter(t => t.completed).length > 0) 
-    && !this.allComplete2;
+    return (this.task.subtasks2.filter(t => t.completed).length > 0)
+      && !this.allComplete2;
   }
   someComplete3(): boolean {
     if (this.task.subtasks1 == null) {
       return false;
     }
-    return (this.task.subtasks3.filter(t => t.completed).length > 0) 
-    && !this.allComplete3;
+    return (this.task.subtasks3.filter(t => t.completed).length > 0)
+      && !this.allComplete3;
   }
 
 
@@ -344,18 +334,18 @@ export class RemindersComponent implements OnInit {
 
 
   //para abrir una notificacion emergente y dar el mensaje de que el recordatorio se registro correctamente
-  openCustomerSnackBar(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponent, {duration: 4000});
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponent, { duration: 4000 });
   }
 
   //regresar al menu principal
-  menuP(){
+  menuP() {
     this.router.navigateByUrl("Menu");
-  } 
+  }
 
   openDialog(row) {
     //Abriendo el cuadro de dialogo para seleccionar los o el estudiante a agregar
-    const dialogRef = this.dialog.open(ViewReminderComponent,{     
+    const dialogRef = this.dialog.open(ViewReminderComponent, {
       data: {
         title: row.title,
         content: row.contentReminder,
@@ -364,10 +354,10 @@ export class RemindersComponent implements OnInit {
       }
     });
     //despues de cerrar el cuadro de dialogo
-    dialogRef.afterClosed().subscribe(responseDialog=>{
-        if(responseDialog){
+    dialogRef.afterClosed().subscribe(responseDialog => {
+      if (responseDialog) {
 
-        }    
+      }
     })
   }
 
@@ -377,4 +367,4 @@ export class RemindersComponent implements OnInit {
   selector: 'custom-snackbar',
   template: `<span style='color: #00ff4ce3;'><strong>Recordatorio Registrado Correctamente</strong></span>`
 })
-export class CustomSnackBarComponent{}
+export class CustomSnackBarComponent { }

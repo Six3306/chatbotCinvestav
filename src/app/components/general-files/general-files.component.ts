@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../services/firebase/firebase.service';
@@ -109,8 +109,13 @@ export class GeneralFilesComponent implements OnInit {
 
   public datosFormulario = new FormData();//obtener y almacenar todos los valores del input (los archivos q selecciona el user)
 
-  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatPaginator) paginator: QueryList<MatPaginator>;
+  @ViewChildren('paginator2') paginator2: QueryList<MatPaginator>;
+
   @ViewChildren(MatSort) sort: QueryList<MatSort>;
+
+
+
 
   /**
    * Arreglo que contiene a todos los estudiantes buscados
@@ -182,8 +187,8 @@ export class GeneralFilesComponent implements OnInit {
 
   showStudentsByGradeGroup() {
     this.dataSourceStudent = new MatTableDataSource(this.arrStudents);
-    this.dataSourceStudent.paginator = this.paginator.last;
-    this.dataSourceStudent.sort = this.sort.last;
+    this.dataSourceStudent.paginator = this.paginator.first;
+    
   }
 
   //remueve las url
@@ -322,9 +327,7 @@ export class GeneralFilesComponent implements OnInit {
   //lista los mensajes y archivos que han sido recibidos por el usuario que actualmente esta activo en el sistema, obteniendo además
   //los metadatos del archivo como informacion del remitente, fecha, descripción
   listar2() {
-
     let nGFilesTmp: GeneralFile[] = [];
-
     this.firebaseStorage.referenciaCloudStorageList2(this.nameUserAct).then((response) => {
       response.items.forEach(function (ite) {
 
@@ -344,20 +347,26 @@ export class GeneralFilesComponent implements OnInit {
         nGFilesTmp.push(nGF);
       });
 
-    }).then(() => {
-
+    }).then(() => {     
       this.generalFiles = nGFilesTmp;
-      this.dataSource = new MatTableDataSource(this.generalFiles);
-      this.dataSource.paginator = this.paginator.first;
-      this.dataSource.sort = this.sort.first;
+      this.dataSource = new MatTableDataSource(nGFilesTmp);
+      this.dataSource.paginator = this.paginator2.first;
+      // this.dataSource.sort = this.sort.first;
+      console.log(nGFilesTmp);
+  
+      // this.dataSource.sort = this.sort.first;
     });
   }
+
+
 
   //inicialmente listamos los archivos que han llegado invocando a la funcion de listar2
   ngOnInit() {
     this.listar2();
     this.retornaProfes();
   }
+
+
 
   //para regresar al menu principal
   menuP() {

@@ -67,6 +67,14 @@
                         <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                     </ng-container>
 
+                    <!-- Disclaimer column -->
+                    <ng-container matColumnDef="disclaimer">
+                        <mat-cell mat-footer-cell *matFooterCellDef colspan="2">
+                            <button *ngIf="gradeSelected && groupSelected" mat-raised-button id="addStudentP"> Añadir Alumno </button>
+                        </mat-cell>
+                    </ng-container>
+
+
                     <mat-header-row *matHeaderRowDef="displayedColumnsS; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumnsS;">
                     </mat-row>
@@ -75,7 +83,14 @@
                     <!-- <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row> -->
                 </mat-table>
 
-                <mat-paginator [pageSizeOptions]="[10, 10, 25, 100]"></mat-paginator>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+
+
+
+
+
+
 
                 <br>
                 <h4>Profesores:</h4><br>
@@ -135,63 +150,72 @@
                 <i class="material-icons" id="iconoR">refresh</i>
             </button>
             <br><br>
-            <div class="example-container centrado">
-                <mat-table mat-table [dataSource]="dataSource" matSort style="max-height: 300px;">
+
+            <!-- <div class="example-container centrado"> -->
+            <mat-table mat-table [dataSource]="dataSource" style="overflow: auto; max-height: 300px;" matSort>
 
 
-                    <!-- Name NOMBRE -->
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-                        <mat-cell mat-cell *matCellDef="let row"> {{row.nameFile}} </mat-cell>
-                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-                    </ng-container>
+                <!-- Name NOMBRE -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                    <mat-cell mat-cell *matCellDef="let row"> {{row.nameFile}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
 
-                    <!-- Grade REMITENTE -->
-                    <ng-container matColumnDef="origen">
-                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Remitente </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.remitente}} </mat-cell>
-                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-                    </ng-container>
+                <!-- Grade REMITENTE -->
+                <ng-container matColumnDef="origen">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Remitente </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.remitente}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
 
-                    <!-- Group FECHA-HORA -->
-                    <ng-container matColumnDef="fecha">
-                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Fecha-Hora </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.timeSend}} </mat-cell>
-                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-                    </ng-container>
+                <!-- Group FECHA-HORA -->
+                <ng-container matColumnDef="fecha">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Fecha-Hora </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.timeSend}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
 
 
-                    <!-- Set Score DESCRIPCION -->
-                    <ng-container matColumnDef="info">
-                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
-                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-                    </ng-container>
+                <!-- Set Score DESCRIPCION -->
+                <ng-container matColumnDef="info">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
 
-                    <!-- ID LINK -->
-                    <ng-container matColumnDef="link">
-                        <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> <a href="{{row.url}}" class="linkFileD" target="_blank">IR</a> </mat-cell>
-                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-                    </ng-container>
+                <!-- ID LINK -->
+                <ng-container matColumnDef="link">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Link </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> <a href="{{row.url}}" class="linkFileD" target="_blank">IR</a> </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
 
-                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;">
-                    </mat-row>
+                <!-- Disclaimer column -->
+                <ng-container matColumnDef="disclaimer">
+                    <mat-cell mat-footer-cell *matFooterCellDef colspan="2">
+                        <button *ngIf="gradeSelected && groupSelected" mat-raised-button id="addStudentP"> Añadir Alumno </button>
+                    </mat-cell>
+                </ng-container>
 
-                    <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" class="example-first-footer-row"></mat-footer-row>
-                </mat-table>
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;">
+                </mat-row>
 
-                <mat-paginator [pageSizeOptions]="[3, 10, 25, 100]"></mat-paginator>
-            </div>
+                <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" class="example-second-footer-row"></mat-footer-row>
+                <!-- <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row> -->
+            </mat-table>
+
+            <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+
+            <!-- </div> -->
 
         </mat-tab>
     </mat-tab-group>
 
 
 
-
-    <br>
     <!--tabla para mostrar los mensajes y archivos que han sido recibidor-->
 
     <!-- Para retornar
