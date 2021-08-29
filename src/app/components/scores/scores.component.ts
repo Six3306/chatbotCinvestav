@@ -11,7 +11,7 @@ import { Scores } from 'src/app/models/Scores.model';
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Grade{
+export interface Grade {
   /**
    * value es el valor real que tendra 
    */
@@ -24,7 +24,7 @@ export interface Grade{
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
  */
-export interface Group{
+export interface Group {
   /**
    * value es el valor real que tendra 
    */
@@ -35,7 +35,7 @@ export interface Group{
   viewValue: any
 }
 
-export interface Materia{
+export interface Materia {
   /**
    * value es el valor real que tendra 
    */
@@ -54,34 +54,34 @@ export interface Materia{
   providers: [MatSnackBar]
 })
 export class ScoresComponent implements OnInit {
- /**
-   * Arraeglo que contiene a todos los alumnos buscados
-   */
+  /**
+    * Arraeglo que contiene a todos los alumnos buscados
+    */
   arrayStudents: Array<User>;
 
- /**
-   * Arraglo que contiene a todos los grados y materias de un profesor
-   */
+  /**
+    * Arraglo que contiene a todos los grados y materias de un profesor
+    */
   arraySubjects: Array<Subject>;
- /**
-   * Arreglo que contiene a todos las materias de cierto profesor y grado
-   */
+  /**
+    * Arreglo que contiene a todos las materias de cierto profesor y grado
+    */
   arrayMaterias: Array<Subject>;
 
   /**
    * Arreglo que contiene todas las materias de los alumnos
    */
   arrayLessons: Array<Subject>;
-  
+
   /**
    * Indica si ya se buscaron materias  
    */
-  materias: Boolean =false;
+  materias: Boolean = false;
   /**
    * Indica si ya se buscaron estudiantes anteriormente
    */
-  estudiantes: Boolean =false;
-  
+  estudiantes: Boolean = false;
+
   /**
    * Arreglo que tiene todos los alumnos seleccionados
    */
@@ -92,30 +92,30 @@ export class ScoresComponent implements OnInit {
    * Columnas a mostrar para los alumnos
    */
   displayedColumns: string[] = ['nameStudent', 'b1', 'b2', 'b3', 'b4', 'b5', 'calificar'];
-  
+
   /**
    * Tabla donde estan los datos de los usuarios
    */
   dataSource: MatTableDataSource<User>;
 
-//dataSource para la tabla de calificaciones
-dataSourceScores: MatTableDataSource<Scores>;
-  
+  //dataSource para la tabla de calificaciones
+  dataSourceScores: MatTableDataSource<Scores>;
+
   /**
    * Contiene el valor del grado seleccionado
    */
-  gradeSelected:String
+  gradeSelected: String
 
   /**
    * Contiene el valor del grupo seleccionado
    */
-  groupSelected:String
+  groupSelected: String
 
   /**
    * Contiene el valor de la materia seleccionada
    */
-  materiaSelected:String;
-  bimRepSelected:number;
+  materiaSelected: String;
+  bimRepSelected: number;
 
   /**
    *  Propiedad que sirve para tener los grados de los alumnos
@@ -123,22 +123,22 @@ dataSourceScores: MatTableDataSource<Scores>;
    * @param viewValue es el valor que que se muestra para la seleccion 
    * 
    */
- retornaGrados(){
-  this.user= JSON.parse(localStorage.getItem("user"));
-  //obtenemos la lista de los grados en los que da clase el profesor actualmente logeado
-  let grades: Grade[] = [];
-  for (let i = 1; i <= 3; i++) {
-    this.firebase.getGradesProfesor(this.user.username,i).then(response=>{
-      if(response==true){
-        grades.push({value: i, viewValue: i});
-      }
-    })
+  retornaGrados() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    //obtenemos la lista de los grados en los que da clase el profesor actualmente logeado
+    let grades: Grade[] = [];
+    for (let i = 1; i <= 3; i++) {
+      this.firebase.getGradesProfesor(this.user.username, i).then(response => {
+        if (response == true) {
+          grades.push({ value: i, viewValue: i });
+        }
+      })
+    }
+    this.grades = grades;
   }
-  this.grades = grades;
-}
 
-  subjects:Materia[];
-  grades:Grade[];
+  subjects: Materia[];
+  grades: Grade[];
 
   /**
    * Propiedad que indica 
@@ -146,29 +146,29 @@ dataSourceScores: MatTableDataSource<Scores>;
    * @param viewValue es el valor que que se muestra para la seleccion 
    * 
    */
-  groups:Group[] = [
-    {value: 'A', viewValue:"A"},
-    {value: 'B', viewValue:"B"},
-    {value: 'C', viewValue:"C"},
-    {value: 'D', viewValue:"D"},
-    {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"},
-    {value: 'E', viewValue:"G"},
-    {value: 'F', viewValue:"H"},
-    {value: 'E', viewValue:"I"},
-    {value: 'F', viewValue:"J"}
+  groups: Group[] = [
+    { value: 'A', viewValue: "A" },
+    { value: 'B', viewValue: "B" },
+    { value: 'C', viewValue: "C" },
+    { value: 'D', viewValue: "D" },
+    { value: 'E', viewValue: "E" },
+    { value: 'F', viewValue: "F" },
+    { value: 'E', viewValue: "G" },
+    { value: 'F', viewValue: "H" },
+    { value: 'E', viewValue: "I" },
+    { value: 'F', viewValue: "J" }
   ];
 
-  bimReportArray:number[] = [1,2,3,4,5];
+  bimReportArray: number[] = [1, 2, 3, 4, 5];
 
-    /**
-   * @param user usuario actual del sistema
-   */
-  user:User;
-  
+  /**
+ * @param user usuario actual del sistema
+ */
+  user: User;
 
-  @ViewChildren(MatPaginator, ) paginator:QueryList<MatPaginator>;
-  @ViewChildren(MatSort)  sort:QueryList< MatSort>;
+
+  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
   /**
    * Constructor de la clase 
@@ -177,33 +177,33 @@ dataSourceScores: MatTableDataSource<Scores>;
    */
   constructor(
     public firebase: FirebaseService,
-    public dialog : MatDialog,
+    public dialog: MatDialog,
     private router: Router,
     private snackBar: MatSnackBar,
   ) {
-    this.user= JSON.parse(localStorage.getItem("user"));    
+    this.user = JSON.parse(localStorage.getItem("user"));
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.retornaGrados();
   }
   /**
    * Metodo que sirve para buscar un estudiante haciendo una llamada a la base de datos por la 
    * API este metodo no recibe parametros porque saca los valores de los campos seleccionador de el grado y el grupo
    */
-  searchStudents(){ 
-    
-    if (this.gradeSelected){
+  searchStudents() {
+
+    if (this.gradeSelected) {
       let subjects: Materia[] = [];
-      let data={
+      let data = {
         grade: this.gradeSelected,
         group: this.groupSelected,
         professor: this.user.username,
       };
 
-      this.firebase.getSubjectsByProfessorGrade(data).then(response=>{
+      this.firebase.getSubjectsByProfessorGrade(data).then(response => {
         response.forEach(element => {
-          subjects.push({value: element, viewValue: element});
+          subjects.push({ value: element, viewValue: element });
         });
         this.subjects = subjects;
       });
@@ -216,15 +216,15 @@ dataSourceScores: MatTableDataSource<Scores>;
         grade: this.gradeSelected,
         group: this.groupSelected,
       }
-      this.firebase.getbimReport(dataN).then(response=>{       
+      this.firebase.getbimReport(dataN).then(response => {
         this.bimRepSelected = response;
       });
     }
   }
 
   //para indicar hasta que bimestre se ha evaluado
-  bimReport(){
-    if (this.gradeSelected && this.groupSelected && this.materiaSelected){
+  bimReport() {
+    if (this.gradeSelected && this.groupSelected && this.materiaSelected) {
       // this.firebase.setbimReport();
       let data = {
         subject: this.materiaSelected,
@@ -237,13 +237,13 @@ dataSourceScores: MatTableDataSource<Scores>;
   }
 
   //muestra las calificaciones
-  showScores(){
-    let params={
+  showScores() {
+    let params = {
       grade: this.gradeSelected,
       group: this.groupSelected,
       subject: this.materiaSelected
-    }  
-    this.firebase.getScoresStudentsInLesson(params).then(response=>{
+    }
+    this.firebase.getScoresStudentsInLesson(params).then(response => {
       this.dataSourceScores = new MatTableDataSource(response);
       this.dataSourceScores.paginator = this.paginator.last;
       this.dataSourceScores.sort = this.sort.last;
@@ -252,10 +252,10 @@ dataSourceScores: MatTableDataSource<Scores>;
 
   //ver la info de un usuario dado click en su boton de calificar, ademas el metodo permite modificar o bien registrar
   //una nueva calificacion en el sistema, tanto a nivel mysql como a firebase
-  setScores(row){
-    const dialogRef = this.dialog.open(ScoreUserComponent,{
+  setScores(row) {
+    const dialogRef = this.dialog.open(ScoreUserComponent, {
       data: {
-        subject:this.materiaSelected,
+        subject: this.materiaSelected,
         grade: this.gradeSelected,
         group: this.groupSelected,
         b1: row.b1,
@@ -266,14 +266,11 @@ dataSourceScores: MatTableDataSource<Scores>;
         nameStudent: row.nameStudent,
       }
     });
-    dialogRef.afterClosed().subscribe(response=>{
-        console.log(response);
-        
-        if(response){
-
-          this.firebase.getEmailStudent(response.nameStud).then(response2=>{
-
-            let data={
+    dialogRef.afterClosed().subscribe(response => {
+      if (response) {
+        if ((response.bim1 >= 0 && response.bim1 <= 10) && (response.bim2 >= 0 && response.bim2 <= 10) && (response.bim3 >= 0 && response.bim3 <= 10) && (response.bim4 >= 0 && response.bim4 <= 10) && (response.bim5 >= 0 && response.bim5 <= 10)) {
+          this.firebase.getEmailStudent(response.nameStud).then(response2 => {
+            let data = {
               subject: this.materiaSelected,
               grade: this.gradeSelected,
               group: this.groupSelected,
@@ -289,20 +286,24 @@ dataSourceScores: MatTableDataSource<Scores>;
             this.firebase.refreshStudentScoreClass(data);
             this.showScores();
             this.openCustomerSnackBar();
-          });      
-        } 
+
+          });
+        } else {
+          console.log("Ingresa únicamente valores entre 0 y 10 para calificar");
+        }
+      }
     })
-    
+
   }
 
-//metodo para regresar al menu principal
-  menuP(){
+  //metodo para regresar al menu principal
+  menuP() {
     this.router.navigateByUrl("Menu");
-  } 
+  }
 
   //metodo para mostrar una notificacion emergente de que las calificaciones han sido modificadas o añadidas correctamente
-  openCustomerSnackBar(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentAddScore, {duration: 4000});
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentAddScore, { duration: 4000 });
   }
 
 }
@@ -311,4 +312,4 @@ dataSourceScores: MatTableDataSource<Scores>;
   selector: 'custom-snackbar',
   template: `<span style='color: #00ff4ce3;'><strong>Calificaciones Añadidas/Modificadas Correctamente</strong></span>`
 })
-export class CustomSnackBarComponentAddScore{}
+export class CustomSnackBarComponentAddScore { }

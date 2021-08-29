@@ -4,10 +4,10 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/User.model';
 import { Subject } from 'src/app/models/Subject.model';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
-export interface Grade{
+export interface Grade {
   /**
    * value es el valor real que tendra 
    */
@@ -18,7 +18,7 @@ export interface Grade{
   viewValue: any
 }
 
-export interface Group{
+export interface Group {
   /**
    * value es el valor real que tendra 
    */
@@ -29,7 +29,7 @@ export interface Group{
   viewValue: any
 }
 
-export interface Materia{
+export interface Materia {
   /**
    * value es el valor real que tendra 
    */
@@ -59,40 +59,40 @@ export class AddFilesComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   urls: Url[] = [];
 
-  grades:Grade[];
-  user:User; 
+  grades: Grade[];
+  user: User;
   arraySubjects: Array<Subject>;
-  subjects:Materia[];
-  gradeSelected:String;
-  groupSelected:String
-  materiaSelected:String
+  subjects: Materia[];
+  gradeSelected: String;
+  groupSelected: String
+  materiaSelected: String
 
-  groups:Group[] = [
-    {value: 'A', viewValue:"A"},
-    {value: 'B', viewValue:"B"},
-    {value: 'C', viewValue:"C"},
-    {value: 'D', viewValue:"D"},
-    {value: 'E', viewValue:"E"},
-    {value: 'F', viewValue:"F"},
-    {value: 'E', viewValue:"G"},
-    {value: 'F', viewValue:"H"},
-    {value: 'E', viewValue:"I"},
-    {value: 'F', viewValue:"J"}
+  groups: Group[] = [
+    { value: 'A', viewValue: "A" },
+    { value: 'B', viewValue: "B" },
+    { value: 'C', viewValue: "C" },
+    { value: 'D', viewValue: "D" },
+    { value: 'E', viewValue: "E" },
+    { value: 'F', viewValue: "F" },
+    { value: 'E', viewValue: "G" },
+    { value: 'F', viewValue: "H" },
+    { value: 'E', viewValue: "I" },
+    { value: 'F', viewValue: "J" }
   ];
 
   arrayMaterias: Array<Subject>;
 
-  response:Boolean;
+  response: Boolean;
 
   /**
    * form con los datos del archivo
    */
-  formFile:FormGroup;
+  formFile: FormGroup;
 
   /**
    * variable que indica si ya se envio la respuesta
    */
-  enviado:Boolean;
+  enviado: Boolean;
 
   /**
    * Variable que tiene los datos a guardar del archivo
@@ -101,12 +101,12 @@ export class AddFilesComponent implements OnInit {
    * @param grupo el grupo para los alumnos del archivo
    * @param materia la materia a la que pertenece el archivo
    */
-   data={
-    title:"",
-    description:"",
-    grade:"",
+  data = {
+    title: "",
+    description: "",
+    grade: "",
     group: "",
-    subject:"Materia",
+    subject: "Materia",
   };
   /**
    * 
@@ -117,17 +117,17 @@ export class AddFilesComponent implements OnInit {
    */
   constructor(
     public formBuilder: FormBuilder,
-    public dialogRef : MatDialogRef<AddFilesComponent>,
+    public dialogRef: MatDialogRef<AddFilesComponent>,
     public firebase: FirebaseService,
-    @Inject(MAT_DIALOG_DATA) public message:string,
+    @Inject(MAT_DIALOG_DATA) public message: string,
     private snackBar: MatSnackBar,
-  ) { 
+  ) {
     this.formFile = this.formBuilder.group({
-      title:['', [Validators.required]],
-      description:['', [Validators.required]],
-      grade:['', [Validators.required]],
+      title: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      grade: ['', [Validators.required]],
       group: ['', [Validators.required]],
-      subject:['Materia', [Validators.required]],
+      subject: ['Materia', [Validators.required]],
     });
 
   }
@@ -135,7 +135,7 @@ export class AddFilesComponent implements OnInit {
   /**
    * Funcion para cerrar el dialog  
    */
-  onClickNo():void{
+  onClickNo(): void {
     this.dialogRef.close()
   }
   ngOnInit() {
@@ -143,43 +143,62 @@ export class AddFilesComponent implements OnInit {
   }
 
   //metodo para obtener los grados del profe actual
-  retornaGrados(){
-    this.user= JSON.parse(localStorage.getItem("user"));
+  retornaGrados() {
+    this.user = JSON.parse(localStorage.getItem("user"));
     let grades: Grade[] = [];
     for (let i = 1; i <= 3; i++) {
-      this.firebase.getGradesProfesor(this.user.username,i).then(response=>{
-        if(response==true){
-          grades.push({value: i, viewValue: i});
+      this.firebase.getGradesProfesor(this.user.username, i).then(response => {
+        if (response == true) {
+          grades.push({ value: i, viewValue: i });
         }
       })
     }
     this.grades = grades;
   }
- 
+
   /**
    * Funcion para enviar el archivo
-   */ 
-  sendFile(){
-    this.data=this.formFile.value;   
-    let date: Date = new Date();
-    let publicationDate:String= date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-    this.firebase.addLinkMaterial(this.data, this.urls, publicationDate);
-    this.openCustomerSnackBar();  
+   */
+  sendFile() {
+    var b = true;
+    this.data = this.formFile.value;
+    var caP = ["{", "}", "[", "]", "-", "_",  "|", "&", ".delete", ".update", "alert("];
+
+    for (let i = 0; i < caP.length; i++) {
+      if (this.data.title.includes(caP[i]) || this.data.description.includes(caP[i])) {
+        b = false;
+      }
+    }
+
+    if (this.data.title.trim() == "" && this.data.description.trim() == "") {
+      b = false;
+    }
+
+    if (b) {
+      let date: Date = new Date();
+      let publicationDate: String = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+      this.firebase.addLinkMaterial(this.data, this.urls, publicationDate);
+      this.openCustomerSnackBar();
+    } else {
+      console.log("Verifica que tu información sea correcta");
+
+    }
+
   }
 
   //metodo para listar las materias que da un profesor en determinado grado
-  darMaterias(){  
-    if (this.gradeSelected){
+  darMaterias() {
+    if (this.gradeSelected) {
       let subjects: Materia[] = [];
-      let data={
+      let data = {
         grade: this.gradeSelected,
         group: this.groupSelected,
         professor: this.user.username
       };
 
-      this.firebase.getSubjectsByProfessorGrade(data).then(response=>{
+      this.firebase.getSubjectsByProfessorGrade(data).then(response => {
         response.forEach(element => {
-          subjects.push({value: element, viewValue: element});
+          subjects.push({ value: element, viewValue: element });
         });
         this.subjects = subjects;
       });
@@ -190,9 +209,22 @@ export class AddFilesComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
+    var b = true;
 
     if ((value || '').trim()) {
-      this.urls.push({url: value});
+      if (value.includes("http")) {
+        for (let i = 0; i < this.urls.length; i++) {
+          // console.log("si"+this.urls[i].);
+
+          if (this.urls[i].url == value) {
+            b = false;
+          }
+        }
+
+        if (b) {
+          this.urls.push({ url: value });
+        }
+      }
     }
     if (input) {
       input.value = '';
@@ -208,8 +240,8 @@ export class AddFilesComponent implements OnInit {
   }
 
   //para abrir la ventana de notificacion emergente y mostrar que la operacion de agregar material de apoyo se realizo correctamente
-  openCustomerSnackBar(){
-    return this.snackBar.openFromComponent(CustomSnackBarComponentAddFilesChatbot, {duration: 4000});
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentAddFilesChatbot, { duration: 4000 });
   }
 
 }
@@ -219,4 +251,4 @@ export class AddFilesComponent implements OnInit {
   selector: 'custom-snackbar',
   template: `<span style='color: #00ff4ce3;'><strong>Material de Apoyo Agregado Correctamente</strong></span>`
 })
-export class CustomSnackBarComponentAddFilesChatbot{}
+export class CustomSnackBarComponentAddFilesChatbot { }

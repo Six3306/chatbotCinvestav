@@ -203,9 +203,20 @@ export class GeneralFilesComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
+    var tmp = "";
     if ((value || '').trim()) {
-      this.emails.push({ email: value });
+      if(value.includes("@")){
+        tmp = value.split("@")[0];
+      }else{
+        tmp = value;
+      }
+      this.firebase.userExists(tmp).then(response => {
+        if(response){
+          this.emails.push({ email: value });
+        }else{
+          console.log("El usuario que ingresaste no esta registrado");
+        }
+      });
     }
     if (input) {
       input.value = '';
@@ -305,21 +316,38 @@ export class GeneralFilesComponent implements OnInit {
   public subirArchivo() {
     let archivo = this.datosFormulario.get('archivo');
     let description = this.formFileSend.get('description').value;
+    var resErrorDes = "";
 
     if (archivo === null) {
       alert("Seleccione el archivo a enviar!");
     } else {
       let fecha = new Date();
       let fechaStr = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear() + " - " + fecha.getHours() + ":" + fecha.getMinutes();
-      for (let i = 0; i < this.emails.length; i++) {
-        this.firebase.userExists(this.emails[i].email).then(response => {
-          // console.log(response+" - "+this.emails[i].email);
-          if (response == true) {
-            this.firebaseStorage.guarda2(this.emails[i].email, this.nameUserAct, fechaStr, description, archivo);
-            this.openCustomerSnackBar();
-          }
-        });
+      
+      if(this.emails.length>0){
+
+        for (let i = 0; i < this.emails.length; i++) {
+          this.firebase.userExists(this.emails[i].email).then(response => {
+            // console.log(response+" - "+this.emails[i].email);
+            if (response == true) {
+              this.firebaseStorage.guarda2(this.emails[i].email, this.nameUserAct, fechaStr, description, archivo);
+              this.openCustomerSnackBar();
+            }else{
+              if(resErrorDes==""){
+                resErrorDes+="No fue posible enviar el mensaje a: ";//+ resErrorDes+" verifica que realmente esten registrados en el sistema");
+              }
+              resErrorDes += this.emails[i].email+", ";
+            }
+          });
+        }
+
+
+      }else{
+        console.log("Por favor selecciona algun destinatario");
+        
       }
+      
+      
     }
 
   }

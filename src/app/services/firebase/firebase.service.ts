@@ -1286,7 +1286,7 @@ export class FirebaseService {
 
   //verifica si un usuario existe o no
   userExists(email) {
-    let band: Boolean = false;
+    var band: Boolean = false;
     return this.database.database.ref(`Usuarios/`).once('value').then((snapshot) => {
       const value = snapshot.val();
       if (value !== null) {

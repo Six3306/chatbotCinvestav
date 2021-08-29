@@ -11,7 +11,7 @@
 
         <!--Para añadir links-->
         <mat-form-field class="example-chip-list">
-            <mat-label>Urls de apoyo</mat-label>
+            <mat-label>Links de apoyo</mat-label>
             <mat-chip-list #chipList aria-label="Url selection">
                 <mat-chip *ngFor="let u of urls" [selectable]="selectable" [removable]="removable" (removed)="remove(u)">
                     {{u.url| slice:0:14}}
