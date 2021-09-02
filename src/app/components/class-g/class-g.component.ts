@@ -6,6 +6,7 @@ import { AddSubjectComponent } from 'src/app/dialogs/add-subject/add-subject.com
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { SubjectG } from 'src/app/models/SubjectG.model';
+import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
@@ -139,13 +140,39 @@ export class ClassGComponent implements OnInit {
   }
 
   changeActivated(activated: Boolean, row: any) {
-    row.status = activated;
-    this.firebase.updateStatusSubject(row);
-    // console.log(row.name+" ... "+row.status);
+    if (activated) {//activar
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          msg: "¿Seguro que deseas activar la clase?",
+        }
+      });
+      dialogRef.afterClosed().subscribe(responseDialog => {
+        if (responseDialog) {
+          if (responseDialog == 1) {
+            row.status = activated;
+            this.firebase.updateStatusSubject(row);
+            this.openCustomerSnackBarLesson();
+          }
+        }
+      });
 
-    // this.api.updateUser(user).subscribe(response=>{
-    //   // console.log(response)
-    // })
+    } else {//desactivar
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          msg: "¿Seguro que deseas desactivar la clase?",
+        }
+      });
+      dialogRef.afterClosed().subscribe(responseDialog => {
+        if (responseDialog) {
+          if (responseDialog == 1) {
+            row.status = activated;
+            this.firebase.updateStatusSubject(row);
+            this.openCustomerSnackBarLessonNot();
+          }
+        }
+      });
+    }
+
   }
 
   viewSubjects() {
@@ -187,8 +214,6 @@ export class ClassGComponent implements OnInit {
         }
 
         this.firebase.addSubject(classGData).then(r => {
-          console.log("..."+r);
-          
           if (r) {
             this.firebase.setStudentsOnNewSubject(response.materia, response.grado);
             this.viewSubjects();
@@ -213,11 +238,22 @@ export class ClassGComponent implements OnInit {
     return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddLesson, { duration: 4000 });
   }
 
+  //para mostrar un cuadro emergente con el mensaje de que una materia ha sido desactivada correctamente
+  openCustomerSnackBarLessonNot() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddLessonNot, { duration: 4000 });
+  }
+
 }
 
 
 @Component({
   selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Materia Añadida Correctamente</strong></span>`
+  template: `<span style='color: #00ff4ce3;'><strong>Materia añadida correctamente</strong></span>`
 })
 export class CustomSnackBarComponentUserLessonsAddLesson { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Materia desactivada correctamente</strong></span>`
+})
+export class CustomSnackBarComponentUserLessonsAddLessonNot { }

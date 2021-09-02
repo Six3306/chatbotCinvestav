@@ -18,7 +18,7 @@ import {MatInputModule, MatProgressSpinnerModule, MatDatepickerModule, MatNative
 import { RegisterComponent, CustomSnackBarComponentRegister } from './components/register/register.component';
 import {MatRadioModule} from '@angular/material/radio';
 import { MenuComponent } from './components/menu/menu.component';
-import { ChatbotComponent } from './components/chatbot/chatbot.component';
+import { ChatbotComponent, CustomSnackBarComponentResponseSendHomework } from './components/chatbot/chatbot.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AlertComponent } from './components/alert/alert.component';
 import { environment } from 'src/environments/environment';
@@ -32,6 +32,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import {MatChipsModule} from '@angular/material/chips'
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { ChartsModule, ThemeService  } from 'ng2-charts';
 
@@ -40,22 +41,22 @@ import {AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
-import { AddFilesComponent, CustomSnackBarComponentAddFilesChatbot } from './dialogs/add-files/add-files.component';
+import { AddFilesComponent, CustomSnackBarComponentAddFilesChatbot, CustomSnackBarComponentAddFilesChatbotNot } from './dialogs/add-files/add-files.component';
 import { RouteGuardGuard } from './guardians/route-guard/route-guard.guard';
 import { LoginRegisterGuard } from './guardians/loginRegister/login-register.guard';
 import { ValidateUsersComponent } from './components/validate-users/validate-users.component';
 import { AdminGuardianGuard } from './guardians/admin-guardian/admin-guardian.guard';
-import { UsersLessonsComponent, CustomSnackBarComponentUserLessonsAddStudent } from './components/users-lessons/users-lessons.component';
+import { UsersLessonsComponent, CustomSnackBarComponentUserLessonsAddStudent, CustomSnackBarComponentUserLessonsRemoveStudent } from './components/users-lessons/users-lessons.component';
 import { LessonsComponent } from './components/lessons/lessons.component';
 import { AddSubjectComponent } from './dialogs/add-subject/add-subject.component';
 import { AddStudentComponent } from './dialogs/add-student/add-student.component';
-import { ScoresComponent,CustomSnackBarComponentAddScore } from './components/scores/scores.component';
+import { ScoresComponent, CustomSnackBarComponentAddScore, CustomSnackBarComponentAddScoreNot } from './components/scores/scores.component';
 import { ScoreUserComponent } from './dialogs/score-user/score-user.component';
-import { GeneralFilesComponent, CustomSnackBarComponentSendGeneralFile } from './components/general-files/general-files.component';
-import { RemindersComponent, CustomSnackBarComponent } from './components/reminders/reminders.component';
+import { GeneralFilesComponent, CustomSnackBarComponentSendGeneralFile, CustomSnackBarComponentSendGeneralFileNot, CustomSnackBarComponentSendGeneralFileNotExi } from './components/general-files/general-files.component';
+import { RemindersComponent, CustomSnackBarComponent, openCustomerSnackBarNot } from './components/reminders/reminders.component';
 import { GenerateKeyComponent } from './dialogs/generate-key/generate-key.component';
-import { ConfigureAccountComponent, CustomSnackBarComponentUpdatePassword } from './components/configure-account/configure-account.component';
-import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson } from './components/class-g/class-g.component';
+import { ConfigureAccountComponent, CustomSnackBarComponentUpdatePassword, CustomSnackBarComponentUpdatePasswordNot } from './components/configure-account/configure-account.component';
+import { ClassGComponent, CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddLessonNot } from './components/class-g/class-g.component';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ViewReminderComponent } from './dialogs/view-reminder/view-reminder.component';
@@ -68,20 +69,21 @@ import { ProgressStudentComponent } from './components/progress-student/progress
 import { GeneralProgressStudentComponent } from './components/graphics/general-progress-student/general-progress-student.component';
 import { PushNotificationService } from './services/push-notification.service';
 import { AddHomeworkComponent } from './dialogs/add-homework/add-homework.component';
-import { HomeworksComponent } from './components/homeworks/homeworks.component';
+import { HomeworksComponent, CustomSnackBarComponentSendFeedbackHomework, CustomSnackBarComponentSendFeedbackHomeworkNot } from './components/homeworks/homeworks.component';
 import { ViewDetailsHomeworksComponent } from './dialogs/view-details-homeworks/view-details-homeworks.component';
 import { FeedbackHomeworkComponent } from './dialogs/feedback-homework/feedback-homework.component';
-import { HomeworksStudentComponent } from './components/homeworks-student/homeworks-student.component';
+import { HomeworksStudentComponent, CustomSnackBarComponentResponseSendHomeworkI } from './components/homeworks-student/homeworks-student.component';
 import { FeelingStudentsComponent } from './components/feeling-students/feeling-students.component';
-import { FeelingGroupComponent } from './components/feelings/feeling-group/feeling-group.component';
+import { FeelingGroupComponent, CustomSnackBarComponentAddAdvice, CustomSnackBarComponentAddAdviceNot } from './components/feelings/feeling-group/feeling-group.component';
 import { FeelingIndividualComponent } from './components/feelings/feeling-individual/feeling-individual.component';
 import { AddAdviceWComponent } from './dialogs/add-advice-w/add-advice-w.component';
 import { DoubtsComponent } from './components/Doubts/doubts/doubts.component';
 import { MaterialDoubtsComponent } from './components/Doubts/material-doubts/material-doubts.component';
-import { HomeworkDoubtsComponent } from './components/Doubts/homework-doubts/homework-doubts.component';
+import { HomeworkDoubtsComponent, CustomSnackBarComponentResponseHNot, CustomSnackBarComponentResponseH } from './components/Doubts/homework-doubts/homework-doubts.component';
 import { DetailsDoubtComponent } from './dialogs/details-doubt/details-doubt.component';
-import { ExamDoubtsComponent } from './components/Doubts/exam-doubts/exam-doubts.component';
-import { GeneralDoubtsComponent } from './components/Doubts/general-doubts/general-doubts.component';
+import { ExamDoubtsComponent, CustomSnackBarComponentResponseE, CustomSnackBarComponentResponseENot } from './components/Doubts/exam-doubts/exam-doubts.component';
+import { GeneralDoubtsComponent, CustomSnackBarComponentResponseG, CustomSnackBarComponentResponseGNot } from './components/Doubts/general-doubts/general-doubts.component';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 /**
  * Variable para importar todas las librerias de angular material
@@ -133,11 +135,31 @@ const angularMaterial=[
     CustomSnackBarComponent,
     CustomSnackBarComponentUserLessonsAddLesson,
     CustomSnackBarComponentUserLessonsAddStudent,
+    openCustomerSnackBarNot,
+    CustomSnackBarComponentSendFeedbackHomeworkNot,
+    CustomSnackBarComponentUpdatePasswordNot,
+    CustomSnackBarComponentSendGeneralFileNot,
+    CustomSnackBarComponentUserLessonsAddLessonNot,
+    CustomSnackBarComponentResponseH, 
+    CustomSnackBarComponentResponseHNot,
+    CustomSnackBarComponentResponseE, 
+    CustomSnackBarComponentResponseENot,
+    CustomSnackBarComponentResponseG, 
+    CustomSnackBarComponentResponseGNot,
+    CustomSnackBarComponentResponseSendHomework,
+    CustomSnackBarComponentUserLessonsRemoveStudent,
     CustomSnackBarComponentRegister,
     CustomSnackBarComponentSendGeneralFile,
     CustomSnackBarComponentAddFilesChatbot,
     CustomSnackBarComponentAddScore,
+    CustomSnackBarComponentSendGeneralFileNotExi,
+    CustomSnackBarComponentAddScoreNot,
     CustomSnackBarComponentLogin,
+    CustomSnackBarComponentAddFilesChatbotNot,
+    CustomSnackBarComponentSendFeedbackHomework,
+    CustomSnackBarComponentAddAdvice,
+    CustomSnackBarComponentAddAdviceNot,
+    CustomSnackBarComponentResponseSendHomeworkI,
     ConfigureAccountComponent,
     ClassGComponent,
     ViewReminderComponent,
@@ -165,6 +187,7 @@ const angularMaterial=[
     DetailsDoubtComponent,
     ExamDoubtsComponent,
     GeneralDoubtsComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -173,6 +196,7 @@ const angularMaterial=[
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    ScrollingModule,
     angularMaterial,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -193,10 +217,14 @@ const angularMaterial=[
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,AddFilesComponent, AddHomeworkComponent,AddSubjectComponent, 
     AddStudentComponent, ScoreUserComponent, ViewDetailsHomeworksComponent, FeedbackHomeworkComponent, GenerateKeyComponent, CustomSnackBarComponent,
-    CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent,
-    CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile,
-    CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore,
-    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword, AddAdviceWComponent,DetailsDoubtComponent
+    CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent, openCustomerSnackBarNot, CustomSnackBarComponentSendFeedbackHomework, CustomSnackBarComponentAddScoreNot, 
+    CustomSnackBarComponentAddFilesChatbotNot, CustomSnackBarComponentSendGeneralFileNotExi, CustomSnackBarComponentSendFeedbackHomeworkNot, CustomSnackBarComponentSendGeneralFileNot, 
+    CustomSnackBarComponentUpdatePasswordNot, CustomSnackBarComponentUserLessonsAddLessonNot, CustomSnackBarComponentUserLessonsRemoveStudent,
+    CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile, CustomSnackBarComponentAddAdvice, CustomSnackBarComponentAddAdviceNot,
+    CustomSnackBarComponentAddFilesChatbot,CustomSnackBarComponentAddScore, CustomSnackBarComponentResponseH, CustomSnackBarComponentResponseHNot,
+    CustomSnackBarComponentResponseE, CustomSnackBarComponentResponseENot, CustomSnackBarComponentResponseG, CustomSnackBarComponentResponseGNot,
+    CustomSnackBarComponentResponseSendHomework, CustomSnackBarComponentResponseSendHomeworkI,
+    CustomSnackBarComponentLogin,ViewReminderComponent, CustomSnackBarComponentUpdatePassword, AddAdviceWComponent,DetailsDoubtComponent, ConfirmDialogComponent,
   ]
 })
 export class AppModule { }

@@ -100,6 +100,7 @@ export class HomeworksStudentComponent implements OnInit {
     private formbuilder: FormBuilder,
     private firebaseStorage: FirebaseService,
     private firebase: FirebaseService,
+    private snackBar: MatSnackBar,
   ) {
     this.formSelSubjectandHomework = this.formbuilder.group({
       subjectS: ['', Validators.required],
@@ -193,6 +194,7 @@ export class HomeworksStudentComponent implements OnInit {
         // this.listarHomeworksSelGradGrupMat();
         
         this.getHomeworksInfoAndFile();
+        this.openCustomerSnackBar();
         // this.searchHomewoks();
         
       }
@@ -222,6 +224,16 @@ export class HomeworksStudentComponent implements OnInit {
     this.router.navigateByUrl("Menu");
   }
 
+  //metodo para mostrar una notificacion emergente de que la respuesta a la duda fue añadida correctamente
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentResponseSendHomeworkI, { duration: 4000 });
+  }
 
 }
 
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Tu tarea ha sido entregada</strong></span>`
+})
+export class CustomSnackBarComponentResponseSendHomeworkI { }

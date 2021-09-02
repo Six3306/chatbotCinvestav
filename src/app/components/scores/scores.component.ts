@@ -183,7 +183,7 @@ export class ScoresComponent implements OnInit {
   ) {
     this.user = JSON.parse(localStorage.getItem("user"));
   }
-
+ 
   ngOnInit() {
     this.retornaGrados();
   }
@@ -289,7 +289,7 @@ export class ScoresComponent implements OnInit {
 
           });
         } else {
-          console.log("Ingresa únicamente valores entre 0 y 10 para calificar");
+          this.openCustomerSnackBarNot();
         }
       }
     })
@@ -306,10 +306,21 @@ export class ScoresComponent implements OnInit {
     return this.snackBar.openFromComponent(CustomSnackBarComponentAddScore, { duration: 4000 });
   }
 
+  //metodo para mostrar una notificacion emergente de que las calificaciones no han podido ser registradas
+  openCustomerSnackBarNot() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentAddScoreNot, { duration: 4000 });
+  }
+
 }
 
 @Component({
   selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Calificaciones Añadidas/Modificadas Correctamente</strong></span>`
+  template: `<span style='color: #00ff4ce3;'><strong>Calificaciones añadidas/modificadas correctamente</strong></span>`
 })
 export class CustomSnackBarComponentAddScore { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>Ingresa únicamente valores entre 0 y 10 para calificar</strong></span>`
+})
+export class CustomSnackBarComponentAddScoreNot { }

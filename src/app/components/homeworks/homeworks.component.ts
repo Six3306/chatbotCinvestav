@@ -82,6 +82,7 @@ export class HomeworksComponent implements OnInit {
     private formbuilder: FormBuilder,
     private firebaseStorage: FirebaseService,
     private firebase: FirebaseService,
+    private snackBar: MatSnackBar,
   ) {
     this.formFileDes = this.formbuilder.group({
       rol: ['', Validators.required],
@@ -217,7 +218,6 @@ export class HomeworksComponent implements OnInit {
 
   
   viewFeedbackH(row){
-
     const dialogRef = this.dialog.open(FeedbackHomeworkComponent,{
       data: {
         "nameStudent": row.nameStudent,
@@ -234,8 +234,11 @@ export class HomeworksComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(response=>{
       if(response==1 || response=="1"){
+        this.openCustomerSnackBar();
         row.statusFeedback = 1;
-      }      
+      }else if(response==0 || response=="0"){
+        this.openCustomerSnackBarNot();
+      }
     });
   }
 
@@ -249,6 +252,27 @@ export class HomeworksComponent implements OnInit {
     this.router.navigateByUrl("Menu");
   }
 
+  //para mostrar un mensaje emergente notificando que la retroalimnetación se envió correctamente.
+  openCustomerSnackBar(){
+    return this.snackBar.openFromComponent(CustomSnackBarComponentSendFeedbackHomework, {duration: 4000});
+  }
+
+  //para mostrar un mensaje emergente notificando que la retroalimnetación no fue enviada
+  openCustomerSnackBarNot(){
+    return this.snackBar.openFromComponent(CustomSnackBarComponentSendFeedbackHomeworkNot, {duration: 4000});
+  }
 
 }
 
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Retroalimentación enviada correctamente</strong></span>`
+})
+export class CustomSnackBarComponentSendFeedbackHomework{}
+
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>La retroalimentación no pudo ser enviada, verifica los datos</strong></span>`
+})
+export class CustomSnackBarComponentSendFeedbackHomeworkNot { }

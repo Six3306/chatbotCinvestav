@@ -1,3 +1,88 @@
-<h4 id="titleFooter">CHATBOT CINVESTAV - <em>{{nowYear}}</em></h4>
+<mat-toolbar class="toolbar">
+</mat-toolbar>
 
-<p>desde el abc PRUEBA</p>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <!--ADMINISTRADOR-->
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA!='/Validate-users'" class="nav-link" id="adminUsers" (click)="adminUsers()">Usuarios</a>
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA=='/Validate-users'" class="nav-link" id="adminUsersA" (click)="adminUsers()">Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA!='/Users-lessons'" class="nav-link" id="adminCourStud" (click)="adminCourStud()">Gestionar Grupos/Estudiantes</a>
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA=='/Users-lessons'" class="nav-link" id="adminCourStudA" (click)="adminCourStud()">Gestionar Grupos/Estudiantes</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA!='/Class-g'" class="nav-link" id="adminGClass" (click)="admingClass()">Gestionar Clases</a>
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA=='/Class-g'" class="nav-link" id="adminGClassA" (click)="admingClass()">Gestionar Clases</a>
+
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA!='/reminders'" class="nav-link" id="adminRemind" (click)="adminRemind()">Avisos</a>
+                <a *ngIf="typeMenu=='Administrador' && status==true && routeA=='/reminders'" class="nav-link" id="adminReminA" (click)="adminRemind()">Avisos</a>
+            </li>
+            <!--PROFESOR Y ALUMNOS-->
+            <li class="nav-item">
+                <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true && routeA!='/General-files'" class="nav-link" id="goToGeneralFiles" (click)="goToGeneralFiles()">Gestion de Archivos y Mensajes</a>
+                <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true && routeA=='/General-files'" class="nav-link" id="goToGeneralFilesA" (click)="goToGeneralFiles()">Gestion de Archivos y Mensajes</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true && routeA!='/Chatbot'" class="nav-link" id="goToChatbot" (click)="goToChatbot()">Chatbot</a>
+                <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Alumno') && status==true && routeA=='/Chatbot'" class="nav-link" id="goToChatbotA" (click)="goToChatbot()">Chatbot</a>
+            </li>
+            <!--ALUMNOS-->
+            <li class="nav-item">
+                <a *ngIf="typeMenu== 'Alumno' && status==true && routeA!='/Progress-student'" class="nav-link" id="goToProgressStudent" (click)="goToProgressStudent()">Progreso en Clases</a>
+                <a *ngIf="typeMenu== 'Alumno' && status==true && routeA=='/Progress-student'" class="nav-link" id="goToProgressStudentA" (click)="goToProgressStudent()">Progreso en Clases</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu== 'Alumno' && status==true && routeA!='/Homeworks-student'" class="nav-link" id="goToHomeworkStudent" (click)="goToHomeworkStudent()">Tareas</a>
+                <a *ngIf="typeMenu== 'Alumno' && status==true && routeA=='/Homeworks-student'" class="nav-link" id="goToHomeworkStudentA" (click)="goToHomeworkStudent()">Tareas</a>
+            </li>
+            <!--PROFESOR-->
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA!='/Scores'" class="nav-link" id="goToScoresUsers" (click)="goToScoresUsers()">Calificar</a>
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA=='/Scores'" class="nav-link" id="goToScoresUsersA" (click)="goToScoresUsers()">Calificar</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA!='/Progress-group'" class="nav-link" id="goToProgressGroup" (click)="progressGroup()">Progreso de Grupos</a>
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA=='/Progress-group'" class="nav-link" id="goToProgressGroupA" (click)="progressGroup()">Progreso de Grupos</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA!='/Homeworks'" class="nav-link" id="goToHomeworks" (click)="goToHomeworks()">Tareas</a>
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA=='/Homeworks'" class="nav-link" id="goToHomeworksA" (click)="goToHomeworks()">Tareas</a>
+            </li>
+            <li class="nav-item">
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA!='/Doubts'" class="nav-link" id="goToDoubts" (click)="goToDoubts()">Dudas de Estudiantes</a>
+                <a *ngIf="typeMenu=='Profesor' && status==true && routeA=='/Doubts'" class="nav-link" id="goToDoubtsA" (click)="goToDoubts()">Dudas de Estudiantes</a>
+            </li>
+            <!--ADMINISTRADOR Y PROFESOR-->
+            <li class="nav-item">
+                <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Administrador') && status==true && routeA!='/Feelings'" class="nav-link" id="goToFeelings" (click)="goToFeelings()">Sentimientos de Estudiantes</a>
+                <a *ngIf="(typeMenu=='Profesor' || typeMenu== 'Administrador') && status==true && routeA=='/Feelings'" class="nav-link" id="goToFeelingsA" (click)="goToFeelings()">Sentimientos de Estudiantes</a>
+            </li>
+            <!--TODOS-->
+            <li class="nav-item">
+                <a *ngIf="existUser" class="nav-link" id="exitAccount" (click)="exitAcount()">Cerrar Sesión</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- <div id="cc"> -->
+<div id="imgR">
+    <img src="/assets/pictures/logo_ChatbotCinves.png" alt="logoChat" class="logoP" (click)="goMenuPrincipal()" />
+</div>
+
+<div id="avat">
+    <img src="../assets/pictures/avatar1.png" id="avatar" title="{{'Hola '+name}}" (click)="goConfigureAccount()" *ngIf="routeA!='/Configure-account'" />
+</div>
+
+<!-- </div> -->
+<br><br><br>

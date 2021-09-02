@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChildren, QueryList, SimpleChanges } from '@angular/core';
 import { User } from '../../../models/User.model';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { Doubt } from '../../../models/Doubt.model';
 import { FirebaseService } from '../../../services/firebase/firebase.service';
 import { DetailsDoubtComponent } from '../../../dialogs/details-doubt/details-doubt.component';
@@ -36,11 +36,11 @@ export class ExamDoubtsComponent implements OnInit {
   dataSourceExamDoubt: MatTableDataSource<Doubt>;
   displayedColumnsExam: string[] = ['student', 'date', 'hour', 'status', 'details', 'recommendedMaterial', 'email', 'id'];
 
-  @ViewChildren(MatPaginator,) paginator: QueryList<MatPaginator>;
+  @ViewChildren('paginatorE') paginator: QueryList<MatPaginator>;
   @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
 
-  constructor(public firebase: FirebaseService, public dialog: MatDialog) {
+  constructor(public firebase: FirebaseService, public dialog: MatDialog, private snackBar: MatSnackBar) {
     this.user = JSON.parse(localStorage.getItem("user"));
   }
 
@@ -53,7 +53,7 @@ export class ExamDoubtsComponent implements OnInit {
       this.examSelected = null;
       this.exams = [];
       this.descriptionE = "";
-      this.pieChartData = [0,0,0];
+      this.pieChartData = [0, 0, 0];
       if ((this.grade == "1" || this.grade == "2" || this.grade == "3") && (this.group == "A" || this.group == "B" || this.group == "C" || this.group == "D" || this.group == "E" || this.group == "F" || this.group == "G" || this.group == "H" || this.group == "I" || this.group == "J") && (this.subject != undefined)) {
         let data = {
           "grade": this.grade,
@@ -86,7 +86,7 @@ export class ExamDoubtsComponent implements OnInit {
       this.descriptionE = response["descriptionE"];
       this.dataSourceExamDoubt = new MatTableDataSource(response["examDoubts"]);
       this.dataSourceExamDoubt.paginator = this.paginator.first;
-      this.dataSourceExamDoubt.sort = this.sort.first;
+      // this.dataSourceExamDoubt.sort = this.sort.first;
 
       this.pieChartData = [response["sumD"], response["sumF"], response["sumL"]];
 
@@ -114,6 +114,9 @@ export class ExamDoubtsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(response => {
       if (response == 1 || response == "1") {
         row.statusFeedback = 1;
+        this.openCustomerSnackBar();
+      } else if (response == 0 || response == "0") {
+        this.openCustomerSnackBarNot();
       }
     });
   }
@@ -134,4 +137,27 @@ export class ExamDoubtsComponent implements OnInit {
   ];
 
 
+  //metodo para mostrar una notificacion emergente de que la respuesta a la duda fue añadida correctamente
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentResponseE, { duration: 4000 });
+  }
+
+  //metodo para mostrar una notificacion emergente de que la respuesta a la duda no pudo ser añadida
+  openCustomerSnackBarNot() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentResponseENot, { duration: 4000 });
+  }
+
 }
+
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Respuesta a duda del examen añadida correctamente</strong></span>`
+})
+export class CustomSnackBarComponentResponseE { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>Ingresa una respuesta válida a esa duda de examen</strong></span>`
+})
+export class CustomSnackBarComponentResponseENot { }

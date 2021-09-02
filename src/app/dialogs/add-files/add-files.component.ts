@@ -162,7 +162,7 @@ export class AddFilesComponent implements OnInit {
   sendFile() {
     var b = true;
     this.data = this.formFile.value;
-    var caP = ["{", "}", "[", "]", "-", "_",  "|", "&", ".delete", ".update", "alert("];
+    var caP = ["{", "}", "[", "]", "-", "_", "|", "&", ".delete", ".update", "alert("];
 
     for (let i = 0; i < caP.length; i++) {
       if (this.data.title.includes(caP[i]) || this.data.description.includes(caP[i])) {
@@ -180,8 +180,7 @@ export class AddFilesComponent implements OnInit {
       this.firebase.addLinkMaterial(this.data, this.urls, publicationDate);
       this.openCustomerSnackBar();
     } else {
-      console.log("Verifica que tu información sea correcta");
-
+      this.openCustomerSnackBarNot();
     }
 
   }
@@ -244,11 +243,22 @@ export class AddFilesComponent implements OnInit {
     return this.snackBar.openFromComponent(CustomSnackBarComponentAddFilesChatbot, { duration: 4000 });
   }
 
+  //para abrir la ventana de notificacion emergente y mostrar que la operacion de agregar material de apoyo no agrego el material
+  openCustomerSnackBarNot() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentAddFilesChatbotNot, { duration: 4000 });
+  }
+
 }
 
 
 @Component({
   selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Material de Apoyo Agregado Correctamente</strong></span>`
+  template: `<span style='color: #00ff4ce3;'><strong>Material de apoyo agregado correctamente</strong></span>`
 })
 export class CustomSnackBarComponentAddFilesChatbot { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>El material de apoyo no fue añadido, verifica que tu información sea correcta</strong></span>`
+})
+export class CustomSnackBarComponentAddFilesChatbotNot { }

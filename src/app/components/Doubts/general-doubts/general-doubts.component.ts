@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges, QueryList, ViewChildren } from '@angular/core';
 import { DetailsDoubtComponent } from '../../../dialogs/details-doubt/details-doubt.component';
-import { MatTableDataSource, MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
 import { FirebaseService } from '../../../services/firebase/firebase.service';
 import { Doubt } from '../../../models/Doubt.model';
 import { User } from '../../../models/User.model';
@@ -20,7 +20,7 @@ export interface GeneralTmp {
 
 export class GeneralDoubtsComponent implements OnInit {
 
-  
+
   @Input()
   grade: any
   @Input()
@@ -28,57 +28,56 @@ export class GeneralDoubtsComponent implements OnInit {
   @Input()
   subject: any
 
-  generalSelected:String;
-  generals:GeneralTmp[] = [];
-  user:User;
-  descriptionE:String;
+  generalSelected: String;
+  generals: GeneralTmp[] = [];
+  user: User;
+  descriptionE: String;
 
   dataSourceGeneralDoubt: MatTableDataSource<Doubt>;
   displayedColumnsGeneral: string[] = ['student', 'date', 'hour', 'status', 'details', 'recommendedMaterial', 'email', 'id', 'doubt'];
 
-  @ViewChildren(MatPaginator) paginator: QueryList<MatPaginator>;
+  @ViewChildren('paginator2') paginator: QueryList<MatPaginator>;
   @ViewChildren(MatSort) sort: QueryList<MatSort>;
 
 
-  constructor(public firebase: FirebaseService, public dialog: MatDialog) { 
-    this.user= JSON.parse(localStorage.getItem("user"));  
-  }  
+  constructor(public firebase: FirebaseService, public dialog: MatDialog, private snackBar: MatSnackBar) {
+    this.user = JSON.parse(localStorage.getItem("user"));
+  }
 
   ngOnInit() {
   }
 
-   
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.grade != undefined || changes.group != undefined || changes.subject != undefined) {
       this.generalSelected = null;
       this.generals = [];
       this.descriptionE = "";
-      this.pieChartData = [0,0,0];
-      if ((this.grade == "1" || this.grade == "2" || this.grade == "3") && (this.group == "A" ||this.group == "B" ||this.group == "C" ||this.group == "D" ||this.group == "E" ||this.group == "F" ||this.group == "G" ||this.group == "H" ||this.group == "I" ||this.group == "J") && (this.subject!=undefined)){
-          this.selectExam();
+      this.pieChartData = [0, 0, 0];
+      if ((this.grade == "1" || this.grade == "2" || this.grade == "3") && (this.group == "A" || this.group == "B" || this.group == "C" || this.group == "D" || this.group == "E" || this.group == "F" || this.group == "G" || this.group == "H" || this.group == "I" || this.group == "J") && (this.subject != undefined)) {
+        this.selectExam();
       }
 
     }
   }
 
-  selectExam(){
+  selectExam() {
     let data = {
       "grade": this.grade,
       "group": this.group,
       "subject": this.subject,
     }
 
-    this.firebase.getDoubtsGeneral(data).then(response=>{
-      console.log(JSON.stringify(response));
+    this.firebase.getDoubtsGeneral(data).then(response => {
       this.dataSourceGeneralDoubt = new MatTableDataSource(response["generalDoubts"]);
-        this.dataSourceGeneralDoubt.paginator = this.paginator.first;
-      this.pieChartData = [response["sumD"],response["sumF"],response["sumL"]];
+      this.dataSourceGeneralDoubt.paginator = this.paginator.first;
+      this.pieChartData = [response["sumD"], response["sumF"], response["sumL"]];
 
     });
   }
 
-  viewFeedbackE(row){
-    const dialogRef = this.dialog.open(DetailsDoubtComponent,{
+  viewFeedbackE(row) {
+    const dialogRef = this.dialog.open(DetailsDoubtComponent, {
       data: {
         "student": row.student,
         "hour": row.hour,
@@ -89,17 +88,20 @@ export class GeneralDoubtsComponent implements OnInit {
         "subject": this.subject,
         "idG": this.generalSelected,
         "type": "g",
-        "doubtC":row.doubt,
+        "doubtC": row.doubt,
         "recomended": row.recommendedMaterial,
         "email": row.email,
         "id": row.id,
       }
-      
+
     });
-    dialogRef.afterClosed().subscribe(response=>{
-      if(response==1 || response=="1"){
+    dialogRef.afterClosed().subscribe(response => {
+      if (response == 1 || response == "1") {
         row.statusFeedback = 1;
-      }      
+        this.openCustomerSnackBar();
+      } else if (response == 0 || response == "0") {
+        this.openCustomerSnackBarNot();
+      }
     });
   }
 
@@ -118,4 +120,27 @@ export class GeneralDoubtsComponent implements OnInit {
     },
   ];
 
+  //metodo para mostrar una notificacion emergente de que la respuesta a la duda fue añadida correctamente
+  openCustomerSnackBar() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentResponseG, { duration: 4000 });
+  }
+
+  //metodo para mostrar una notificacion emergente de que la respuesta a la duda no pudo ser añadida
+  openCustomerSnackBarNot() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentResponseGNot, { duration: 4000 });
+  }
+
 }
+
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Respuesta a la duda general añadida correctamente</strong></span>`
+})
+export class CustomSnackBarComponentResponseG { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>Ingresa una respuesta válida para la duda general</strong></span>`
+})
+export class CustomSnackBarComponentResponseGNot { }

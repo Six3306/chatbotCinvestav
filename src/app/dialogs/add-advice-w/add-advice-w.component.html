@@ -10,12 +10,15 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <ul *ngFor="let advice of studentAdviceW">
-                <li><b>Consejo dado por: {{advice.nameProfesor}} a las {{advice.hour}} del {{advice.date}}</b>
+            <!-- <cdk-virtual-scroll-viewport itemSize="5"> -->
+            <div class="advicesList">
+                <div *ngFor="let advice of studentAdviceW">
+                    <b>Consejo dado por: {{advice.nameProfesor}} a las {{advice.hour}} del {{advice.date}}</b>
                     <p>{{advice.advice}}</p>
+                </div>
+            </div>
+            <!-- </cdk-virtual-scroll-viewport> -->
 
-                </li>
-            </ul>
         </mat-expansion-panel>
 
     </mat-accordion>

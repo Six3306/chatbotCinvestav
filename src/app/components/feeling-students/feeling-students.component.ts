@@ -84,16 +84,9 @@ export class FeelingStudentsComponent implements OnInit {
         let data={
           grade: this.gradeSelected,
           group: this.groupSelected,
-        };
-
-        console.log(JSON.stringify(data)+"...");
-        
-
+        };        
         this.firebase.getListFeelingStudents(data).then(response=>{
-          // console.log(JSON.stringify(response)+"...");
-          this.dataGeneral = response;
-          // console.log(this.dataGeneral);
-          
+          this.dataGeneral = response;          
         });
         
       }
@@ -104,16 +97,10 @@ export class FeelingStudentsComponent implements OnInit {
         let data={
           grade: this.gradeSelected,
           group: this.groupSelected,
-        };
-
-        console.log(JSON.stringify(data)+"...");
-        
+        };       
 
         this.firebase.getListFeelingStudents(data).then(response=>{
-          // console.log(JSON.stringify(response)+"...");
-          this.dataGeneral = response;
-          // console.log(this.dataGeneral);
-          
+          this.dataGeneral = response;          
         });
         
       }

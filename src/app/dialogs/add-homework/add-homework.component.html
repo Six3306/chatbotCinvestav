@@ -18,16 +18,15 @@
             <!--para asignar la tarea-->
             <mat-form-field class="selectsSubjectHomework">
                 <mat-label>Tarea a Enviar</mat-label>
-                <mat-select formControlName="subject" [(ngModel)]="homeworkSelected">
+                <mat-select formControlName="subject" (selectionChange)="viewStatusHomework()" [(ngModel)]="homeworkSelected">
                     <mat-option *ngFor="let homework of homeworks" [value]="homework.value">
                         {{homework.viewValue}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-
-
-
         </form>
+
+        <p>{{statusHG}}</p>
 
         <!--formulario para enviar nuevos archivos-->
         <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">

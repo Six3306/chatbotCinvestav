@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { AdviceW } from '../../models/adviceW.model';
 import { User } from '../../models/User.model';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-add-advice-w',
@@ -16,6 +16,7 @@ export class AddAdviceWComponent implements OnInit {
   student: string = "";
   dateReg: string = "";
   hourReg: string = "";
+  title: string = "";
   status: number = 0;
   formFile: FormGroup;
   bSP: boolean = false;
@@ -40,6 +41,7 @@ user:User;
     this.hourReg = data.hourR;
     this.dateReg = data.dateR;
     this.status = data.status;
+    this.title = data.title;
     this.user= JSON.parse(localStorage.getItem("user"));    
     this.firebase.getInfoStatusAdviceProfessorStudent(data.title, this.user).then(response => {
       if(response && this.status == 0){
@@ -59,7 +61,7 @@ user:User;
   }
 
   getListAdvice(){
-    this.firebase.getListAdviceStudent(this.student).then(response => {
+    this.firebase.getListAdviceStudent(this.title.split("---")[0], this.student).then(response => {
       console.log(JSON.stringify(response));
       this.studentAdviceW = response;
     });

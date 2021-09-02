@@ -54,3 +54,8 @@
 #bsPS {
     color: #972c2c;
 }
+
+.advicesList {
+    height: 200px;
+    overflow-y: scroll;
+}

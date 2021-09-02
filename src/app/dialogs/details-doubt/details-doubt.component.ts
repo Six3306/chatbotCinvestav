@@ -42,7 +42,7 @@ export class DetailsDoubtComponent implements OnInit {
     this.type = data.type;
     this.id = data.id;
 
-    if(this.type=="g"){
+    if (this.type == "g") {
       this.doubtContent = data.doubtC;
     }
 
@@ -69,24 +69,36 @@ export class DetailsDoubtComponent implements OnInit {
     * Funcion para cerrar el dialog 
     */
   okClick(): void {
-    this.dialogRef.close(0);
+    this.dialogRef.close(2);
   }
 
   setAnswerDoubt() {
-    let data = {
-      "grade": this.grade,
-      "group": this.group,
-      "email": this.email,
-      "student": this.student,
-      "subject": this.subject,
-      "type": this.type,
-      "idG": this.idG,
-      "feedB": this.feedbackCommentA,
-      "id": this.id,
+    var b = true;
+    var caP = ["{", "}",  "[", "]", "javascript.", "alert("];
+    for (let i = 0; i < caP.length; i++) {
+      if (this.feedbackCommentA.includes(caP[i])) {
+        b = false;
+      }
     }
-    this.firebase.setFeedBackDoubtStudent(data).then(() => {
-      this.dialogRef.close(1);
-    });
+
+    if (this.feedbackCommentA.trim() != "" && b) {
+      let data = {
+        "grade": this.grade,
+        "group": this.group,
+        "email": this.email,
+        "student": this.student,
+        "subject": this.subject,
+        "type": this.type,
+        "idG": this.idG,
+        "feedB": this.feedbackCommentA,
+        "id": this.id,
+      }
+      this.firebase.setFeedBackDoubtStudent(data).then(() => {
+        this.dialogRef.close(1);
+      });
+    } else {
+      this.dialogRef.close(0);
+    }
   }
 
 

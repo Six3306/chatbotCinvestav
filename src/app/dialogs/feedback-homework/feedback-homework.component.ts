@@ -97,7 +97,7 @@ export class FeedbackHomeworkComponent implements OnInit {
   subject: string;
   homeworkName: string;
   statusFeedback: string;
-  fileUrl:string="";
+  fileUrl: string = "";
   archivo = null;
   feedbackCommentA = null;
 
@@ -159,31 +159,32 @@ export class FeedbackHomeworkComponent implements OnInit {
 
     this.feedbackCommentA = this.formFileSend.get('FeedbackComment').value;
 
-    if(this.feedbackCommentA == null || this.feedbackCommentA == ""){
+    if (this.feedbackCommentA == null || this.feedbackCommentA == "" || this.feedbackCommentA.trim() == "") {
       this.feedbackCommentA = this.feedbackComment;
     }
 
     if (this.archivo === null && (this.feedbackCommentA == null || this.feedbackCommentA == "")) {
-      alert("Seleccione el archivo a enviar!");
+      this.dialogRef.close(0);
     } else {
       let fecha = new Date();
-        let dateA = ((fecha.getDate()<10)? "0"+fecha.getDate() : fecha.getDate()+"") + "-" + (((fecha.getMonth() + 1) < 10)? "0"+(fecha.getMonth() + 1): (fecha.getMonth() + 1)+"") + "-" + (fecha.getFullYear()+"");
-        let timeA = ((fecha.getHours()<10)? "0"+fecha.getHours() : fecha.getHours()+"") + ":" + ((fecha.getMinutes()<10)? "0"+fecha.getMinutes() : fecha.getMinutes()+"") + ":" + ((fecha.getSeconds()<10)? "0"+fecha.getSeconds() : fecha.getSeconds()+"");
-        var data = {
-          'grade': this.grade,
-          'group': this.group,
-          'idHomework': this.homeworkName,
-          'subject': this.subject,
-          'title': this.homeworkName + "--" + this.nameStudent,
-          'nameStudent': this.nameStudent,
-        };
+      let dateA = ((fecha.getDate() < 10) ? "0" + fecha.getDate() : fecha.getDate() + "") + "-" + (((fecha.getMonth() + 1) < 10) ? "0" + (fecha.getMonth() + 1) : (fecha.getMonth() + 1) + "") + "-" + (fecha.getFullYear() + "");
+      let timeA = ((fecha.getHours() < 10) ? "0" + fecha.getHours() : fecha.getHours() + "") + ":" + ((fecha.getMinutes() < 10) ? "0" + fecha.getMinutes() : fecha.getMinutes() + "") + ":" + ((fecha.getSeconds() < 10) ? "0" + fecha.getSeconds() : fecha.getSeconds() + "");
+      var data = {
+        'grade': this.grade,
+        'group': this.group,
+        'idHomework': this.homeworkName,
+        'subject': this.subject,
+        'title': this.homeworkName + "--" + this.nameStudent,
+        'nameStudent': this.nameStudent,
+      };
       if (archivoF === null) {
-        this.firebaseStorage.saveFeedbackCommentHomework(data, dateA, timeA+"", this.feedbackCommentA);
-      } else {  
-        this.firebaseStorage.saveFeedbackHomework(data, dateA, timeA+"", this.feedbackCommentA, archivoF);
+        this.firebaseStorage.saveFeedbackCommentHomework(data, dateA, timeA + "", this.feedbackCommentA);
+      } else {
+        this.firebaseStorage.saveFeedbackHomework(data, dateA, timeA + "", this.feedbackCommentA, archivoF);
       }
+      this.dialogRef.close(1);
     }
-    this.dialogRef.close(1);
+
   }
 
   getHomeworkInfoAndFile() {
@@ -198,10 +199,10 @@ export class FeedbackHomeworkComponent implements OnInit {
 
 
     this.firebaseStorage.listHomeworkFileFeedbackStudents(data).then(response => {
-      if(response!=undefined || response!=""){
+      if (response != undefined || response != "") {
         this.fileUrl = response;
       }
-    }, onReject =>{
+    }, onReject => {
       this.fileUrl = "";
     });
 
@@ -216,16 +217,6 @@ export class FeedbackHomeworkComponent implements OnInit {
   menuP() {
     this.router.navigateByUrl("Menu");
   }
-  // //para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
-  //   openCustomerSnackBar(){
-  //     return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, {duration: 4000});
-  //   }
 
 }
 
-
-// @Component({
-//   selector: 'custom-snackbar',
-//   template: `<span style='color: #00ff4ce3;'><strong>Archivo Enviado Correctamente</strong></span>`
-// })
-// export class CustomSnackBarComponentSendGeneralFile{}

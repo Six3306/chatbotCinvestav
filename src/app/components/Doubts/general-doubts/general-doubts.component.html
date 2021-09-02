@@ -1,6 +1,6 @@
 <br><br>
 <div class="example-container centrado">
-    <mat-table mat-table [dataSource]="dataSourceGeneralDoubt" matSort style="max-height: 300px;">
+    <mat-table mat-table [dataSource]="dataSourceGeneralDoubt" matSort>
 
         <!-- Name NOMBRE -->
         <ng-container matColumnDef="student">
@@ -66,8 +66,20 @@
         <mat-header-row *matHeaderRowDef="displayedColumnsGeneral; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumnsGeneral;">
         </mat-row>
+
+        <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumnsGeneral; sticky: true" class="example-second-footer-row"></mat-footer-row>
+        <!-- <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row> -->
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 10, 25, 100]"></mat-paginator>
+
+    <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+
+
+
+
+
+
+
 </div>
 
 <div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null">

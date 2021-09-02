@@ -401,6 +401,48 @@ export class FirebaseService {
     });
   }
 
+  //retorna el estatus de una tarea por parte de un alumno (2 entregada fuera de tiempo, 1 entregada a tiempo, 0 no entregada)
+  getStatusHomeworkStudent(data) {
+    var statusF = 2;
+
+    return this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var h in value) {
+          if (h == data.homework) {
+            statusF = value[h]["entregados"][data.student]["estatus"];
+            break;
+          }
+        }
+      }
+      return statusF;
+    });
+  }
+
+  //actualiza la retroalimentacion de una tarea que ha sido subida nuevamente
+  refreshFeedbackHomework(data) {
+    this.database.database.ref(`Clases/${data.grade}/Materias/${data.subject}/${data.group}/Tareas/${data.idHomework}/entregados/${data.nameStudent}/`).update({ estatusFeedback: 0, fechaRetroalimentacion: "", feedbackComment: "", horaRetroalimentacion: "" });
+  }
+
+  refreshFeedbackHomeworkStudent(data) {
+    var idR = [];
+    var email = data.userEmail.split("@")[0]
+    this.database.database.ref(`Usuarios/Alumnos/${email}/retroalimentacionDudas/`).once('value').then((snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        for (var r in value) {
+          if (value[r]["idMaterialGeneral"] == data.idHomework && value[r]["tipo"] == "h" && value[r]["materia"] == data.subject) {
+            idR.push(r);
+          }
+        }
+      }
+    }).then(() => {
+      for (let i = 0; i < idR.length; i++) {
+        this.database.database.ref(`Usuarios/Alumnos/${email}/retroalimentacionDudas/${idR[i]}/`).remove();
+      }
+    });
+  }
+
   //retorna los datos de una tarea
   getInfoHomeworkStudentSend(data) {
     let infoHomework: String;
@@ -869,6 +911,7 @@ export class FirebaseService {
   }
 
   setAdviceToStudent(data) {
+    var b = false;
     // this.database.database.ref(`Usuarios/Alumnos/${nameU[0]}`).set({ nombre: usuario.username, grado: '', grupo: '', correo: usuario.email, estatus: 0, clave: usuario.password, estadosAnimo: "", notificaciones: { calificaciones: 0, examenes: 0, avisos: 0, materiales: 0, tareas: 0, recordatoriosClase: 0, archivos: 0 } });
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
       const value = snapshot.val();
@@ -878,20 +921,22 @@ export class FirebaseService {
             for (var edoA in value[emailStud]["estadosAnimo"]) {
               if (value[emailStud]["estadosAnimo"][edoA]["fecha"] = data.dateRW && data.hourRW == (edoA.split("---")[1]).split("--")[0]) {
                 this.database.database.ref(`Usuarios/Alumnos/${value[emailStud]["correo"].split("@")[0]}/estadosAnimo/${edoA}/consejos/`).push({ fecha: data.fA, hora: data.hA, consejo: data.adviceC, nombreProfesor: data.professorN, emailProfesor: data.professorE });
+                b = true;
                 break;
               }
             }
             // break;
           }
         }
-
       }
-
+      return b;
     });
   }
 
   //obtiene los consejos que se le han dado a un alumno con sentimientos peligrosos
-  getListAdviceStudent(nameStudent) {
+  getListAdviceStudent(title, nameStudent) {
+    console.log("dentro: " + title);
+
     var studentAdviceW: Array<AdviceW> = [];
     return this.database.database.ref(`Usuarios/Alumnos/`).once('value').then((snapshot) => {
       const value = snapshot.val();
@@ -899,7 +944,7 @@ export class FirebaseService {
         for (var emailStud in value) {
           if (value[emailStud]["nombre"] == nameStudent) {
             for (var edoA in value[emailStud]["estadosAnimo"]) {
-              if (edoA.includes("matar")) {
+              if (edoA.includes("matar") && edoA.includes(title)) {
                 if (value[emailStud]["estadosAnimo"][edoA]["consejos"] != "") {
                   for (var advi in value[emailStud]["estadosAnimo"][edoA]["consejos"]) {
                     var adviceS = new AdviceW(value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["fecha"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["hora"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["consejo"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["nombreProfesor"], value[emailStud]["estadosAnimo"][edoA]["consejos"][advi]["emailProfesor"]);
@@ -1177,7 +1222,7 @@ export class FirebaseService {
 
             if (dateR.getTime() > dateA.getTime()) {
               rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, 1);
-            }else{
+            } else {
               rem = new Reminder(value[val].titulo, value[val].contenido, value[val].fechaPub, value[val].fechaExp, value[val].profesores, 0);
             }
             let arrayDest: Array<String> = [];

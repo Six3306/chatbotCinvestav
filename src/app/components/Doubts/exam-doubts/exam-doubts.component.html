@@ -16,7 +16,7 @@
 
 <br><br>
 <div class="example-container centrado">
-    <mat-table mat-table [dataSource]="dataSourceExamDoubt" matSort style="max-height: 300px;">
+    <mat-table mat-table [dataSource]="dataSourceExamDoubt" matSort>
 
         <!-- Name NOMBRE -->
         <ng-container matColumnDef="student">
@@ -76,9 +76,13 @@
         <mat-header-row *matHeaderRowDef="displayedColumnsExam; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumnsExam;">
         </mat-row>
-        <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumnsExam; sticky: true" class="example-first-footer-row"></mat-footer-row>
+
+        <mat-footer-row mat-footer-row *matFooterRowDef="displayedColumnsExam; sticky: true" class="example-second-footer-row"></mat-footer-row>
+        <!-- <mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row> -->
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+    <mat-paginator #paginatorE [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
 </div>
 
 <div class="detailsGeneralSel" *ngIf="this.grade!=null && this.group!=null && this.subject!=null && this.examSelected != null">

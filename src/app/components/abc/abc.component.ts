@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PushNotificationService } from '../../services/push-notification.service';
+import { Router } from '@angular/router';
+import { User } from '../../models/User.model';
 
 @Component({
   selector: 'app-abc',
@@ -7,54 +8,144 @@ import { PushNotificationService } from '../../services/push-notification.servic
   styleUrls: ['./abc.component.css']
 })
 export class AbcComponent implements OnInit {
+  existUser:boolean=false;
 
-  // nowYear;
-  // messageReceived = '';
+  user:User;
 
+  typeMenu:String ="";
+
+  status:Boolean;
+
+  name:String;
+
+  routeA:String;
+  
+  /**
+   * 
+   * @param router varibale para manejar las rutas del header 
+   */
   constructor(
-  ) {
-    // notificacion.requestPermission().then(token=>{
-    //   console.log(token);
-    // })
-   }
-
+    private router: Router,
+  ) { 
+    this.user= JSON.parse(localStorage.getItem("user"));
+  }
+  
+  /**
+   * Metodo que se ejcuta cuando se contruye el nav bar 
+   */
   ngOnInit() {
+    this.typeMenu=this.user.type;
+    this.name= this.user.username;
+    this.status = this.user.activated;
+    this.routeA = this.router.url;
 
-    // var fecha = new Date();
+    if(localStorage.getItem("user")!=undefined)
+      this.existUser=true;
+    else
+      this.existUser=false;
+  }
+  /**
+   * Metodo para cerrar sesion 
+   */
+  exitAcount(){
+    this.router.navigateByUrl("");
+  }
 
-    // this.nowYear = fecha.getFullYear();
+  /**
+   * Metodo para ir a la ventana de registrase
+   */
+  register(){
+    this.router.navigateByUrl("Register")
+  }
+  /**
+   * Metodo para ir a la ventana de iniciar sesion
+   */
+  login(){
+    this.router.navigateByUrl("Login")
+  }
 
+  //metodo para regresar al menu principal
+  principal(){
+    this.router.navigateByUrl("Menu");
+  }
+  
+  adminUsers(){
+    this.router.navigateByUrl("Validate-users")
+  }
 
-    // this.notificacion.receiveMessage().subscribe(payload=>{
-    //   console.log(payload);      
+  adminCourStud(){
+    this.router.navigateByUrl("Users-lessons")
+  }
+
+  admingClass(){
+    this.router.navigateByUrl("Class-g")
+  }
+
+  adminRemind(){
+    this.router.navigateByUrl("reminders")
+  }
+
+  progressGroup(){
+    this.router.navigateByUrl("Progress-group")
+  }
+
+    /**
+   * Metodo para dirigirse a la vista para calificar usuarios 
+   */
+  goToScoresUsers(){
+    this.router.navigateByUrl("Scores");
+  }
+
+    /**
+   * Metodo para dirigirse a la vista del chatbot
+   */
+  goToChatbot(){
+    this.router.navigateByUrl("Chatbot")
+  }
+
+    /**
+   * Metodo para dirigirse a la vista del progreso de un estudiante
+   */
+     goToProgressStudent(){
+      this.router.navigateByUrl("Progress-student")
+    }
+    
+    /**
+   * Metodo para dirigirse a la vista de archivos
+   */
+  goToGeneralFiles(){
+    this.router.navigateByUrl("General-files");
+  }
+
+  //metodo para dirigirse a la vista de homeworks
+  goToHomeworks(){
+    this.router.navigateByUrl("Homeworks")
+  }
+
+  //metodo para ir a dudas de alumnos
+  goToDoubts(){
+    this.router.navigateByUrl("Doubts")
+  }
+
+  //metodo para dirigirse a la vista de sentimientos
+  goToFeelings(){
+    this.router.navigateByUrl("Feelings")
+  }
+
+  /*Dirige al menu principal*/
+  goMenuPrincipal(){
+    this.router.navigateByUrl("Menu");
+  }
+
+    //dirige a configurar la cuenta actual
+    goConfigureAccount(){
+      this.router.navigateByUrl("Configure-account");
     }
 
-    // fecha
-
-    // //admin.initializeApp(firebaseConfig);
-    // // var database = firebase.database();
-    // //agent.add('estamos consultando examenes!');
-    // var t = null;
-
-    // const examenes = admin.database().ref("Examenes").once('value', (snapshot) => {
-    //     snapshot.forEach((childSnapshot) => {
-    //         var childKey = childSnapshot.key;
-    //         var childData = childSnapshot.val();
-    //         t = childKey + " " + childData+" "+t;
-    //         // console.log('DATOSSSSSSSSSSS: ' + childData);
-    //     });
-
-    //     this.contenido = t;
-
-    // });
-    // console.log(t);
-    // //agent.add('estamos consultando examenes!');
-
-    // //agent.add('Resultado: ' + examenes);
-    // //agent.add('RESULTADO: ' + from_data.data);
-
-
-
-  // }
-
+    
+    //dirige a las tareas de un alumno
+    goToHomeworkStudent(){
+      this.router.navigateByUrl('Homeworks-student');
+    }
+        
 }

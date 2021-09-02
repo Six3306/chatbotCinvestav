@@ -83,6 +83,7 @@ export class AddHomeworkComponent implements OnInit {
 
   subjectRI: any;
   homeworkIdRI: any;
+  statusHG = "";
 
   /**
    * Arreglo que contiene a todos los estudiantes buscados
@@ -121,7 +122,6 @@ export class AddHomeworkComponent implements OnInit {
     } else {
       this.subjectRI = dataR.subjectR;
       this.homeworkIdRI = dataR.homeworkIdR;
-
     }
   }
 
@@ -150,6 +150,29 @@ export class AddHomeworkComponent implements OnInit {
     });
   }
 
+
+  //consulta el estatus de una tarea por un alumno
+  viewStatusHomework(){
+    var data = {
+      "subject": this.materiaSelected,
+      "homework": this.homeworkSelected,
+      "student": this.student.username,
+      "grade": this.student.grade,
+      "group": this.student.group,
+    }
+    
+    this.firebase.getStatusHomeworkStudent(data).then(r=>{
+      if(r==0){
+        this.statusHG = "Nunca has entregado esta tarea";
+      }else if(r==1){
+        this.statusHG = "Ya entregaste esta tarea";
+      }else if(r ==2){
+        this.statusHG = "Ya entregaste fuera de tiempo esta tarea";
+      }
+
+    });
+  }
+
   listarDesti() {
 
   }
@@ -169,13 +192,13 @@ export class AddHomeworkComponent implements OnInit {
 
   //Sube el archivo a Cloud Storage
   public subirArchivo() {
-
     if (this.homeworkIdRI == null || this.homeworkIdRI == '') {
       let archivo = this.datosFormulario.get('archivo');
       let description = this.formFileSend.get('description').value;
-      if (archivo === null) {
-        alert("Seleccione el archivo a enviar!");
+      if (archivo == null) {
+        console.log("Seleccione el archivo a enviar!");
       } else {
+
         let fecha = new Date();
         let fechaStr = fecha.getDate() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getFullYear() + " T " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
 
@@ -188,7 +211,13 @@ export class AddHomeworkComponent implements OnInit {
           'title': this.homeworkSelected + "--" + this.student.username,
           'nameStudent': this.student.username,
         };
-        this.firebaseStorage.saveHomework(data, fechaStr, description, archivo);
+        this.firebaseStorage.saveHomework(data, fechaStr, description, archivo).then(()=>{
+          if(this.statusHG!="Nunca has entregado esta tarea"){
+            this.firebase.refreshFeedbackHomework(data);
+            this.firebase.refreshFeedbackHomeworkStudent(data);
+          }
+          this.dialogRef.close(1);
+        });
       }
     }else{
       let archivo = this.datosFormulario.get('archivo');
@@ -206,9 +235,13 @@ export class AddHomeworkComponent implements OnInit {
           'subject': this.subjectRI,
           'title': this.homeworkIdRI + "--" + this.student.username,
           'nameStudent': this.student.username,
-        };
+        };        
         this.firebaseStorage.saveHomework(data2, fechaStr, description, archivo).then(r=>{
-          this.dialogRef.close(1);
+           if(this.statusHG!="Nunca has entregado esta tarea"){
+            this.firebase.refreshFeedbackHomework(data2);
+            this.firebase.refreshFeedbackHomeworkStudent(data2);
+           }
+           this.dialogRef.close(1);
         });
       }
     }
@@ -225,16 +258,6 @@ export class AddHomeworkComponent implements OnInit {
   menuP() {
     this.router.navigateByUrl("Menu");
   }
-  // //para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
-  //   openCustomerSnackBar(){
-  //     return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, {duration: 4000});
-  //   }
+
 
 }
-
-
-// @Component({
-//   selector: 'custom-snackbar',
-//   template: `<span style='color: #00ff4ce3;'><strong>Archivo Enviado Correctamente</strong></span>`
-// })
-// export class CustomSnackBarComponentSendGeneralFile{}

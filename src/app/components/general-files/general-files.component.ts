@@ -214,7 +214,7 @@ export class GeneralFilesComponent implements OnInit {
         if(response){
           this.emails.push({ email: value });
         }else{
-          console.log("El usuario que ingresaste no esta registrado");
+          this.openCustomerSnackBarNotEU();
         }
       });
     }
@@ -237,9 +237,6 @@ export class GeneralFilesComponent implements OnInit {
           }
           this.profes = profes;
         });
-
-
-
       });
 
     } else {
@@ -251,9 +248,7 @@ export class GeneralFilesComponent implements OnInit {
             profes.push({ value: response[i].split("#")[0].split("@")[0], viewValue: response[i].split("#")[1] });
           }
         }
-
         this.profes = profes;
-
       });
     }
 
@@ -304,7 +299,7 @@ export class GeneralFilesComponent implements OnInit {
 
   addProfessor() {
     if (this.professorSelected == "") {
-      console.log("Selecciona un profesor");
+      // this.openCustomerSnackBarNotEU();
     } else {
       this.verifyNotExitsinList(this.professorSelected);
     }
@@ -319,7 +314,7 @@ export class GeneralFilesComponent implements OnInit {
     var resErrorDes = "";
 
     if (archivo === null) {
-      alert("Seleccione el archivo a enviar!");
+      this.openCustomerSnackBarNot();
     } else {
       let fecha = new Date();
       let fechaStr = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear() + " - " + fecha.getHours() + ":" + fecha.getMinutes();
@@ -328,7 +323,6 @@ export class GeneralFilesComponent implements OnInit {
 
         for (let i = 0; i < this.emails.length; i++) {
           this.firebase.userExists(this.emails[i].email).then(response => {
-            // console.log(response+" - "+this.emails[i].email);
             if (response == true) {
               this.firebaseStorage.guarda2(this.emails[i].email, this.nameUserAct, fechaStr, description, archivo);
               this.openCustomerSnackBar();
@@ -338,15 +332,17 @@ export class GeneralFilesComponent implements OnInit {
               }
               resErrorDes += this.emails[i].email+", ";
             }
+          }).then(()=>{
+            this.remove(this.emails[i]);
           });
         }
 
+        this.datosFormulario.delete('archivo');
+        this.formFileSend.get('description').setValue("");
 
       }else{
-        console.log("Por favor selecciona algun destinatario");
-        
+        this.openCustomerSnackBarNot()
       }
-      
       
     }
 
@@ -379,10 +375,6 @@ export class GeneralFilesComponent implements OnInit {
       this.generalFiles = nGFilesTmp;
       this.dataSource = new MatTableDataSource(nGFilesTmp);
       this.dataSource.paginator = this.paginator2.first;
-      // this.dataSource.sort = this.sort.first;
-      console.log(nGFilesTmp);
-  
-      // this.dataSource.sort = this.sort.first;
     });
   }
 
@@ -394,15 +386,24 @@ export class GeneralFilesComponent implements OnInit {
     this.retornaProfes();
   }
 
-
-
   //para regresar al menu principal
   menuP() {
     this.router.navigateByUrl("Menu");
   }
+
   //para mostrar un mensaje emergente notificando que un archivo ha sido enviado correctamente.
   openCustomerSnackBar() {
     return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFile, { duration: 4000 });
+  }
+
+  //para mostrar un mensaje emergente notificando que un archivo no ha podido ser enviado.
+  openCustomerSnackBarNot() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFileNot, { duration: 4000 });
+  }
+
+  //para mostrar un mensaje emergente notificando que un usuario no existe.
+  openCustomerSnackBarNotEU() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentSendGeneralFileNotExi, { duration: 4000 });
   }
 
 }
@@ -410,6 +411,18 @@ export class GeneralFilesComponent implements OnInit {
 
 @Component({
   selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Archivo Enviado Correctamente</strong></span>`
+  template: `<span style='color: #00ff4ce3;'><strong>Archivo enviado correctamente</strong></span>`
 })
 export class CustomSnackBarComponentSendGeneralFile { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>El archivo no fue Enviado, verifica que todo este correcto y no falte nada</strong></span>`
+})
+export class CustomSnackBarComponentSendGeneralFileNot { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>El usuario que ingresaste no esta registrado en el sistema</strong></span>`
+})
+export class CustomSnackBarComponentSendGeneralFileNotExi { }

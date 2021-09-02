@@ -5,6 +5,7 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewReminderComponent } from '../../dialogs/view-reminder/view-reminder.component';
+import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
 
 
 export interface Group {
@@ -203,11 +204,36 @@ export class RemindersComponent implements OnInit {
   //para cambiar el estado de un aviso, de activado a desactivado y viceversa
   changeActivated(activated: Boolean, remin: Reminder) {
     if (activated) {
-      this.firebase.updateReminderActivated(remin.title, 1);
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          msg: "¿Seguro que deseas activar el aviso?",
+        }
+      });
+      dialogRef.afterClosed().subscribe(responseDialog => {
+        if (responseDialog) {
+          if (responseDialog == 1) {
+            this.firebase.updateReminderActivated(remin.title, 1);
+            this.getRemind();
+            this.openCustomerSnackBar();
+          }
+        }
+      });
     } else {
-      this.firebase.updateReminderActivated(remin.title, 0);
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          msg: "¿Seguro que deseas desactivar el aviso?",
+        }
+      });
+      dialogRef.afterClosed().subscribe(responseDialog => {
+        if (responseDialog) {
+          if (responseDialog == 1) {
+            this.firebase.updateReminderActivated(remin.title, 0);
+            this.getRemind();
+            this.openCustomerSnackBarNot();
+          }
+        }
+      });
     }
-    this.getRemind();
   }
 
   //para ver los detalles de un aviso
@@ -338,6 +364,11 @@ export class RemindersComponent implements OnInit {
     return this.snackBar.openFromComponent(CustomSnackBarComponent, { duration: 4000 });
   }
 
+  //para abrir una notificacion emergente y dar el mensaje de que el recordatorio se ha deshabilitado correctamente
+  openCustomerSnackBarNot() {
+    return this.snackBar.openFromComponent(openCustomerSnackBarNot, { duration: 4000 });
+  }
+
   //regresar al menu principal
   menuP() {
     this.router.navigateByUrl("Menu");
@@ -365,6 +396,12 @@ export class RemindersComponent implements OnInit {
 
 @Component({
   selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Recordatorio Registrado Correctamente</strong></span>`
+  template: `<span style='color: #00ff4ce3;'><strong>Recordatorio Añadido Correctamente</strong></span>`
 })
 export class CustomSnackBarComponent { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>Recordatorio Desahabilitado Correctamente</strong></span>`
+})
+export class openCustomerSnackBarNot { }

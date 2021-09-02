@@ -6,6 +6,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Student } from '../../models/Student.model';
+import { ConfirmDialogComponent } from 'src/app/dialogs/confirm-dialog/confirm-dialog.component';
 
 /**
  * Interace para mantener dos valores uno a mostrar y otro el valor que relamente tendra
@@ -215,37 +216,47 @@ export class UsersLessonsComponent implements OnInit {
           });
         }
         this.showStudentsByGradeGroup();
+        this.openCustomerSnackBarStudent();
       }
     })
   }
-  
+
   /**
    * Metodo para eliminar un estudiante
    * @param row Estudiante a eliminar
    */
   deleteStudent(row) {
-    this.firebase.deleteGradeGroupStudent(row.email.split("@")[0]);
-
-    this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response => {
-      let data = {
-        userName: row.username,
-        grade: this.gradeSelected,
-        group: this.groupSelected,
-        email: row.email.split("@")[0]
-      };
-
-      this.firebase.removeStudentScoreClass(data, response);
-      this.firebase.removeStudentQuestionsClass(data, response);
-      this.firebase.removeStudentQuestionsExamClass(data, response);
-
-      this.firebase.removeStudentQuestionsHomeworkClass(data, response);
-      this.firebase.removeStudentFeelDetect(data);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        msg: "¿Seguro que deseas eliminar dicho usuario?",
+      }
     });
-
-
-    this.showStudentsByGradeGroup();
-    this.selection = new SelectionModel<Student>(true, []);
+    dialogRef.afterClosed().subscribe(responseDialog => {
+      if (responseDialog) {
+        if (responseDialog == 1) {
+          this.firebase.deleteGradeGroupStudent(row.email.split("@")[0]);
+          this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response => {
+            let data = {
+              userName: row.username,
+              grade: this.gradeSelected,
+              group: this.groupSelected,
+              email: row.email.split("@")[0]
+            };
+            this.firebase.removeStudentScoreClass(data, response);
+            this.firebase.removeStudentQuestionsClass(data, response);
+            this.firebase.removeStudentQuestionsExamClass(data, response);
+            this.firebase.removeStudentQuestionsHomeworkClass(data, response);
+            this.firebase.removeStudentFeelDetect(data);
+          });
+          this.showStudentsByGradeGroup();
+          this.selection = new SelectionModel<Student>(true, []);
+          this.openCustomerSnackBarStudentRemove();
+        }
+      }
+    })
   }
+
+
   /**
    * Metodo para comprobar si todos en una pagina han sido seleccionados
    */
@@ -270,29 +281,41 @@ export class UsersLessonsComponent implements OnInit {
    * Metood para eliminar a todo seleccionado
    */
   async removeSelectedRows() {
-    if (this.gradeSelected != null && this.groupSelected != null) {
-      this.selection.selected.forEach(item => {
-        var dir = item.email.split("@");
-        this.firebase.deleteGradeGroupStudent(dir[0]);
-        //remover las calificaciones del grado y grupo de un alumno(actualmente funcional pero en desuso debido a que solo se elimina el grado y grupo de un alumno)
-        this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response => {
-          let data = {
-            userName: item.username,
-            grade: this.gradeSelected,
-            group: this.groupSelected,
-            email: dir[0]
-          };
-          this.firebase.removeStudentScoreClass(data, response);
-          this.firebase.removeStudentQuestionsClass(data, response);
-          this.firebase.removeStudentQuestionsExamClass(data, response);
-          this.firebase.removeStudentQuestionsHomeworkClass(data, response);
-          this.firebase.removeStudentFeelDetect(data);
-        });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        msg: "¿Seguro que deseas eliminar dicho usuario?",
+      }
+    });
 
-      });
-      this.showStudentsByGradeGroup();
-      this.selection = new SelectionModel<Student>(true, []);
-    }
+    dialogRef.afterClosed().subscribe(responseDialog => {
+      if (responseDialog) {
+        if (responseDialog == 1) {
+          if (this.gradeSelected != null && this.groupSelected != null) {
+            this.selection.selected.forEach(item => {
+              var dir = item.email.split("@");
+              this.firebase.deleteGradeGroupStudent(dir[0]);
+              //remover las calificaciones del grado y grupo de un alumno(actualmente funcional pero en desuso debido a que solo se elimina el grado y grupo de un alumno)
+              this.firebase.getSubjectsNameByGrade(this.gradeSelected).then(response => {
+                let data = {
+                  userName: item.username,
+                  grade: this.gradeSelected,
+                  group: this.groupSelected,
+                  email: dir[0]
+                };
+                this.firebase.removeStudentScoreClass(data, response);
+                this.firebase.removeStudentQuestionsClass(data, response);
+                this.firebase.removeStudentQuestionsExamClass(data, response);
+                this.firebase.removeStudentQuestionsHomeworkClass(data, response);
+                this.firebase.removeStudentFeelDetect(data);
+              });
+
+            });
+            this.showStudentsByGradeGroup();
+            this.selection = new SelectionModel<Student>(true, []);
+          }
+        }
+      }
+    });
   }
 
   //metodo para regresar al menu principal
@@ -305,10 +328,21 @@ export class UsersLessonsComponent implements OnInit {
     return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddStudent, { duration: 4000 });
   }
 
+  //para mostrar un cuadro emergente con el mensaje de que un alumno ha sido agregado correctamente
+  openCustomerSnackBarStudentRemove() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsRemoveStudent, { duration: 4000 });
+  }
+
 }
 
 @Component({
   selector: 'custom-snackbar',
-  template: `<span style='color: #00ff4ce3;'><strong>Estudiante Agregado Correctamente</strong></span>`
+  template: `<span style='color: #00ff4ce3;'><strong>Estudiante agregado correctamente</strong></span>`
 })
 export class CustomSnackBarComponentUserLessonsAddStudent { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Estudiante eliminado correctamente</strong></span>`
+})
+export class CustomSnackBarComponentUserLessonsRemoveStudent { }

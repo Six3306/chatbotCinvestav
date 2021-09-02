@@ -4,7 +4,7 @@ import { ChatbotService } from 'src/app/services/chatbot/chatbot.service';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/User.model';
 import { Message } from 'src/app/models/Message.model';
-import { MatDialog, MatDatepickerInputEvent } from '@angular/material';
+import { MatDialog, MatDatepickerInputEvent, MatSnackBar } from '@angular/material';
 import { AddFilesComponent } from 'src/app/dialogs/add-files/add-files.component';
 
 import * as _moment from 'moment';
@@ -85,6 +85,7 @@ export class ChatbotComponent implements OnInit {
     private chabtot: ChatbotService,
     public dialog : MatDialog,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) {
     this.formChat = this.formbuilder.group({
       message : [''],
@@ -126,7 +127,6 @@ export class ChatbotComponent implements OnInit {
     let mensajeUsuario:Message = new Message (value, this.user.id, this.user.username) ;
     this.chabtot.converse(mensajeUsuario.content).then(responseBot=>{
       if("¿Qué día sera el examen?"==responseBot.content){
-      //  console.log("el dia") 
         responseBot.dateCondition=true;
       }
       this.array_messages.push(mensajeUsuario)    
@@ -230,6 +230,9 @@ export class ChatbotComponent implements OnInit {
   openDialogAddHomework(){
     const dialogRef = this.dialog.open(AddHomeworkComponent);
     dialogRef.afterClosed().subscribe(response=>{  
+      if(response==1){
+        this.openCustomerSnackBar();
+      }
     })
   }
 
@@ -238,4 +241,19 @@ export class ChatbotComponent implements OnInit {
     this.router.navigateByUrl("Menu");
   } 
 
+    //metodo para mostrar una notificacion emergente de que la respuesta a la duda fue añadida correctamente
+    openCustomerSnackBar() {
+      return this.snackBar.openFromComponent(CustomSnackBarComponentResponseSendHomework, { duration: 4000 });
+    }
+
+
+
+
 }
+
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #00ff4ce3;'><strong>Tu tarea ha sido entregada</strong></span>`
+})
+export class CustomSnackBarComponentResponseSendHomework { }
