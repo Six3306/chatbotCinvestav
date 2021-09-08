@@ -3,7 +3,6 @@
     <app-header></app-header>
 
     <!--Buscador-->
-    <br><br><br>
     <h2 class="title">Gestionar Clases</h2>
     <br><br>
     <div id="divSelectorGrade">
@@ -24,8 +23,6 @@
     <!--Tabla de materias-->
     <div class="row containerTables">
         <div class="subjects">
-            <h3 style="text-align: center;">Materias</h3>
-
             <mat-table class="subjectsTable" mat-table [dataSource]="dataSourceSubjects" matSort>
 
                 <!-- Name Column -->
@@ -49,8 +46,8 @@
                 <ng-container matColumnDef="status">
                     <mat-header-cell class="celdas" *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
                     <mat-cell class="celdas" *matCellDef="let row">
-                        <p *ngIf="row.status=='0'"><button mat-flat-button style="background-color: #ccd5ec; color: black;" (click)="changeActivated(true,row)">Activar</button></p>
-                        <p *ngIf="row.status=='1'"><button mat-flat-button style="background-color: #515e80; color: white;" (click)="changeActivated(false,row)">Desactivar</button></p>
+                        <button *ngIf="row.status=='0'" mat-flat-button (click)="changeActivated(true,row)" class="btnA">Activar</button>
+                        <button *ngIf="row.status=='1'" mat-flat-button (click)="changeActivated(false,row)" class="btnD">Desactivar</button>
                     </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                 </ng-container>
@@ -92,12 +89,12 @@
 
     </div>
     <!--para regresar al menu principal-->
-    <div id="boxR">
+    <!-- <div id="boxR">
         <button class="btn-return" (click)="menuP()">
         <i class="material-icons">
             navigate_before
         </i>       
     </button>
-    </div>
+    </div> -->
 
 </div>

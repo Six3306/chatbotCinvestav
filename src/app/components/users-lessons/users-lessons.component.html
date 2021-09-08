@@ -3,10 +3,9 @@
     <app-header></app-header>
 
     <!--Buscador-->
-    <br><br><br>
     <h2 class="title">Gestionar Grupos y Estudiantes</h2>
     <br><br>
-    <div class="row centrado">
+    <div class="centrado">
         <mat-toolbar-row>
             <mat-form-field id="sGrade">
                 <mat-label>Grado</mat-label>
@@ -44,7 +43,7 @@
         <!-- tabla de alumnos -->
         <div class="example-container">
             <h3 style="text-align: center;">Alumnos</h3>
-            <button mat-raised-button style="background-color: #515e80; color: white;" (click)="removeSelectedRows()">
+            <button mat-raised-button (click)="removeSelectedRows()" class="btnRemoveAllI">
                         Remover alumnos seleccionados
             </button>
 
@@ -97,7 +96,7 @@
 
                 <ng-container matColumnDef="delet">
                     <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> <button mat-raised-button style="background-color: #515e80; color: white;" (click)="deleteStudent(row)"> Eliminar</button> </mat-cell>
+                    <mat-cell *matCellDef="let row"> &nbsp;&nbsp; <button mat-raised-button (click)="deleteStudent(row)" class="btnDeleteI">Eliminar</button> </mat-cell>
                     <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                 </ng-container>
 
@@ -123,12 +122,12 @@
 
     </div>
     <!--para regresar al menu principal-->
-    <div id="boxR">
+    <!-- <div id="boxR">
         <button class="btn-return" (click)="menuP()">
         <i class="material-icons">
             navigate_before
         </i>       
     </button>
-    </div>
+    </div> -->
 
 </div>

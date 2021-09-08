@@ -13,69 +13,190 @@
     overflow: auto;
 }
 
-.title {
-    margin-left: 42.8%;
-    text-transform: uppercase;
-    font-family: "Segoe UI";
-    color: black;
-    font-size: 40px;
+
+/* pc */
+
+@media screen and (max-width: 2500px) {
+    .centrado {
+        text-align: center;
+    }
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 40px;
+    }
+    #avatar {
+        max-width: 50%!important;
+        max-height: 50%!important;
+        width: 14%;
+        height: 23%;
+        border-radius: 100%;
+        cursor: pointer;
+        margin-top: 3%;
+        margin-left: 43%;
+        border-style: solid;
+        border-width: 6px;
+        border-color: #1D2B46;
+        opacity: 0.8;
+    }
+    #nameUser {
+        text-align: center;
+    }
+    .updatePassword {
+        text-align: center;
+    }
+    #passwords {
+        text-align: center;
+        font-size: 18px;
+    }
+    .pass {
+        width: 25%!important;
+        text-align: center;
+    }
+    .button_update_user {
+        background-color: #3A445D;
+        color: white;
+        border-color: black;
+        height: 10%;
+        width: 20%;
+        /* font-size: 30%; */
+    }
+    .button_update_user[disabled]:hover {
+        cursor: not-allowed;
+    }
+    .button_update_user:hover:enabled {
+        background: #162138;
+        box-shadow: 2px 2px 5px #999;
+    }
+     ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #3A445D;
+    }
+     ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+        background-color: #7d88a1;
+    }
 }
 
-#avatar {
-    max-width: 50%!important;
-    max-height: 50%!important;
-    width: 14%;
-    height: 23%;
-    border-radius: 100%;
-    cursor: pointer;
-    margin-top: 3%;
-    margin-left: 43%;
-    border-style: solid;
-    border-width: 6px;
-    border-color: #1D2B46;
-    opacity: 0.8;
+
+/*CELL PHONE*/
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .centrado {
+        text-align: center;
+    }
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 25px;
+    }
+    #avatar {
+        max-width: 60%!important;
+        max-height: 8%!important;
+        border-radius: 100%;
+        cursor: pointer;
+        margin-top: 3%;
+        margin-left: 43%;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #1D2B46;
+        opacity: 0.8;
+    }
+    #nameUser {
+        text-align: center;
+    }
+    .updatePassword {
+        text-align: center;
+    }
+    #passwords {
+        text-align: center;
+        font-size: 10px;
+    }
+    .pass {
+        width: 22%!important;
+        text-align: center;
+    }
+    .button_update_user {
+        background-color: #3A445D;
+        color: white;
+        border-color: black;
+        height: 10%;
+        width: 58%;
+        /* font-size: 80%; */
+    }
+    .button_update_user[disabled]:hover {
+        cursor: not-allowed;
+    }
+    .button_update_user:hover:enabled {
+        background: #162138;
+        box-shadow: 2px 2px 5px #999;
+    }
+     ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #3A445D;
+    }
+     ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+        background-color: #7d88a1;
+    }
 }
 
-#nameUser {
-    text-align: center;
-}
-
-.updatePassword {
-    text-align: center;
-}
-
-#passwords {
-    text-align: center;
-    font-size: 18px;
-}
-
-.pass {
-    width: 25%!important;
-    text-align: center;
-}
-
-.button_update_user {
-    background-color: #3A445D;
-    color: white;
-    border-color: black;
-    height: 10%;
-    width: 12%;
-    font-size: 100%;
-}
-
-.button_update_user[disabled]:hover {
-    cursor: not-allowed;
-}
-
-.button_update_user:hover:enabled {
-    background: #162138;
-    box-shadow: 2px 2px 5px #999;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-    background-color: #3A445D;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-    background-color: #7d88a1;
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .centrado {
+        text-align: center;
+    }
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 25px;
+    }
+    #avatar {
+        max-width: 60%!important;
+        max-height: 28%!important;
+        border-radius: 100%;
+        cursor: pointer;
+        margin-top: 3%;
+        margin-left: 43%;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #1D2B46;
+        opacity: 0.8;
+    }
+    #nameUser {
+        text-align: center;
+    }
+    .updatePassword {
+        text-align: center;
+    }
+    #passwords {
+        text-align: center;
+        font-size: 10px;
+    }
+    .pass {
+        width: 22%!important;
+        text-align: center;
+    }
+    .button_update_user {
+        background-color: #3A445D;
+        color: white;
+        border-color: black;
+        height: 10%;
+        width: 40%;
+        /* font-size: 80%; */
+    }
+    .button_update_user[disabled]:hover {
+        cursor: not-allowed;
+    }
+    .button_update_user:hover:enabled {
+        background: #162138;
+        box-shadow: 2px 2px 5px #999;
+    }
+     ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #3A445D;
+    }
+     ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+        background-color: #7d88a1;
+    }
 }

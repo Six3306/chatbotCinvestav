@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/User.model';
 import { Router } from '@angular/router';
-import {MatTooltipModule} from '@angular/material';
+import { MatTooltipModule } from '@angular/material';
 
 @Component({
   selector: 'app-menu',
@@ -12,27 +12,27 @@ import {MatTooltipModule} from '@angular/material';
 
 export class MenuComponent implements OnInit {
 
-  existUser:boolean=false;
+  existUser: boolean = false;
 
   /**
    * @param typeMenu tipo de menu de la vista existente estos pueden ser:  Alumno, Profesor y Adminsitrador
    */
-  typeMenu:String ="" //existen tres tipos de menu Alumno, Profesor y Adminsitrador entre esos debe de cambiar la variable
-  
+  typeMenu: String = "" //existen tres tipos de menu Alumno, Profesor y Adminsitrador entre esos debe de cambiar la variable
+
   /**
    * @param name variable del nombre a mostrar en el menu
    */
-  name:String="Luis"
+  name: String = "Luis"
 
   /**
    * saber si esta activo el usuario
    */
-  status:Boolean;
+  status: Boolean;
 
   /**
    * @param user usuario actual del sistema
    */
-  user:User;
+  user: User;
 
   /**
    * 
@@ -41,59 +41,71 @@ export class MenuComponent implements OnInit {
   constructor(
     private router: Router,
   ) {
-    this.user= JSON.parse(localStorage.getItem("user"))
-    
-   }
+    this.user = JSON.parse(localStorage.getItem("user"))
 
-   /**
-    * Metodo que se ejecuta cuando se crea la vista inicializa el usuario y el nombre
-    */
-  ngOnInit() {
-    this.typeMenu=this.user.type;
-    this.name= this.user.username;
-    this.status = this.user.activated;
-    if(localStorage.getItem("user")!=undefined)
-      this.existUser=true;
-    else
-      this.existUser=false;
-    // console.log(this.user)
-    
   }
 
-  exitAcount(){
+  /**
+   * Metodo que se ejecuta cuando se crea la vista inicializa el usuario y el nombre
+   */
+  ngOnInit() {
+    this.typeMenu = this.user.type;
+    this.name = this.user.username;
+    this.status = this.user.activated;
+    // window.location.reload();
+
+    if (window.localStorage) {
+      if (!localStorage.getItem('firstLoad')) {
+        localStorage['firstLoad'] = true;
+        window.location.reload();
+      }
+      else
+        localStorage.removeItem('firstLoad');
+    }
+
+
+    if (localStorage.getItem("user") != undefined)
+      this.existUser = true;
+    else
+      this.existUser = false;
+    // console.log(this.user)
+
+  }
+
+  exitAcount() {
     this.router.navigateByUrl("");
   }
 
   /**
    * Metodo para dirigirse a la vista de archivos
    */
-  goToGeneralFiles(){
+  goToGeneralFiles() {
     this.router.navigateByUrl("General-files");
   }
 
   /**
    * Metodo para dirigirse a la vista del chatbot
    */
-  goToChatbot(){
+  goToChatbot() {
     this.router.navigateByUrl("Chatbot")
   }
 
-    /**
-   * Metodo para dirigirse a la vista del progreso de un estudiante
-   */
-  goToProgressStudent(){
+  /**
+ * Metodo para dirigirse a la vista del progreso de un estudiante
+ */
+  goToProgressStudent() {
     this.router.navigateByUrl("Progress-student")
   }
 
   /**
    * Metodo para dirigirse a la vista del progress-class
    */
-   goToProgressGroup(){
+  goToProgressGroup() {
     this.router.navigateByUrl("Progress-group")
   }
 
   //metodo para dirigirse a la vista de homeworks
-  goToHomeworks(){
+  goToHomeworks() {
     this.router.navigateByUrl("Homeworks")
   }
 
@@ -101,36 +113,36 @@ export class MenuComponent implements OnInit {
   /**
    * Metodo para dirigirse a la vista de las materias 
    */
-  goToMaterias(){
+  goToMaterias() {
     this.router.navigateByUrl("Users-lessons")
   }
 
   /**
    * Metodo para dirigirse a la vista de las clases 
    */
-  goToClases(){
+  goToClases() {
     this.router.navigateByUrl("Class-g")
   }
 
   /**
    * Metodo para dirigirse a la vista de las recordatorios reminders 
    */
-  goToRecordatorios(){
+  goToRecordatorios() {
     this.router.navigateByUrl("reminders")
   }
 
   //dirige a las tareas de un alumno
-  goToHomeworkStudent(){
+  goToHomeworkStudent() {
     this.router.navigateByUrl('Homeworks-student');
   }
 
   //dirige a la vista de sentimientos
-  goToFeelings(){
+  goToFeelings() {
     this.router.navigateByUrl('Feelings');
   }
 
   //dirige a las dudas de estudiantes
-  goToDoubts(){
+  goToDoubts() {
     this.router.navigateByUrl('Doubts');
 
   }
@@ -138,17 +150,17 @@ export class MenuComponent implements OnInit {
   /**
    * Metodo para dirigirse a la vista para validar usuarios 
    */
-  goToValidateUsers(){
+  goToValidateUsers() {
     this.router.navigateByUrl("Validate-users")
   }
   /**
    * Metodo para dirigirse a la vista para calificar usuarios 
    */
-  goToScoresUsers(){
+  goToScoresUsers() {
     this.router.navigateByUrl("Scores");
   }
   //ir a configurar la cuenta actual
-  goConfigureAccount(){
+  goConfigureAccount() {
     console.log("CONFIGURARRR");
     this.router.navigateByUrl("Configure-account");
   }

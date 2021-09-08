@@ -60,6 +60,14 @@ export class RegisterComponent implements OnInit {
     private firebase: FirebaseService,
     private snackBar: MatSnackBar,
   ) {
+    if (window.localStorage) {
+      if (!localStorage.getItem('firstLoad')) {
+        localStorage['firstLoad'] = true;
+        window.location.reload();
+      }
+      else
+        localStorage.removeItem('firstLoad');
+    }
     this.formRegister = this.formbuilder.group({
       username: ['', Validators.required],
       lastNameFather: ['', Validators.required],
@@ -76,7 +84,9 @@ export class RegisterComponent implements OnInit {
   /**
    * Inicializacion del controlador
    */
-  ngOnInit() { }
+  ngOnInit() { 
+    
+  }
 
 
   /**

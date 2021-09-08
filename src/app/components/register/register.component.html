@@ -6,10 +6,6 @@
         <div class="centrado">
             <h1 class="tituloIS">Registrarse</h1>
             <div>
-                <div class="circulo_register">
-                </div>
-            </div>
-            <div>
                 <!-- form del registo -->
                 <form [formGroup]="formRegister" autocomplete="off" (ngSubmit)="sendRegister()">
                     <mat-form-field>
@@ -21,7 +17,7 @@
                         </mat-form-field>
                         <span class="space"> &nbsp;&nbsp; </span>
                         <mat-form-field class="lastName">
-                            <input matInput formControlName="lastNameMother" placeholder="Apellido paterno" type="text" id="lastNameMother">
+                            <input matInput formControlName="lastNameMother" placeholder="Apellido materno" type="text" id="lastNameMother">
                         </mat-form-field>
                     </p>
 
@@ -64,14 +60,5 @@
             </div>
         </div>
 
-    </div>
-
-    <!--para regresar al login-->
-    <div id="boxR">
-        <button class="btn-return" (click)="loginP()">
-        <i class="material-icons">
-            navigate_before
-        </i>       
-    </button>
     </div>
 </div>
