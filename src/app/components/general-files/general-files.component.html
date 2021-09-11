@@ -2,8 +2,6 @@
 
     <app-header></app-header>
 
-    <br><br>
-
     <p class="title">Control de Archivos</p>
 
     <br>
@@ -12,13 +10,11 @@
         <mat-tab label="Enviar Archivo">
             <br>
             <div class="centrado2">
-
                 <!--formulario para seleccionar los destinatarios-->
                 <form [formGroup]="formFileDes" autocomplete="off" (ngSubmit)="listarDesti()" class="md-form">
-                    <br>
-                    <h3>Seleccionar destinatarios:</h3>
+                    <h3 class="selDes">Seleccionar destinatarios:</h3>
 
-                    <h4>Alumnos:</h4><br>
+                    <h4 class="selStdPro">Alumnos:</h4><br>
 
                     <mat-toolbar-row>
                         <mat-form-field id="sGrade">
@@ -63,7 +59,7 @@
 
                     <ng-container matColumnDef="addStudent">
                         <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Añadir </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> <button mat-raised-button style="background-color: #515e80; color: white;" (click)="addStudent(row)">Añadir</button> </mat-cell>
+                        <mat-cell *matCellDef="let row"> <button class="btnAddStd" (click)="addStudent(row)">Añadir</button> </mat-cell>
                         <mat-footer-cell *matFooterCellDef></mat-footer-cell>
                     </ng-container>
 
@@ -93,7 +89,7 @@
 
 
                 <br>
-                <h4>Profesores:</h4><br>
+                <h4 class="selStdPro">Profesores:</h4><br>
 
                 <mat-toolbar-row>
                     <mat-form-field id="sProfessor">
@@ -121,7 +117,7 @@
 
 
                 <!--formulario para enviar nuevos archivos-->
-                <h3>Archivo a enviar:</h3>
+                <h3 class="selDes">Archivo a enviar:</h3>
                 <form [formGroup]="formFileSend" autocomplete="off" (ngSubmit)="subirArchivo()" class="md-form">
 
 

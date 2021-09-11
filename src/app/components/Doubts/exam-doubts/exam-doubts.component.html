@@ -10,8 +10,8 @@
         </mat-form-field>
     </mat-toolbar-row>
 
-    <h6><b>Descripción del Examen</b></h6>
-    <p>{{this.descriptionE}}</p>
+    <h4 class="subT">Descripción del Examen</h4>
+    <p id="descriptionE">{{this.descriptionE}}</p>
 </div>
 
 <br><br>
@@ -50,7 +50,7 @@
         <!-- FEEDBACK -->
         <ng-container matColumnDef="details">
             <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Detalles </mat-header-cell>
-            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackE(row)" id="btnFeedback"> ... </button> </mat-cell>
+            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button (click)="viewFeedbackE(row)" id="btnFeedback"> ... </button> </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 

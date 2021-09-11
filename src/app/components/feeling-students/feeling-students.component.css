@@ -13,44 +13,203 @@
     overflow: auto;
 }
 
-.title {
-    text-align: center;
-    text-transform: uppercase;
-    font-family: "Segoe UI";
-    color: black;
-    font-size: 40px;
+@media screen and (max-width: 2500px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 40px;
+    }
+    .mat-tab-group {
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .mat-toolbar-row {
+        justify-content: center;
+        text-align: center;
+    }
+    #sGrade {
+        text-align: center;
+    }
+    #sGroup {
+        margin-left: 3%;
+        margin-right: 3%;
+        text-align: center;
+    }
+    #bimSelect {
+        text-align: center;
+    }
+    #bimSelect2 {
+        text-align: center;
+    }
+    #indiv {
+        width: 100%;
+    }
 }
 
-.mat-tab-group {
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 21px;
+    }
+    .mat-tab-group {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .mat-toolbar-row {
+        justify-content: center;
+        text-align: center;
+    }
+    #sGrade {
+        text-align: center;
+        width: 26%;
+    }
+    #sGroup {
+        margin-left: 3%;
+        text-align: center;
+        width: 26%;
+    }
+    #bimSelect {
+        text-align: center;
+    }
+    #bimSelect2 {
+        text-align: center;
+    }
+    #indiv {
+        width: 100%;
+    }
 }
 
-.mat-toolbar-row {
-    justify-content: center;
-    text-align: center;
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 24px;
+    }
+    .mat-tab-group {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .mat-toolbar-row {
+        justify-content: center;
+        text-align: center;
+    }
+    #sGrade {
+        text-align: center;
+        width: 28%;
+    }
+    #sGroup {
+        margin-left: 3%;
+        text-align: center;
+        width: 28%;
+    }
+    #bimSelect {
+        text-align: center;
+    }
+    #bimSelect2 {
+        text-align: center;
+    }
+    #indiv {
+        width: 100%;
+    }
 }
 
-#sGrade {
-    text-align: center;
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 18px;
+    }
+    .mat-tab-group {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .mat-toolbar-row {
+        justify-content: center;
+        text-align: center;
+    }
+    #sGrade {
+        text-align: center;
+        width: 20%;
+    }
+    #sGroup {
+        margin-left: 3%;
+        text-align: center;
+        width: 20%;
+    }
+    #bimSelect {
+        text-align: center;
+    }
+    #bimSelect2 {
+        text-align: center;
+    }
+    #indiv {
+        width: 100%;
+    }
 }
 
-#sGroup {
-    margin-left: 3%;
-    margin-right: 3%;
-    text-align: center;
-}
 
-#bimSelect {
-    text-align: center;
-}
+/* cellphone r*/
 
-#bimSelect2 {
-    text-align: center;
-}
-
-#indiv {
-    width: 100%;
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 20px;
+    }
+    .mat-tab-group {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    .mat-toolbar-row {
+        justify-content: center;
+        text-align: center;
+    }
+    #sGrade {
+        text-align: center;
+        width: 25%;
+    }
+    #sGroup {
+        margin-left: 3%;
+        text-align: center;
+        width: 25%;
+    }
+    #bimSelect {
+        text-align: center;
+    }
+    #bimSelect2 {
+        text-align: center;
+    }
+    #indiv {
+        width: 100%;
+    }
 }

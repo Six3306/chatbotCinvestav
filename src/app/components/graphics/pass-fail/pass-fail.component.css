@@ -27,3 +27,25 @@
 #listStudents {
     vertical-align: top;
 }
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    #pasfail {
+        font-size: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #listSF {
+        font-size: 9px;
+    }
+}
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    #pasfail {
+        font-size: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #listSF {
+        font-size: 9px;
+    }
+}

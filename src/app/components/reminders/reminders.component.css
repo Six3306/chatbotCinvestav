@@ -173,6 +173,344 @@
 }
 
 
+/* TAB */
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 21px;
+    }
+    table {
+        width: 100%;
+        height: 100%;
+        max-height: 400px;
+        /* margin-left: 19.8%; */
+        /* text-align: center; */
+    }
+    .example-container {
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .mat-form-field {
+        font-size: 12px;
+        width: 82%;
+        margin-left: auto;
+        margin-right: auto;
+        color: #000000;
+    }
+    .mat-paginator {
+        font-size: 12px;
+        width: 100%;
+    }
+    .mat-column-title,
+    .mat-column-dateExpiration {
+        font-size: 12px;
+    }
+    .btn {
+        font-size: medium;
+        background: #1D2B46;
+        color: white;
+        /* margin-left: 46.6%; */
+    }
+    .btn:hover {
+        background: #0d5d92;
+        color: white;
+    }
+    .btnDetails {
+        background: #6579ad;
+        color: white;
+        font-size: 12px;
+        width: 11%;
+    }
+    .btnAc {
+        background: #ccd5ec;
+        color: black;
+        font-size: 12px;
+        width: 12%
+    }
+    .btnDe {
+        background: #515e80;
+        color: white;
+        font-size: 12px;
+    }
+    .contentMsg {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        float: center;
+        text-align: center;
+    }
+    #textAreaReminder {
+        width: 100%;
+    }
+    .containerTables {
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 63%;
+    }
+    .mat-accordion {
+        width: 82%!important;
+    }
+    #btnAddRemind {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        font-size: 16px;
+        border-color: black;
+        background: #3A445D;
+    }
+    #btnAddRemind:hover {
+        box-shadow: 2px 2px 5px #999;
+        background: #162138;
+    }
+    .mat-flat-button:hover {
+        box-shadow: 2px 2px 5px #999;
+    }
+    .mat-header-cell {
+        font-weight: bold;
+        font-size: 13px;
+    }
+    .mat-expansion-panel-header {
+        text-align: center;
+    }
+    UL.col5 {
+        PADDING-RIGHT: 0px;
+        PADDING-LEFT: 0px;
+        FLOAT: left;
+        font-size: 12px;
+        PADDING-BOTTOM: 0px;
+        WIDTH: 100%;
+        PADDING-TOP: 3%;
+        LIST-STYLE-TYPE: none
+    }
+    UL.col5 LI {
+        PADDING-RIGHT: 2%;
+        DISPLAY: inline;
+        PADDING-LEFT: 2%;
+        FLOAT: center;
+        /* margin-right: 12%; */
+        PADDING-BOTTOM: 2%;
+        WIDTH: 15%;
+        PADDING-TOP: 4%;
+    }
+    .nRem {
+        text-align: center;
+        font-size: 11px;
+    }
+    .mat-accordion {
+        text-align: center;
+        width: 80%;
+    }
+    .mat-expansion-panel {
+        background: rgba(255, 255, 255, 0);
+    }
+    .titleBtn {
+        cursor: pointer;
+        color: #1D2B46;
+        transition: opacity 0.1s linear 0.2s;
+    }
+    .titleBtn:hover {
+        opacity: 0.4;
+        color: #3A445D;
+    }
+    .subTit {
+        text-align: center;
+        color: #3A445D;
+        font-size: 19px;
+    }
+    #selDes {
+        font-size: 13px;
+    }
+    .example-margin {
+        width: 1%;
+        font-size: 12px;
+    }
+    #titleReminder {
+        font-size: 14px;
+    }
+    #calendar {
+        width: 100%;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .title {
+        text-align: center;
+        text-transform: uppercase;
+        font-family: "Segoe UI";
+        color: black;
+        font-size: 22px;
+    }
+    table {
+        width: 100%;
+        height: 100%;
+        max-height: 400px;
+        /* margin-left: 19.8%; */
+        /* text-align: center; */
+    }
+    .example-container {
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .mat-form-field {
+        font-size: 13px;
+        width: 82%;
+        margin-left: auto;
+        margin-right: auto;
+        color: #000000;
+    }
+    .mat-paginator {
+        font-size: 14px;
+        width: 100%;
+    }
+    .mat-column-title,
+    .mat-column-dateExpiration {
+        font-size: 14px;
+    }
+    .btn {
+        font-size: medium;
+        background: #1D2B46;
+        color: white;
+        /* margin-left: 46.6%; */
+    }
+    .btn:hover {
+        background: #0d5d92;
+        color: white;
+    }
+    .btnDetails {
+        background: #6579ad;
+        color: white;
+        font-size: 14px;
+        width: 14%;
+    }
+    .btnAc {
+        background: #ccd5ec;
+        color: black;
+        font-size: 14px;
+        width: 14%
+    }
+    .btnDe {
+        background: #515e80;
+        color: white;
+        font-size: 14px;
+    }
+    .contentMsg {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        float: center;
+        text-align: center;
+    }
+    #textAreaReminder {
+        width: 100%;
+    }
+    .containerTables {
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 65%;
+    }
+    .mat-accordion {
+        width: 85%!important;
+    }
+    #btnAddRemind {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        font-size: 17px;
+        border-color: black;
+        background: #3A445D;
+    }
+    #btnAddRemind:hover {
+        box-shadow: 2px 2px 5px #999;
+        background: #162138;
+    }
+    .mat-flat-button:hover {
+        box-shadow: 2px 2px 5px #999;
+    }
+    .mat-header-cell {
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .mat-expansion-panel-header {
+        text-align: center;
+    }
+    UL.col5 {
+        PADDING-RIGHT: 0px;
+        PADDING-LEFT: 0px;
+        FLOAT: left;
+        font-size: 14px;
+        PADDING-BOTTOM: 0px;
+        WIDTH: 100%;
+        PADDING-TOP: 3%;
+        LIST-STYLE-TYPE: none
+    }
+    UL.col5 LI {
+        PADDING-RIGHT: 2%;
+        DISPLAY: inline;
+        PADDING-LEFT: 2%;
+        FLOAT: center;
+        /* margin-right: 12%; */
+        PADDING-BOTTOM: 2%;
+        WIDTH: 15%;
+        PADDING-TOP: 4%;
+    }
+    .nRem {
+        text-align: center;
+        font-size: 13px;
+    }
+    .mat-accordion {
+        text-align: center;
+        width: 83%;
+    }
+    .mat-expansion-panel {
+        background: rgba(255, 255, 255, 0);
+    }
+    .titleBtn {
+        cursor: pointer;
+        color: #1D2B46;
+        transition: opacity 0.1s linear 0.2s;
+    }
+    .titleBtn:hover {
+        opacity: 0.4;
+        color: #3A445D;
+    }
+    .subTit {
+        text-align: center;
+        color: #3A445D;
+        font-size: 20px;
+    }
+    #selDes {
+        font-size: 14px;
+    }
+    .example-margin {
+        width: 1%;
+        font-size: 12px;
+    }
+    #titleReminder {
+        font-size: 16px;
+    }
+    #calendar {
+        width: 100%;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
 /* cellphone */
 
 @media screen and (max-width: 479px) and (max-height: 700px) {

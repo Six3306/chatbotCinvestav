@@ -1,77 +1,146 @@
-.detailsHomeworkSel {
-    margin-right: auto;
-    margin-left: auto;
-    background: white;
-    text-align: center;
-    width: 45%;
-    padding: 1%;
-    /* border-radius: 45%; */
-}
-
-.detailsGeneralSel {
-    margin-right: auto;
-    margin-left: auto;
-    background: white;
-    text-align: center;
-    width: 85%;
-    padding: 1%;
-}
-
-.centrado2 {
-    margin-right: auto;
-    margin-left: auto;
-    max-width: 95%;
-    text-align: center;
-    align-content: center;
-    /* background-color: white; */
-}
-
-.mat-toolbar-row {
-    margin: 0px!important;
-}
-
-.mat-form-field {
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
-#statusA {
-    border-radius: 50%;
-    background: #13a03d;
-}
-
-#statusI {
-    border-radius: 50%;
-    background: #818582;
-}
-
-#listLinks {
-    list-style: none;
-    list-style-position: inside;
-    padding: 0;
-}
-
-.subT {
-    color: #191e5a;
-}
-
-.matIn {
-    color: #818582;
-    ;
-}
-
-.matGo {
-    color: #13a03d;
-}
-
-.matBa {
-    color: #992525;
-}
-
-#chaPas {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-}
+    .subT {
+        color: #191e5a;
+        font-weight: bold;
+    }
+    
+    .detailsGeneralSel {
+        margin-right: auto;
+        margin-left: auto;
+        background: white;
+        text-align: center;
+        width: 100%;
+        padding: 1%;
+    }
+    
+    .detailsHomeworkSel {
+        margin-right: auto;
+        margin-left: auto;
+        background: white;
+        text-align: center;
+        width: 45%;
+        padding: 1%;
+        /* border-radius: 45%; */
+    }
+    
+    @media screen and (max-width: 2500px) {}
+    /*TAB*/
+    
+    @media screen and (max-width: 1305px) and (max-height: 780px) {
+        .gGR {
+            font-size: 13px;
+            width: 28%;
+        }
+        .subT {
+            font-size: 15px;
+        }
+        .detailsHomeworkSel,
+        .detailsGeneralSel {
+            font-size: 13px;
+        }
+    }
+    /*TAB R*/
+    
+    @media screen and (max-width: 780px) and (max-height: 1305px) {
+        .gGR {
+            font-size: 14px;
+            width: 30%;
+        }
+        .subT {
+            font-size: 16px;
+        }
+        .detailsHomeworkSel,
+        .detailsGeneralSel {
+            font-size: 14px;
+        }
+    }
+    /* cellphone */
+    
+    @media screen and (max-width: 479px) and (max-height: 700px) {
+        .gGR {
+            font-size: 10px;
+            width: 20%;
+        }
+        .subT {
+            font-size: 12px;
+        }
+        .detailsHomeworkSel,
+        .detailsGeneralSel {
+            font-size: 10px;
+        }
+        #listLinks {
+            font-size: 7px;
+        }
+    }
+    /* cellphone r*/
+    
+    @media screen and (max-width: 700px) and (max-height: 479px) {
+        .gGR {
+            font-size: 11px;
+            width: 24%;
+        }
+        .subT {
+            font-size: 13px;
+        }
+        .detailsHomeworkSel,
+        .detailsGeneralSel {
+            font-size: 11px;
+        }
+        #listLinks {
+            font-size: 8px;
+        }
+    }
+    /*********************************/
+    
+    .centrado2 {
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 95%;
+        text-align: center;
+        align-content: center;
+        /* background-color: white; */
+    }
+    
+    .mat-toolbar-row {
+        margin: 0px!important;
+    }
+    
+    .mat-form-field {
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+    
+    #statusA {
+        border-radius: 50%;
+        background: #13a03d;
+    }
+    
+    #statusI {
+        border-radius: 50%;
+        background: #818582;
+    }
+    
+    #listLinks {
+        list-style: none;
+        list-style-position: inside;
+        padding: 0;
+    }
+    
+    .matIn {
+        color: #818582;
+    }
+    
+    .matGo {
+        color: #13a03d;
+    }
+    
+    .matBa {
+        color: #992525;
+    }
+    
+    #chaPas {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }

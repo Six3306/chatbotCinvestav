@@ -38,7 +38,7 @@
 
     <!------------------------------------------>
     <div class="detailsHomeworkSel" *ngIf="homeworkSelected!=null || homeworkSelected">
-        <h4><b>Detalles generales de la tarea:</b></h4><br>
+        <h4 class="subT"><b>Detalles generales de la tarea:</b></h4><br>
         <p><b>Fecha y hora limite de entrega: </b>{{dateHourLimit}}</p>
         <p><b>Descripción: </b>{{description}}</p>
         <p><b>Estatus: </b>{{statusH}}</p>
@@ -48,7 +48,7 @@
     <div class="homeworkSendandFeedback" *ngIf="homeworkSelected!=null || homeworkSelected">
         <div class="detailskHomeworkSendSel" *ngIf="homeworkSelected!=null || homeworkSelected">
             <div *ngIf="estatusEntrega!='0'">
-                <h4><b>Detalles de la tarea que entregaste:</b></h4><br>
+                <h4 class="subT"><b>Detalles de la tarea que entregaste:</b></h4><br>
                 <p><b>Fecha y hora en que entregaste: </b>{{fechaEntrega}} a las {{horaEntrega}}</p>
                 <p><b>Descripción que agregaste: </b>{{comentarioHE}}</p>
                 <p><b>Link al archivo de tarea enviado: </b><a href="{{urlH}}" class="linkFileD" target="_blank">&nbsp;&nbsp;IR&nbsp;&nbsp;</a></p>
@@ -63,7 +63,7 @@
 
             </div>
             <div *ngIf="estatusEntrega=='0'">
-                <h4><b>Aún no has enviado la tarea</b></h4><br>
+                <h4 class="subT"><b>Aún no has enviado la tarea</b></h4><br>
                 <p>
                     <button mat-menu-item (click)="openDialogAddHomework()">
                         <mat-icon>file_copy</mat-icon>
@@ -75,13 +75,13 @@
 
         <div class="feedbackHomeworkSel" *ngIf="homeworkSelected!=null || homeworkSelected">
             <div *ngIf="estatusFeedback=='1'">
-                <h4><b>Retroalimentación de la tarea:</b></h4><br>
+                <h4 class="subT"><b>Retroalimentación de la tarea:</b></h4><br>
                 <p><b>Fecha y hora de la retroalimentación: </b>{{fechaRetroalimentacion}} a las {{horaRetroalimentacion}}</p>
                 <p *ngIf="feedbackComment!=''"><b>Comentario de retroalimentación: </b>{{feedbackComment}}</p>
                 <p><b>Link al archivo de tarea retroalimentado: </b><a href="{{urlF}}" class="linkFileD" target="_blank">&nbsp;&nbsp;IR&nbsp;&nbsp;</a></p>
             </div>
             <div *ngIf="estatusFeedback=='0'">
-                <h4><b>Retroalimentación de la tarea:</b></h4><br>
+                <h4 class="subT"><b>Retroalimentación de la tarea:</b></h4><br>
                 <p><b>Aún no realizada por el profesor</b></p>
             </div>
         </div>

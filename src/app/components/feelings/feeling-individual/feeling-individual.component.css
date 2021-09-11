@@ -11,3 +11,88 @@
     margin-right: auto;
     /* background: red; */
 }
+
+@media screen and (max-width: 2500px) {
+    #sStudent {
+        font-size: 16px;
+        width: 40%;
+    }
+    .subT {
+        font-size: 16px;
+    }
+    .notiF {
+        display: none
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    #sStudent {
+        font-size: 14px;
+        width: 35%;
+    }
+    .subT {
+        font-size: 13px;
+    }
+    .notiF {
+        display: none
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    #sStudent {
+        font-size: 15px;
+        width: 38%;
+    }
+    .subT {
+        font-size: 14px;
+    }
+    .notiF {
+        display: none
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    #sStudent {
+        font-size: 10px;
+        width: 30%;
+    }
+    .subT {
+        font-size: 10px;
+    }
+    .chart {
+        display: none
+    }
+    #titExp {
+        font-size: 10px;
+    }
+    .mat-column-date,
+    .mat-column-hour,
+    .mat-column-feelR {
+        font-size: 10px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    #sStudent {
+        font-size: 11px;
+        width: 33%;
+    }
+    .subT {
+        font-size: 11px;
+    }
+    .notiF {
+        display: none
+    }
+}

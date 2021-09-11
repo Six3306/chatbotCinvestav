@@ -2,7 +2,6 @@
 
     <app-header></app-header>
 
-    <br><br><br><br>
     <!--para filtrar los datos y alumnos a calificar por grado, grupo y materia-->
     <p class="title">Registrar Calificaciones</p>
     <br>
@@ -36,22 +35,23 @@
             </mat-form-field>
 
         </mat-toolbar-row>
+        <br>
+        <div *ngIf="this.gradeSelected && this.groupSelected && this.materiaSelected" id="contentSelR">
+            <mat-toolbar-row id="selrepSemester">
+                <mat-form-field id="repSemester">
+                    <mat-label>Reportar hasta el bimestre:</mat-label>
+                    <mat-select (selectionChange)="bimReport()" [(ngModel)]="bimRepSelected">
+                        <mat-option *ngFor="let bim of bimReportArray" [value]="bim">
+                            {{bim}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-toolbar-row>
+        </div>
     </div>
     <!--/Buscador-->
 
-    <br>
-    <div *ngIf="this.gradeSelected && this.groupSelected && this.materiaSelected">
-        <mat-toolbar-row id="selrepSemester">
-            <mat-form-field id="repSemester">
-                <mat-label>Reportar hasta el bimestre:</mat-label>
-                <mat-select (selectionChange)="bimReport()" [(ngModel)]="bimRepSelected">
-                    <mat-option *ngFor="let bim of bimReportArray" [value]="bim">
-                        {{bim}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </mat-toolbar-row>
-    </div>
+
     <br><br>
 
     <!-- tabla de alumnos -->
@@ -119,13 +119,6 @@
     </div>
     <!-- /tabla de alumnos -->
 
-    <!--para regresar al menu principal-->
-    <div id="boxR">
-        <button class="btn-return" (click)="menuP()">
-        <i class="material-icons">
-            navigate_before
-        </i>       
-    </button>
-    </div>
+
 
 </div>

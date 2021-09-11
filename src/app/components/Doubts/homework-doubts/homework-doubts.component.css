@@ -7,8 +7,24 @@
     /* background-color: white; */
 }
 
-.mat-toolbar-row {
-    margin: 0px!important;
+.detailsGeneralSel {
+    margin-right: auto;
+    margin-left: auto;
+    background: white;
+    text-align: center;
+    width: 85%;
+    padding: 1%;
+}
+
+#chaPas {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subT {
+    color: #191e5a;
+    font-weight: bold;
 }
 
 .mat-form-field {
@@ -18,22 +34,25 @@
     text-align: center;
 }
 
+.mat-toolbar-row {
+    margin: 0px!important;
+}
+
 .example-container {
     max-height: 500px !important;
     position: relative;
     overflow: auto;
-    width: 80%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     margin-right: auto;
-    margin-left: 12%;
+    margin-left: auto;
 }
 
 .mat-column-student {
     white-space: unset !important;
     flex: 0 0 35% !important;
     width: 35% !important;
-    font-size: 15.5px;
 }
 
 .mat-column-date,
@@ -41,7 +60,14 @@
     white-space: unset !important;
     flex: 0 0 15% !important;
     width: 15% !important;
-    font-size: 12.5px;
+    display: flex;
+    justify-content: center;
+}
+
+.mat-column-status,
+.mat-column-details {
+    display: flex;
+    justify-content: center;
 }
 
 .mat-column-recommendedMaterial,
@@ -50,24 +76,6 @@
     width: 0% !important;
     font-size: 0px;
     flex: 0 0 0% !important;
-}
-
-#status1 {
-    width: 15%;
-    background: rgb(5, 168, 13);
-    border-radius: 50%;
-}
-
-#status2 {
-    width: 15%;
-    background: rgb(107, 106, 104);
-    border-radius: 50%;
-}
-
-#status0 {
-    width: 15%;
-    background: rgb(196, 14, 50);
-    border-radius: 50%;
 }
 
 #btnFeedback {
@@ -80,21 +88,158 @@
     background: #162138;
 }
 
-.detailsGeneralSel {
-    margin-right: auto;
-    margin-left: auto;
-    background: white;
-    text-align: center;
-    width: 85%;
-    padding: 1%;
+#status1 {
+    background: rgb(5, 168, 13);
+    border-radius: 50%;
 }
 
-#chaPas {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+#status2 {
+    background: rgb(107, 106, 104);
+    border-radius: 50%;
 }
 
-.subT {
-    color: #191e5a;
+#status0 {
+    background: rgb(196, 14, 50);
+    border-radius: 50%;
 }
+
+@media screen and (max-width: 2500px) {
+    .mat-column-student,
+    .mat-column-date,
+    .mat-column-hour,
+    .mat-column-status,
+    .mat-column-details {
+        font-size: 14px;
+    }
+    #status0,
+    #status1,
+    #status2 {
+        width: 15%;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .gGR {
+        font-size: 13px;
+        width: 28%;
+    }
+    .subT {
+        font-size: 15px;
+    }
+    .detailsGeneralSel,
+    #descriptionH {
+        font-size: 13px;
+    }
+    .mat-column-student,
+    .mat-column-date,
+    .mat-column-hour,
+    .mat-column-status,
+    .mat-column-details {
+        font-size: 13px;
+    }
+    #status0,
+    #status1,
+    #status2 {
+        width: 15%;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .gGR {
+        font-size: 14px;
+        width: 30%;
+    }
+    .subT {
+        font-size: 16px;
+    }
+    .detailsGeneralSel,
+    #descriptionH {
+        font-size: 14px;
+    }
+    .mat-column-student,
+    .mat-column-date,
+    .mat-column-hour,
+    .mat-column-status,
+    .mat-column-details {
+        font-size: 13px;
+    }
+    #status0,
+    #status1,
+    #status2 {
+        width: 15%;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .gGR {
+        font-size: 10px;
+        width: 50%;
+    }
+    .subT {
+        font-size: 12px;
+    }
+    .detailsGeneralSel,
+    #descriptionH {
+        font-size: 10px;
+    }
+    #listLinks {
+        font-size: 7px;
+    }
+    .mat-column-student,
+    .mat-column-date,
+    .mat-column-hour,
+    .mat-column-status,
+    .mat-column-details {
+        font-size: 10px;
+    }
+    #status0,
+    #status1,
+    #status2 {
+        width: 25%;
+        height: 2%;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .gGR {
+        font-size: 11px;
+        width: 55%;
+    }
+    .subT {
+        font-size: 13px;
+    }
+    .detailsGeneralSel,
+    #descriptionH {
+        font-size: 11px;
+    }
+    #listLinks {
+        font-size: 8px;
+    }
+    .mat-column-student,
+    .mat-column-date,
+    .mat-column-hour,
+    .mat-column-status,
+    .mat-column-details {
+        font-size: 11px;
+    }
+    #status0,
+    #status1,
+    #status2 {
+        width: 20%;
+    }
+}
+
+
+/*********************************/

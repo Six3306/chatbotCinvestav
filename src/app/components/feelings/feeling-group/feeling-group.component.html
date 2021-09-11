@@ -1,7 +1,7 @@
 <table id="tableI">
     <tr>
         <td id="listStudents">
-            <h4>Conteo de sentimientos de alumnos expresados al chatbot</h4>
+            <h4 class="subT">Conteo de sentimientos de alumnos expresados al chatbot</h4>
             <div class="chart">
                 <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors">
             </canvas>
@@ -9,7 +9,7 @@
         </td>
         <td id="graphS">
             <div id="graDon">
-                <h4>Conteo de alumnos que expresaron o no sus sentimientos al chatbot</h4>
+                <h4 class="subT">Conteo de alumnos que expresaron o no sus sentimientos al chatbot</h4>
                 <div style="display: block">
                     <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" [colors]="doughnutChartColors" [legend]="doughnutChartLegend">
                 </canvas>
@@ -77,7 +77,7 @@
 
     </mat-expansion-panel>
 
-    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" id="panelI">
 
         <mat-expansion-panel-header>
             <mat-panel-title>

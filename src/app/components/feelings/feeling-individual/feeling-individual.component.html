@@ -16,16 +16,19 @@
 
 <div id="graphS" *ngIf="band">
     <div class="chart" *ngIf="this.feelRegisterInOrder.length>0">
-        <h4>Porcentajes de estados de ánimo</h4>
+        <h4 class="subT">Porcentajes de estados de ánimo</h4>
         <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors">
             </canvas>
     </div>
+    <div class="notiF">
+        <h4 class="subT">Para visualizar la gráfica voltea tu dispositivo</h4>
+    </div>
     <div class="chart" *ngIf="this.feelRegisterInOrder.length==0 && band==true">
-        <h5>No ha registrado sentimientos el alumno</h5>
+        <h5 class="subT">No ha registrado sentimientos el alumno</h5>
     </div>
 
     <br><br>
-    <mat-accordion>
+    <mat-accordion id="panelI">
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
 
             <mat-expansion-panel-header>

@@ -99,24 +99,7 @@ export class ChatbotComponent implements OnInit {
     this.currentUser=this.user.id;
 
   }
-  /**
-   * Metodo para enviar mensaje al bot por parte del usuario
-   */
-  sendMessage(){
-    let value = this.formChat.get("message").value
-    let mensajeUsuario:Message = new Message (value, this.user.id, this.user.username) ;
-    this.chabtot.converse(mensajeUsuario.content).then(responseBot=>{
-      if("¿Qué día sera el examen?"==responseBot.content){
-      //  console.log("el dia") 
-        responseBot.dateCondition=true;
-      }
-      this.array_messages.push(mensajeUsuario)    
-      this.array_messages.push(responseBot)    
-      
 
-    })
-    this.formChat.reset();
-  }
   /**
    * Metodo para enviar un mensaje al bot por medio de un parametro, no usa el valor obtenido del form
    * @param data mensaje a enviar por parte del usuario 

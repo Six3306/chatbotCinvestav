@@ -4,73 +4,48 @@
     <app-header></app-header>
 
     <!--CUADRO CHATBOT-->
-    <br><br>
+    <p class="title">Chatbot</p>
+
     <div class="background_chatbot">
         <div class="chatbotBox">
-            <!-- Form con el metodo de enviar mensajes -->
-            <form [formGroup]="formChat" (ngSubmit)="sendMessage()">
 
-                <!--AÑADIENDO NUEVO CHATBOT-->
-                <div id="chatbotStudentInterface">
+            <!--AÑADIENDO NUEVO CHATBOT-->
+            <div id="chatbotStudentInterface">
+                <!-- <iframe width="80%" height="658px" src="https://console.dialogflow.com/api-client/demo/embedded/4d619755-34e5-4d2f-b56a-4b0e3c5fe385"></iframe> -->
+                <iframe allow="microphone;" id="intChatbot" src="https://console.dialogflow.com/api-client/demo/embedded/8f06fa44-b6e5-467c-a3ca-7d145446569a"></iframe>
+            </div>
 
-                    <!-- <iframe width="80%" height="658px" src="https://console.dialogflow.com/api-client/demo/embedded/4d619755-34e5-4d2f-b56a-4b0e3c5fe385"></iframe> -->
-
-
-                    <iframe allow="microphone;" width="80%" height="658px" src="https://console.dialogflow.com/api-client/demo/embedded/8f06fa44-b6e5-467c-a3ca-7d145446569a"></iframe>
-                </div>
-
-
-                <div class="background_bar">
-                    <!-- Boton para añadir un archivo  y generar key (solo disponibles para profesores)-->
-
-                    <form *ngIf="user.type=='Profesor'" class="horizontal row">
-                        <button [matMenuTriggerFor]="menu" class="add">
+            <div id="barOpt">
+                <form *ngIf="user.type=='Profesor'" class="despOpt">
+                    <button [matMenuTriggerFor]="menu" class="add">
                         <i class="material-icons">
                             add
-                        </i>       
+                        </i>
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item (click)="openDialogAddFile()">
                                 <mat-icon>file_copy</mat-icon>
-                                <span>Añadir un archivo </span>
+                                <span class="msgI">Añadir un archivo </span>
                             </button>
-
-                        </mat-menu>
-
-                        </button>
-
-                    </form>
-
-                    <form *ngIf="user.type=='Alumno'" class="horizontal row">
-                        <button [matMenuTriggerFor]="menu" class="add">
+                    </mat-menu>
+                    </button>
+                </form>
+                <form *ngIf="user.type=='Alumno'" class="despOpt">
+                    <button [matMenuTriggerFor]="menu" class="add">
                         <i class="material-icons">
                             add
-                        </i>       
+                        </i>
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item (click)="openDialogAddHomework()">
                                 <mat-icon>file_copy</mat-icon>
-                                <span>Enviar una Tarea</span>
+                                <span class="msgI">Enviar una Tarea</span>
                             </button>
 
-                        </mat-menu>
+                    </mat-menu>
+                    </button>
+                </form>
+            </div>
 
-                        </button>
-
-                    </form>
-
-                    <div class="horizontal">
-
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 
-    <!--para el boton de retroceder-->
-    <div id="boxR">
-        <button class="btn-return" (click)="menuP()">
-        <i class="material-icons">
-            navigate_before
-        </i>       
-    </button>
-    </div>
 </div>

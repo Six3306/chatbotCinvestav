@@ -34,7 +34,7 @@
         <!-- FEEDBACK -->
         <ng-container matColumnDef="details">
             <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header> Detalles </mat-header-cell>
-            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button mat-raised-button class="btn btn-info" (click)="viewFeedbackE(row)" id="btnFeedback"> ... </button> </mat-cell>
+            <mat-cell *matCellDef="let row" id="btnFeedBack"> <button (click)="viewFeedbackE(row)" id="btnFeedback"> ... </button> </mat-cell>
             <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
 
