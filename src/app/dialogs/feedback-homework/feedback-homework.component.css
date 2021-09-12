@@ -1,5 +1,12 @@
+#nameStudent {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #261c63;
+}
+
 .contenedor {
-    width: 400px;
+    width: 95%;
 }
 
 .centrado2 {
@@ -14,31 +21,8 @@
     border-radius: 25px;
 }
 
-.btn-return {
-    top: 45%;
-    background: rgba(51, 51, 51, 0.7);
-    color: rgba(214, 226, 236, 0.932);
-    border-top-right-radius: 45%;
-    border-bottom-right-radius: 45%;
-    width: 90px;
-    height: 80px;
-    transform: translate(-5%, -950%);
-}
-
-.btn-return .material-icons {
-    font-size: 60px;
-}
-
-.centrado2 {
-    margin-right: auto;
-    margin-left: auto;
-    width: 85%;
-    text-align: center;
-    padding-left: 2%;
-    padding-right: 2%;
-    padding-top: 0%;
-    padding-bottom: 0%;
-    border-radius: 25px;
+.contentMsg {
+    width: 100%;
 }
 
 .file-input {
@@ -47,62 +31,23 @@
     color: #162138;
 }
 
-.example-container {
-    max-height: 500px !important;
-    position: relative;
-    overflow: auto;
-    width: 80%;
-    display: flex;
-    flex-direction: column;
+#botons {
+    margin-left: auto;
     margin-right: auto;
-    margin-left: 12%;
-}
-
-.btn-return {
-    top: 45%;
-    background: rgba(51, 51, 51, 0.7);
-    color: rgba(214, 226, 236, 0.932);
-    border-top-right-radius: 45%;
-    border-bottom-right-radius: 45%;
-    width: 90px;
-    height: 80px;
-    transform: translate(-5%, -430%);
-}
-
-.btn-return .material-icons {
-    font-size: 60px;
-}
-
-.btn-return:focus {
-    outline: none;
-    box-shadow: 3px 3px 6px #777777;
-}
-
-.btn-return:hover {
-    background: rgba(44, 44, 44, 0.7);
-    color: rgba(250, 250, 250, 0.932);
-}
-
-.addrEmail {
-    width: 78%;
-}
-
-.contentMsg {
-    width: 95%;
+    text-align: center;
+    width: 50%;
 }
 
 .uploadFileBtn {
-    background: #3A445D;
-    width: 63%;
-    height: 20%;
-    font-size: 16px;
-    cursor: pointer;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background: #515e80;
     color: white;
 }
 
 .uploadFileBtn:hover {
     box-shadow: 2px 2px 5px #999;
-    background: #162138;
 }
 
 .mat-toolbar-row {
@@ -125,4 +70,70 @@
 .linkFileD:hover {
     box-shadow: 3px 3px 6px #999;
     background: #596786;
+}
+
+.uploadFileBtn[disabled] {
+    color: #162138;
+}
+
+.uploadFileBtn[disabled]:hover {
+    cursor: not-allowed;
+    color: #162138;
+}
+
+@media screen and (max-width: 2500px) {
+    .contenedor2 {
+        font-size: 16px;
+    }
+    #nameStudent {
+        font-size: 17px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .contenedor2 {
+        font-size: 13px;
+    }
+    #nameStudent {
+        font-size: 14px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .contenedor2 {
+        font-size: 14px;
+    }
+    #nameStudent {
+        font-size: 15px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .contenedor2 {
+        font-size: 10px;
+    }
+    #nameStudent {
+        font-size: 12px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .contenedor2 {
+        font-size: 11px;
+    }
+    #nameStudent {
+        font-size: 13px;
+    }
 }

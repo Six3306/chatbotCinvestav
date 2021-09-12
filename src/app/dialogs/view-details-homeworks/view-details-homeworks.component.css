@@ -9,6 +9,7 @@
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    width: 50%;
 }
 
 .scor {
@@ -20,8 +21,16 @@
     margin-left: 10%;
 }
 
-.btnCancel:hover {
-    background: #4d4d53;
+#btnCancel {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background: #515e80;
+    color: white;
+}
+
+#btnCancel:hover {
+    box-shadow: 2px 2px 5px #999;
 }
 
 #status1 {
@@ -40,4 +49,61 @@
     width: 25%;
     background: rgb(196, 14, 50);
     border-radius: 50%;
+}
+
+@media screen and (max-width: 2500px) {
+    #formData {
+        font-size: 16px;
+    }
+    #nameStudent {
+        font-size: 17px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .formData {
+        font-size: 13px;
+    }
+    #nameStudent {
+        font-size: 14px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    #formData {
+        font-size: 14px;
+    }
+    #nameStudent {
+        font-size: 15px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    #formData {
+        font-size: 10px;
+    }
+    #nameStudent {
+        font-size: 12px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    #formData {
+        font-size: 11px;
+    }
+    #nameStudent {
+        font-size: 13px;
+    }
 }

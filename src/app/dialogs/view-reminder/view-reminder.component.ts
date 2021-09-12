@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA } from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-view-reminder',
@@ -15,7 +15,9 @@ export class ViewReminderComponent implements OnInit {
   datePublication: string = "";
   dateExpiration: string = "";
 
-  constructor(    @Inject(MAT_DIALOG_DATA) public  data:any, 
+  constructor(    @Inject(MAT_DIALOG_DATA) public  data:any,
+  public dialogRef : MatDialogRef<ViewReminderComponent>,
+ 
   ) { }
 
   ngOnInit() {
@@ -30,6 +32,11 @@ export class ViewReminderComponent implements OnInit {
     if(this.data.destinatarys.length>0){
       this.destinatarys = this.destinatarys+this.data.destinatarys[this.data.destinatarys.length-1];
     }
+  }
+
+  ok(){
+    this.dialogRef.close()
+
   }
 
 }

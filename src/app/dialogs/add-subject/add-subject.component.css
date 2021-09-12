@@ -1,0 +1,108 @@
+.mat-form-field {
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btns {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+}
+
+#btnN,
+#btnY {
+    text-align: center;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btnY {
+    background: #515e80;
+}
+
+#btnN {
+    background: #42495e;
+}
+
+#btnN:hover,
+#btnY:hover {
+    box-shadow: 2px 2px 5px #999;
+}
+
+#btnY[disabled] {
+    color: #162138;
+}
+
+#btnY[disabled]:hover {
+    cursor: not-allowed;
+    color: #162138;
+}
+
+@media screen and (max-width: 2500px) {
+    .formASu,
+    #sProfesor,
+    #sGrade,
+    #subject {
+        font-size: 16px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .formASu,
+    #sProfesor,
+    #sGrade,
+    #subject,
+    #btnN,
+    #btnY {
+        font-size: 13px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .formASu,
+    #sProfesor,
+    #sGrade,
+    #subject,
+    #btnN,
+    #btnY {
+        font-size: 14px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .formASu,
+    #sProfesor,
+    #sGrade,
+    #subject,
+    #btnN,
+    #btnY {
+        font-size: 10px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .formASu,
+    #sProfesor,
+    #sGrade,
+    #subject,
+    #btnN,
+    #btnY {
+        font-size: 11px;
+    }
+}

@@ -1,5 +1,5 @@
 <div id="content">
-    <h4 id="nameStudent">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{student|uppercase}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4><br>
+    <h4 id="nameStudent">{{student|uppercase}}</h4><br>
     <!--formulario para registrar las calificaciones de un alumno-->
     <mat-accordion>
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -40,13 +40,10 @@
             <p></p>
 
         </div>
-        <!--botones para cancelar o bien guardar las calificaciones-->
         <div id="botons">
-            <div mat-dialog-actions id="buttons">
-                <button mat-button (click)="onClickNo()" class="btn" id="btnCancel" *ngIf="status==1">Cancelar</button>
-                <button mat-button (click)="onClickNo()" class="btn" id="btnCancel2" *ngIf="status==0">OK</button>
-                <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" class="btn" id="btnReg" *ngIf="textAreaReminder != ''">Registrar</button>
-            </div>
+            <button (click)="onClickNo()" id="btnCancel" *ngIf="status==1">Cancelar</button>
+            <button (click)="onClickNo()" id="btnCancel2" *ngIf="status==0">OK</button>&nbsp;&nbsp;
+            <button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" id="btnReg" *ngIf="textAreaReminder != ''">Registrar</button>
         </div>
     </form>
 

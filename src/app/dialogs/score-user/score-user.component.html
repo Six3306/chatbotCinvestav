@@ -1,10 +1,10 @@
 <h4 id="nameStudent">{{nombreAlumno|uppercase}}</h4><br>
 <!--formulario para registrar las calificaciones de un alumno-->
-<form [formGroup]="formFile">
+<form [formGroup]="formFile" id="formScore">
 
     <input matInput type="text" formControlName="nameStud" hidden>
 
-    <div mat-dialog-content>
+    <div mat-dialog-content id="contentF">
         <mat-label>Calificacion Bimestre 1:</mat-label>
         <mat-form-field class="inp">
             <input matInput type="number" formControlName="bim1" class="scor" max="10" min="0">
@@ -35,8 +35,8 @@
     <!--botones para cancelar o bien guardar las calificaciones-->
     <div id="botons">
         <div mat-dialog-actions id="buttons">
-            <button mat-button (click)="onClickNo()" class="btn" id="btnCancel">Cancelar</button>
-            <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" class="btn" id="btnReg">Registrar</button>
+            <button (click)="onClickNo()" id="btnCancel">Cancelar</button>
+            <button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" id="btnReg">Registrar</button>
         </div>
     </div>
 </form>

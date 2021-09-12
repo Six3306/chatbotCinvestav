@@ -1,8 +1,93 @@
 .formAddFile {
-    width: 300px;
-    max-width: 300px;
+    width: 90%;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .mat-form-field {
     width: 100%;
+}
+
+#content {
+    display: inline-block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btns {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+}
+
+#btnN,
+#btnY {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btnY {
+    background: #515e80;
+    color: white;
+}
+
+#btnY[disabled] {
+    color: #162138;
+}
+
+#btnY[disabled]:hover {
+    cursor: not-allowed;
+    color: #162138;
+}
+
+#btnY:hover,
+#btnN:hover {
+    box-shadow: 2px 2px 5px #999;
+}
+
+@media screen and (max-width: 2500px) {
+    .formAddFile {
+        font-size: 16px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .formAddFile {
+        font-size: 13px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .formAddFile {
+        font-size: 14px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .formAddFile {
+        font-size: 10px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .formAddFile {
+        font-size: 11px;
+    }
 }

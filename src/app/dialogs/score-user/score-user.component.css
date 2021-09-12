@@ -5,9 +5,11 @@
     color: #261c63;
 }
 
-#botons {
-    margin-left: 20%;
-    margin-right: 10%;
+#contentF {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    text-align: center;
 }
 
 .scor {
@@ -15,21 +17,86 @@
 }
 
 .inp {
-    width: 35%;
-    margin-left: 10%;
+    width: 100%;
 }
 
-.buttons {
+#botons {
     margin-left: auto;
     margin-right: auto;
-    align-items: center;
+    text-align: center;
+    width: 50%;
 }
 
-.btnCancel:hover {
-    background: #4d4d53;
+#btnCancel,
+#btnReg {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#btnReg:hover {
-    background: #261c63;
+#btnReg {
+    background: #515e80;
     color: white;
+}
+
+#btnCancel:hover,
+#btnReg:hover {
+    box-shadow: 2px 2px 5px #999;
+}
+
+@media screen and (max-width: 2500px) {
+    #formScore {
+        font-size: 16px;
+    }
+    #nameStudent {
+        font-size: 17px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .formScore {
+        font-size: 13px;
+    }
+    #nameStudent {
+        font-size: 14px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    #formScore {
+        font-size: 14px;
+    }
+    #nameStudent {
+        font-size: 15px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    #formScore {
+        font-size: 10px;
+    }
+    #nameStudent {
+        font-size: 12px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    #formScore {
+        font-size: 11px;
+    }
+    #nameStudent {
+        font-size: 13px;
+    }
 }

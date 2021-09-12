@@ -1,5 +1,21 @@
 .contenedor {
-    width: 400px;
+    width: 95%;
+}
+
+#nameStudent {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: #261c63;
+}
+
+.btnOk[disabled] {
+    color: #162138;
+}
+
+.btnOk[disabled]:hover {
+    cursor: not-allowed;
+    color: #162138;
 }
 
 .centrado2 {
@@ -14,23 +30,78 @@
     border-radius: 25px;
 }
 
-.okR {
-    background: #1D2B46;
-    color: white;
-}
-
-.okR:hover {
-    background: #415b91;
-    color: white;
-}
-
-.contentMsg {
-    background: red;
-}
-
 #recM {
     list-style: none;
     list-style-position: inside;
     padding: 0;
     color: #1b2f55;
+}
+
+.btnOk {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background: #515e80;
+    color: white;
+}
+
+.btnOk:hover {
+    box-shadow: 2px 2px 5px #999;
+}
+
+@media screen and (max-width: 2500px) {
+    .centrado2 {
+        font-size: 16px;
+    }
+    #nameStudent {
+        font-size: 17px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .centrado2 {
+        font-size: 13px;
+    }
+    #nameStudent {
+        font-size: 14px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .centrado2 {
+        font-size: 14px;
+    }
+    #nameStudent {
+        font-size: 15px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .centrado2 {
+        font-size: 10px;
+    }
+    #nameStudent {
+        font-size: 12px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .centrado2 {
+        font-size: 11px;
+    }
+    #nameStudent {
+        font-size: 13px;
+    }
 }

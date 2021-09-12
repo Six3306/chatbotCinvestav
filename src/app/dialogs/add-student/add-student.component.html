@@ -1,25 +1,25 @@
 <!--para añadir un estudiante-->
-<form [formGroup]="formStudent">
+<form [formGroup]="formStudent" class="formAS">
 
-    <mat-form-field style="font-size: 14px;">
+    <mat-form-field>
         <mat-label>Grado</mat-label>
-        <mat-select formControlName="grade">
+        <mat-select formControlName="grade" id="sGrade">
             <mat-option *ngFor="let grade of grades" [value]="grade.value">
                 {{grade.viewValue}}
             </mat-option>
         </mat-select>
     </mat-form-field>
-
-    <mat-form-field style=" font-size: 14px; ">
+    <br>
+    <mat-form-field>
         <mat-label>Grupo</mat-label>
-        <mat-select formControlName="group">
+        <mat-select formControlName="group" id="sGroup">
             <mat-option *ngFor="let group of groups" [value]="group.value">
                 {{group.viewValue}}
             </mat-option>
         </mat-select>
     </mat-form-field>
-
-    <mat-form-field>
+    <br>
+    <mat-form-field id="sSearch">
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
     <br>
@@ -40,14 +40,6 @@
                 <!-- <mat-footer-cell *matFooterCellDef></mat-footer-cell> -->
 
             </ng-container>
-
-
-            <!-- <span *ngIf="row.type == 'Alumno'"> -->
-            <!-- ID Column -->
-            <!-- <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-            </ng-container> -->
 
             <!-- ID Column -->
             <ng-container matColumnDef="email">
@@ -75,6 +67,8 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
     <mat-dialog-actions>
-        <button mat-button type="submit" [disabled]="formStudent.invalid" [mat-dialog-close]="check()">Añadir estudiante</button>
+        <div id="btns">
+            <button id="btnAddStud" type="submit" [disabled]="formStudent.invalid" [mat-dialog-close]="check()">Añadir estudiante</button>
+        </div>
     </mat-dialog-actions>
 </form>

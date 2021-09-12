@@ -1,7 +1,7 @@
 <div class="contenedor">
 
     <div class="centrado2">
-        <h4><b>Retroalimentación para {{nameStudent}}</b></h4>
+        <h4 id="nameStudent"><b>Retroalimentación para {{nameStudent}}</b></h4>
 
         <div *ngIf="statusFeedback=='1'">
             <hr>
@@ -24,7 +24,9 @@
                 <textarea matInput formControlName="FeedbackComment" [(ngModel)]="feedbackCommentA" placeholder="Ingresa opcionalmente una descripción del archivo a enviar"></textarea>
             </mat-form-field>
             <br>
-            <button [disabled]="!formFileSend.valid" *ngIf="(feedbackCommentA!=null && feedbackCommentA!='') || archivo!=null" class="uploadFileBtn">Subir retroalimentación</button>
+            <div id="botons">
+                <button [disabled]="!formFileSend.valid" *ngIf="(feedbackCommentA!=null && feedbackCommentA!='') || archivo!=null" class="uploadFileBtn">Subir retroalimentación</button>
+            </div>
         </form>
     </div>
 

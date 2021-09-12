@@ -6,3 +6,67 @@
     margin-right: auto;
     overflow: visible;
 }
+
+#btns {
+    width: 100%;
+    text-align: center;
+}
+
+#btnN {
+    text-align: center;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    background: #515e80;
+}
+
+#btnN:hover {
+    box-shadow: 2px 2px 5px #999;
+}
+
+@media screen and (max-width: 2500px) {
+    .contentW,
+    #btnN {
+        font-size: 16px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .contentW,
+    #btnN {
+        font-size: 13px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .contentW,
+    #btnN {
+        font-size: 14px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .contentW,
+    #btnN {
+        font-size: 10px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .contentW,
+    #btnN {
+        font-size: 11px;
+    }
+}

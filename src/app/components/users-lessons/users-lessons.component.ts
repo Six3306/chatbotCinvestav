@@ -198,25 +198,29 @@ export class UsersLessonsComponent implements OnInit {
     //despues de cerrar el cuadro de dialogo
     dialogRef.afterClosed().subscribe(responseDialog => {
       if (responseDialog) {
+        console.log(responseDialog);
+        if (responseDialog.length == 0) {
+          this.openCustomerSnackBarStudentRemoveE();
+        } else {
+          for (let index = 0; index < responseDialog.length; index++) {
+            //añadiendo a Firebase el grado y grupo de un usuario
+            let dataU = {
+              email: responseDialog[index].email,
+              username: responseDialog[index].username,
+              grade: responseDialog[index].grade,
+              group: responseDialog[index].group
+            }
+            this.firebase.setGradeGroup(dataU);
+            //obtenemos las materias de dicho grado
 
-        for (let index = 0; index < responseDialog.length; index++) {
-          //añadiendo a Firebase el grado y grupo de un usuario
-          let dataU = {
-            email: responseDialog[index].email,
-            username: responseDialog[index].username,
-            grade: responseDialog[index].grade,
-            group: responseDialog[index].group
+            this.firebase.getSubjectsNameByGrade(responseDialog[index].grade).then(response => {
+              this.firebase.setStudentScoreClass(dataU, response);
+              this.firebase.setFeedbackClass(dataU, response);
+            });
           }
-          this.firebase.setGradeGroup(dataU);
-          //obtenemos las materias de dicho grado
-
-          this.firebase.getSubjectsNameByGrade(responseDialog[index].grade).then(response => {
-            this.firebase.setStudentScoreClass(dataU, response);
-            this.firebase.setFeedbackClass(dataU, response);
-          });
+          this.showStudentsByGradeGroup();
+          this.openCustomerSnackBarStudent();
         }
-        this.showStudentsByGradeGroup();
-        this.openCustomerSnackBarStudent();
       }
     })
   }
@@ -333,6 +337,11 @@ export class UsersLessonsComponent implements OnInit {
     return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsRemoveStudent, { duration: 4000 });
   }
 
+  //para mostrar un cuadro emergente con el mensaje de que un alumno no ha sido agregado correctamente
+  openCustomerSnackBarStudentRemoveE() {
+    return this.snackBar.openFromComponent(CustomSnackBarComponentUserLessonsAddStudentE, { duration: 4000 });
+  }
+
 }
 
 @Component({
@@ -346,3 +355,9 @@ export class CustomSnackBarComponentUserLessonsAddStudent { }
   template: `<span style='color: #00ff4ce3;'><strong>Estudiante eliminado correctamente</strong></span>`
 })
 export class CustomSnackBarComponentUserLessonsRemoveStudent { }
+
+@Component({
+  selector: 'custom-snackbar',
+  template: `<span style='color: #D63513;'><strong>No se agrego ningun estudiante</strong></span>`
+})
+export class CustomSnackBarComponentUserLessonsAddStudentE { }

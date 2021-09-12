@@ -1,7 +1,7 @@
 <div class="contenedor">
     <div class="centrado2">
         <div *ngIf="this.type=='g'">
-            <h5><b>Duda de {{this.student}}:</b></h5>
+            <h5 id="nameStudent"><b>Duda de {{this.student}}:</b></h5>
             <h6>{{this.doubtContent}}</h6>
             <br>
         </div>
@@ -18,9 +18,9 @@
             </div>
 
             <br>
-            <button [disabled]="!formFileSend.valid" *ngIf="(feedbackCommentA!=null && feedbackCommentA!='') && statusD!=1 && this.verify!=true" class="okR">Subir respuesta a duda</button>
+            <button [disabled]="!formFileSend.valid" *ngIf="(feedbackCommentA!=null && feedbackCommentA!='') && statusD!=1 && this.verify!=true" class="btnOk">Subir respuesta a duda</button>
 
-            <button mat-button (click)="okClick()" class="btn btn-info" id="btnOk" *ngIf="statusD==1">OK</button>
+            <button (click)="okClick()" class="btnOk" *ngIf="statusD==1">OK</button>
             <h6 *ngIf="this.verify==true">Ya diste una retroalimentación a la duda</h6>
 
         </form>

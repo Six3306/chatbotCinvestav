@@ -1,13 +1,13 @@
 <!--para añadir materias-->
-<form [formGroup]="formFile">
+<form [formGroup]="formFile" class="formASu">
     <!--colocar el nombre de la materia-->
     <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field id="subject">
             <input matInput formControlName="materia" placeholder="Materia">
         </mat-form-field>
         <p></p>
         <!--colocar el nombre del grado-->
-        <mat-form-field>
+        <mat-form-field id="sGrade">
             <mat-label>Grado</mat-label>
             <mat-select formControlName="grado">
                 <mat-option *ngFor="let grade of grades" [value]="grade.value">
@@ -16,7 +16,7 @@
             </mat-select>
         </mat-form-field>
         <!--colocar el profesor para dicha materia-->
-        <mat-form-field>
+        <mat-form-field id="sProfesor">
             <mat-label>Profesor</mat-label>
             <mat-select formControlName="profesor">
                 <mat-option *ngFor="let profesor of profes" [value]="profesor.viewValue">
@@ -30,9 +30,9 @@
 
 
     <!--botones para cancelar o guardar-->
-    <div mat-dialog-actions>
-        <button mat-button (click)="onClickNo()">No</button>
-        <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value">Si</button>
+    <div mat-dialog-actions id="btns">
+        <button id="btnN" (click)="onClickNo()">No</button>
+        <button id="btnY" type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value">Si</button>
     </div>
 
 </form>

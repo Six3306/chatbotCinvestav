@@ -1,5 +1,5 @@
 <h4 id="nameStudent">{{nombreAlumno|uppercase}}</h4><br>
-<form>
+<form id="formData">
 
 
     <div mat-dialog-content>
@@ -21,6 +21,6 @@
     </div>
     <!--botones para cancelar o bien guardar las calificaciones-->
     <div id="botons">
-        <button mat-button (click)="onClickNo()" class="btn" id="btnCancel">Ok</button>
+        <button (click)="onClickNo()" id="btnCancel">Ok</button>
     </div>
 </form>

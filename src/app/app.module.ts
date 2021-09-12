@@ -46,7 +46,7 @@ import { RouteGuardGuard } from './guardians/route-guard/route-guard.guard';
 import { LoginRegisterGuard } from './guardians/loginRegister/login-register.guard';
 import { ValidateUsersComponent } from './components/validate-users/validate-users.component';
 import { AdminGuardianGuard } from './guardians/admin-guardian/admin-guardian.guard';
-import { UsersLessonsComponent, CustomSnackBarComponentUserLessonsAddStudent, CustomSnackBarComponentUserLessonsRemoveStudent } from './components/users-lessons/users-lessons.component';
+import { UsersLessonsComponent, CustomSnackBarComponentUserLessonsAddStudent, CustomSnackBarComponentUserLessonsRemoveStudent, CustomSnackBarComponentUserLessonsAddStudentE } from './components/users-lessons/users-lessons.component';
 import { LessonsComponent } from './components/lessons/lessons.component';
 import { AddSubjectComponent } from './dialogs/add-subject/add-subject.component';
 import { AddStudentComponent } from './dialogs/add-student/add-student.component';
@@ -135,6 +135,7 @@ const angularMaterial=[
     CustomSnackBarComponent,
     CustomSnackBarComponentUserLessonsAddLesson,
     CustomSnackBarComponentUserLessonsAddStudent,
+    CustomSnackBarComponentUserLessonsAddStudentE,
     openCustomerSnackBarNot,
     CustomSnackBarComponentSendFeedbackHomeworkNot,
     CustomSnackBarComponentUpdatePasswordNot,
@@ -217,7 +218,7 @@ const angularMaterial=[
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,AddFilesComponent, AddHomeworkComponent,AddSubjectComponent, 
     AddStudentComponent, ScoreUserComponent, ViewDetailsHomeworksComponent, FeedbackHomeworkComponent, GenerateKeyComponent, CustomSnackBarComponent,
-    CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent, openCustomerSnackBarNot, CustomSnackBarComponentSendFeedbackHomework, CustomSnackBarComponentAddScoreNot, 
+    CustomSnackBarComponentUserLessonsAddLesson, CustomSnackBarComponentUserLessonsAddStudent, CustomSnackBarComponentUserLessonsAddStudentE, openCustomerSnackBarNot, CustomSnackBarComponentSendFeedbackHomework, CustomSnackBarComponentAddScoreNot, 
     CustomSnackBarComponentAddFilesChatbotNot, CustomSnackBarComponentSendGeneralFileNotExi, CustomSnackBarComponentSendFeedbackHomeworkNot, CustomSnackBarComponentSendGeneralFileNot, 
     CustomSnackBarComponentUpdatePasswordNot, CustomSnackBarComponentUserLessonsAddLessonNot, CustomSnackBarComponentUserLessonsRemoveStudent,
     CustomSnackBarComponentRegister,CustomSnackBarComponentSendGeneralFile, CustomSnackBarComponentAddAdvice, CustomSnackBarComponentAddAdviceNot,

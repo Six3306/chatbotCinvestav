@@ -28,3 +28,55 @@
 .btnDe:hover {
     background: #1D2B46;
 }
+
+@media screen and (max-width: 2500px) {
+    .content,
+    .btnDe,
+    .btnAc {
+        font-size: 16px;
+    }
+}
+
+
+/*TAB*/
+
+@media screen and (max-width: 1305px) and (max-height: 780px) {
+    .content,
+    .btnDe,
+    .btnAc {
+        font-size: 13px;
+    }
+}
+
+
+/*TAB R*/
+
+@media screen and (max-width: 780px) and (max-height: 1305px) {
+    .content,
+    .btnDe,
+    .btnAc {
+        font-size: 14px;
+    }
+}
+
+
+/* cellphone */
+
+@media screen and (max-width: 479px) and (max-height: 700px) {
+    .content,
+    .btnDe,
+    .btnAc {
+        font-size: 10px;
+    }
+}
+
+
+/* cellphone r*/
+
+@media screen and (max-width: 700px) and (max-height: 479px) {
+    .content,
+    #btnY,
+    #btnN {
+        font-size: 11px;
+    }
+}

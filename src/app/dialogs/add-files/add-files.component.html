@@ -1,7 +1,7 @@
 <form [formGroup]="formFile" class="formAddFile">
 
     <!--formulario para añadir nuevos archivos-->
-    <div mat-dialog-content>
+    <div mat-dialog-content id="content">
 
         <!--para agregar un titulo-->
         <mat-form-field>
@@ -59,9 +59,9 @@
 
     </div>
     <!--botones para cancelar y guardar el archivo-->
-    <div mat-dialog-actions>
-        <button mat-button (click)="onClickNo()">No</button>
-        <button mat-button type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" (click)="sendFile()">Si</button>
+    <div mat-dialog-actions id="btns">
+        <button id="btnN" (click)="onClickNo()">No</button>
+        <button id="btnY" type="submit" [disabled]="formFile.invalid" [mat-dialog-close]="formFile.value" (click)="sendFile()">Si</button>
     </div>
 
 </form>
